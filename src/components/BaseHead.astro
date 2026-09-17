@@ -14,13 +14,15 @@ interface Props {
 
 const {
   title,
-  description = SITE.description,
+  description: rawDescription,
   ogImage     = SITE.ogImage,
   ogType      = 'website',
   canonical,
   noindex     = false,
   jsonLd,
 } = Astro.props;
+
+const description = rawDescription?.trim() ? rawDescription : SITE.description;
 
 const pageTitle = title
   ? `${title} | ${SITE.name}`

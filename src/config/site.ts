@@ -19,7 +19,7 @@ const hoursSchema = [
 export const SITE = {
   name: 'Riverside. Dym i Ogień',
   fullName: 'Restauracja Riverside. Dym i Ogień',
-  description: 'Opis Restauracja Riverside. Dym i Ogień',
+  description: 'Riverside. Dym i Ogień — restauracja nad Motławą w Gdańsku. Kuchnia na żywym ogniu, piwo Pilsner Urquell prosto z tanka i program lojalnościowy Riverside Club.',
   url: 'https://www.riversidegdansk.pl',
   finalUrl: 'https://www.riversidegdansk.pl',
   lang: 'pl',
@@ -66,6 +66,7 @@ export const SOCIAL = {
   instagram:  'https://www.instagram.com/riversidegdansk/',
   tiktok:     'https://www.tiktok.com/@riverside_gdansk',
   googleMaps: 'https://maps.app.goo.gl/HJFKB67eAdpTHTi57',
+  youtube:    'https://www.youtube.com/@riversidegdansk',
 } as const;
 
 export const CLOUDINARY = {
