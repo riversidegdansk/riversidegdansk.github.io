@@ -3,6 +3,8 @@ title: 'Mega golonka i litrowy Pilsner — środek tygodnia po czesku'
 author: 'Riverside Dym i Ogień'
 date: 2026-12-17
 excerpt: 'Długo pieczona golonka, chrupiąca skóra, soczyste mięso i litrowy Pilsner Urquell. Sprawdź zestaw dostępny we wtorki i środy w Riverside.'
+seoTitle: 'Mega golonka i litr Pilsnera'
+seoDescription: 'Długo pieczona golonka z chrupiącą skórą i litrowy Pilsner Urquell z tanka. Zestaw we wtorki i środy w Riverside nad Motławą w Gdańsku.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-sekcja-menu-golonka'
   alt: 'Mega golonka z chrupiącą skórą na puree w Riverside w Gdańsku'

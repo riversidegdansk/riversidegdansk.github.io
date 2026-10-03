@@ -1,8 +1,10 @@
 ---
 title: 'Brioche Pull-Apart — wołowina, ser i dużo masła czosnkowego'
-author: 'Riverside Dym i Ogień'
+author: 'Michał Rybak'
 date: 2026-10-22
 excerpt: 'Miękkie brioche, mocno smażona wołowina, cheddar, provolone, sriracha mayo i czosnkowe masło. Michał Rybak pokazuje wersję pull-apart bez półśrodków.'
+seoTitle: 'Brioche Pull-Apart z wołowiną'
+seoDescription: 'Bułeczki brioche z mocno smażoną wołowiną, cheddarem, provolone i masłem czosnkowym. Przepis Michała Rybaka na danie do dzielenia.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-post-brioche-pull-apart'
   alt: 'Kucharz Riverside składa Brioche Pull-Apart w formie do zapiekania'

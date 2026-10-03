@@ -1,8 +1,10 @@
 ---
 title: 'Dlaczego wołowinę trzeba mocno przesmażyć? Kolor to smak'
-author: 'Riverside Dym i Ogień'
+author: 'Michał Rybak'
 date: 2026-10-29
 excerpt: 'Mocno rozgrzana patelnia i właściwe zrumienienie mięsa potrafią zmienić całe danie. Wyjaśniamy, dlaczego kolor wołowiny ma tak duże znaczenie.'
+seoTitle: 'Jak smażyć wołowinę? Kolor to smak'
+seoDescription: 'Mocno rozgrzana patelnia i reakcja Maillarda: wyjaśniamy, dlaczego zrumieniona wołowina smakuje lepiej i jak jej nie zadusić na patelni.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-post-dlaczego-wolowine-trzeba-mocno-przesmazyc'
   alt: 'Mielona wołowina rozprowadzana dłońmi na patelni przed mocnym smażeniem'

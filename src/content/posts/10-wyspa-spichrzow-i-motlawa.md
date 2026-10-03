@@ -1,8 +1,10 @@
 ---
-title: 'Wyspa Spichrzów i Motława - co zobaczyć przed kolacją?'
+title: 'Wyspa Spichrzów i Motława — co zobaczyć przed kolacją?'
 author: 'Riverside Dym i Ogień'
 date: 2026-05-28
 excerpt: 'Spacerujesz po centrum Gdańska? Podpowiadamy, co zobaczyć nad Motławą i na Wyspie Spichrzów przed obiadem lub kolacją w Riverside.'
+seoTitle: 'Wyspa Spichrzów i Motława — spacer'
+seoDescription: 'Długi Targ, Zielona Brama, Żuraw i Wyspa Spichrzów: trasa spaceru nad Motławą w Gdańsku przed obiadem lub kolacją w Riverside.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-otoczenie-fot-5'
   alt: 'Motława i Wyspa Spichrzów w Gdańsku ze statkami wycieczkowymi'

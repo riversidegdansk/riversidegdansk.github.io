@@ -3,6 +3,8 @@ title: 'Jak zorganizować spotkanie firmowe w restauracji w Gdańsku?'
 author: 'Riverside Dym i Ogień'
 date: 2026-05-14
 excerpt: 'Przestrzeń, menu, liczba gości, prywatność i lokalizacja. Podpowiadamy, na co zwrócić uwagę przy organizacji spotkania firmowego w restauracji.'
+seoTitle: 'Spotkanie firmowe w Gdańsku'
+seoDescription: 'Sala VIP do 50 osób czy cały lokal dla 150 gości? Podpowiadamy, jak zorganizować spotkanie firmowe w restauracji nad Motławą w Gdańsku.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-wnetrza-fot-5'
   alt: 'Sala restauracyjna Riverside z zielenią pod sufitem, gotowa na spotkanie firmowe w Gdańsku'

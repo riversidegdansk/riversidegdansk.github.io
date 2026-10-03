@@ -18,12 +18,13 @@ const adminIndexInDev = {
 };
 
 export default defineConfig({
-  site: 'https://riversidegdansk.github.io/',
+  site: 'https://www.riversidegdansk.pl',
   integrations: [
   alpinejs(),
   sitemap({
     filter: (page) =>
-      !page.includes('/privacy/')
+      !page.includes('/privacy/') &&
+      !page.includes('/offline/')
   }),
 ],
   image: {

@@ -1,8 +1,10 @@
 ---
-title: 'Żeberka BBQ - czas, ogień i autorski sos'
+title: 'Żeberka BBQ — czas, ogień i autorski sos'
 author: 'Riverside Dym i Ogień'
 date: 2026-07-29
 excerpt: 'Miękkie, soczyste mięso, powolne przygotowanie i wyrazisty sos BBQ. Pokazujemy, jak powstają żeberka w Riverside.'
+seoTitle: 'Żeberka BBQ z autorskim sosem'
+seoDescription: 'Miękkie, wolno pieczone żeberka BBQ z autorskim sosem w Riverside w Gdańsku. Pokazujemy, jak czas i krótka finalizacja na ogniu budują smak.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-dania-fot-3'
   alt: 'Żeberka BBQ z autorskim sosem, ziemniakami i sałatką w Riverside'

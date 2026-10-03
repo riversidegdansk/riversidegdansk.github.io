@@ -1,8 +1,10 @@
 ---
-title: 'Riverside od 2019 roku - nasza historia nad Motławą'
+title: 'Riverside od 2019 roku — nasza historia nad Motławą'
 author: 'Riverside Dym i Ogień'
 date: 2026-06-17
 excerpt: 'Od 2019 roku gotujemy nad Motławą, serwujemy Pilsnera prosto z tanka i rozwijamy własny styl kuchni. Poznaj historię Riverside.'
+seoTitle: 'Historia Riverside nad Motławą'
+seoDescription: 'Od 2019 roku gotujemy nad Motławą w Gdańsku i nalewamy Pilsnera prosto z tanka. Poznaj historię restauracji Riverside. Dym i Ogień.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-otoczenie-fot-2'
   alt: 'Taras Riverside nad Motławą z widokiem na Żuraw w Gdańsku'

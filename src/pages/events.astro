@@ -1,6 +1,7 @@
 ---
-import { cloudinaryVideoUrl, cloudinaryVideoPoster } from '../utils/cloudinary';
+import { cloudinaryUrl, cloudinaryVideoUrl, cloudinaryVideoPoster } from '../utils/cloudinary';
 import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
+import { withBase } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionGallery from '../components/ui/SectionGallery.astro';
 import SectionBookingEvent from '../components/ui/SectionBookingEvent.astro';
@@ -78,8 +79,9 @@ const eventTypes = [
 ---
 
 <BaseLayout
-  title="Imprezy i eventy"
-  description="Organizujemy eventy firmowe i imprezy prywatne w Riverside. Dym i Ogień — kameralna sala VIP do 50 osób lub cały lokal na wyłączność dla 150 gości, z widokiem na Motławę."
+  title="Imprezy firmowe i prywatne w Gdańsku"
+  ogImage={cloudinaryUrl('riverside-dym-ogien-gdansk-galeria-wnetrza-fot-5', { width: 1200, height: 630, crop: 'fill' })}
+  description="Imprezy firmowe i prywatne nad Motławą w Gdańsku: sala VIP do 50 osób lub cały lokal na wyłączność dla 150 gości. Menu i oprawę dopasujemy do Ciebie."
 >
 
   {/* Hero */}
@@ -92,6 +94,7 @@ const eventTypes = [
             <p class="prose-p">Oferujemy przestrzeń dla grup od kilkunastu do 150 osób – z widokiem na Motławę.</p>
             <p class="prose-p">Kameralna sala VIP mieści do 50 gości. Cały lokal do wynajęcia na wyłączność dla około 150 osób.</p>
             <p class="prose-p">Nie obsługujemy koncertów i głośnych atrakcji – stawiamy na komfort i prywatność. Na specjalne życzenie zapewniamy nagłośnienie, oprawę tematyczną, menu degustacyjne.</p>
+            <p class="prose-p">Planujesz wydarzenie dla firmy? Przeczytaj, <a href={withBase('/posts/09-spotkanie-firmowe-gdansk/')}>jak zorganizować spotkanie firmowe w Gdańsku</a> i zajrzyj do <a href={withBase('/faq')}>najczęstszych pytań</a>.</p>
           </div>
         </div>
         <div class="w-full lg:w-1/2 px-4">

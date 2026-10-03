@@ -1,7 +1,29 @@
 {
+  "id": "/",
   "name": "Riverside. Dym i Ogień",
   "short_name": "Riverside",
+  "description": "Restauracja nad Motławą w Gdańsku. Kuchnia na żywym ogniu, piwo Pilsner Urquell prosto z tanka.",
+  "lang": "pl-PL",
+  "dir": "ltr",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#C95A1A",
+  "background_color": "#111315",
+  "categories": ["food", "lifestyle"],
   "icons": [
+    {
+      "src": "/favicons/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicons/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "/favicons/web-app-manifest-192x192.png",
       "sizes": "192x192",
@@ -15,7 +37,24 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#C95A1A",
-  "background_color": "#111315",
-  "display": "standalone"
+  "shortcuts": [
+    {
+      "name": "Menu",
+      "short_name": "Menu",
+      "url": "/menu/?source=pwa",
+      "icons": [{ "src": "/favicons/web-app-manifest-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Rezerwacja stolika",
+      "short_name": "Rezerwacja",
+      "url": "/reservations/?source=pwa",
+      "icons": [{ "src": "/favicons/web-app-manifest-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Kontakt i dojazd",
+      "short_name": "Kontakt",
+      "url": "/contact/?source=pwa",
+      "icons": [{ "src": "/favicons/web-app-manifest-192x192.png", "sizes": "192x192" }]
+    }
+  ]
 }

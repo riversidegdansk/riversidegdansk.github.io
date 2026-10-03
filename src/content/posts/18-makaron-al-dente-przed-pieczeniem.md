@@ -1,8 +1,10 @@
 ---
 title: 'Makaron al dente przed pieczeniem — dlaczego trzeba skrócić gotowanie?'
-author: 'Riverside Dym i Ogień'
+author: 'Michał Rybak'
 date: 2026-11-26
 excerpt: 'Jeśli makaron ma później trafić do pieca, nie powinien być ugotowany do końca w garnku. Michał Rybak pokazuje, dlaczego warto skrócić pierwszy etap o kilka minut.'
+seoTitle: 'Makaron al dente przed zapiekaniem'
+seoDescription: 'Makaron do zapiekania gotuj 2–3 minuty krócej niż na opakowaniu. Michał Rybak wyjaśnia, dlaczego al dente to podstawa dobrej zapiekanki.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-chef-fot-9'
   alt: 'Michał Rybak doprawia danie w rondlu w kuchni Riverside'

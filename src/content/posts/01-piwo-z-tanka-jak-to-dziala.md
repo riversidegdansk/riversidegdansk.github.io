@@ -1,8 +1,10 @@
 ---
-title: 'Piwo z tanka - jak to działa?'
+title: 'Piwo z tanka — jak to działa?'
 author: 'Riverside Dym i Ogień'
 date: 2026-06-03
 excerpt: 'Niepasteryzowany Pilsner Urquell prosto z tanka, zawsze świeży i w odpowiedniej temperaturze. Wyjaśniamy, na czym polega ta metoda serwowania piwa.'
+seoTitle: 'Piwo z tanka — jak to działa?'
+seoDescription: 'Niepasteryzowany Pilsner Urquell prosto z tanka w Gdańsku: dlaczego jest świeższy, jak go nalewamy i czym różni się od piwa z beczki.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-tank-fot-12'
   alt: 'Pięć kufli Pilsnera Urquella nalanych prosto z tanka w Riverside w Gdańsku'

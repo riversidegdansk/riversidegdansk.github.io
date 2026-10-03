@@ -17,8 +17,8 @@ const {
 ---
 
 <BaseLayout
-  title="Rezerwacja stolika"
-  description="Zarezerwuj stolik w Riverside. Dym i Ogień nad Motławą w Gdańsku — rezerwacja online lub telefonicznie."
+  title="Rezerwacja stolika nad Motławą"
+  description="Zarezerwuj stolik w Riverside nad Motławą w Gdańsku: online do 10 osób albo telefonicznie. Taras z widokiem na Żuraw, a dla większych grup oferta imprez."
 >
 
   {/* Hero */}
@@ -32,6 +32,11 @@ const {
             <h2 class="text-glass-white section-heading tracking-tight mb-6">Zarezerwuj stolik online</h2>
             <p class="prose-p max-w-sm">System rezerwacji online obsługuje portal zjedz.my. Rezerwujemy maksymalnie 10 miejsc w systemie online.</p>
             <p class="prose-p max-w-sm">Jeśli potrzebujesz zarezerwować więcej miejsc lub chcesz zorganizować imprezę — <a href={withBase('/events')}>zapoznaj się z naszą ofertą imprez i eventów</a>.</p>
+            <h2 class="text-2xl tracking-tight text-glass-white mt-10 mb-4">Wolisz zadzwonić?</h2>
+            <p class="prose-p max-w-sm">Rezerwacje przyjmujemy też telefonicznie: <a href={CONTACT.phoneWorkHref}>{CONTACT.phoneWork}</a>. Stoliki na oszklonym i ogrzewanym tarasie z widokiem na Motławę i Żuraw są dostępne przez cały rok.</p>
+            <h2 class="text-2xl tracking-tight text-glass-white mt-10 mb-4">Godziny otwarcia</h2>
+            <ul class="prose-p max-w-sm list-none p-0">{CONTACT.hours.map((h) => <li>{h}</li>)}</ul>
+            <p class="prose-p max-w-sm">Pytasz o dania wegetariańskie, przyjście z psem albo rodzinne niedziele? Odpowiedzi znajdziesz w <a href={withBase('/faq')}>FAQ</a>.</p>
           </div>
         </div>
 

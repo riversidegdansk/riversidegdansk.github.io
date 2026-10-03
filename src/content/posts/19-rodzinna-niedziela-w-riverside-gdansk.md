@@ -3,6 +3,8 @@ title: 'Rodzinna niedziela w Riverside — czas dla dzieci i dorosłych'
 author: 'Riverside Dym i Ogień'
 date: 2026-12-03
 excerpt: 'Bańki mydlane, balony, bajki, muzyka i specjalna strefa dla najmłodszych. Pokazujemy, jak wygląda rodzinna niedziela w Riverside nad Motławą.'
+seoTitle: 'Rodzinna niedziela w Gdańsku'
+seoDescription: 'Bańki mydlane, balony, animatorzy i strefa zabaw dla dzieci, a dla dorosłych spokojny obiad nad Motławą. Tak wygląda rodzinna niedziela w Riverside.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-rodzinna-niedziela'
   alt: 'Tata z dzieckiem w balonowej czapce przy stoliku na tarasie Riverside podczas rodzinnej niedzieli'

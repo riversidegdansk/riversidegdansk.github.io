@@ -31,6 +31,8 @@ const { Content } = await render(post);
   excerpt={post.data.excerpt}
   cover={post.data.cover}
   author={post.data.author}
+  seoTitle={post.data.seoTitle}
+  seoDescription={post.data.seoDescription}
   prev={prev ? { title: prev.data.title, href: withBase(`/posts/${prev.id}`) } : null}
   next={next ? { title: next.data.title, href: withBase(`/posts/${next.id}`) } : null}
 >

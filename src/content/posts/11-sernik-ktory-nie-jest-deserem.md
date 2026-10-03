@@ -1,8 +1,10 @@
 ---
 title: 'Sernik, który nie jest deserem — makaron według pomysłu Michała Rybaka'
-author: 'Riverside Dym i Ogień'
+author: 'Michał Rybak'
 date: 2026-10-08
 excerpt: 'Paccheri ustawione pionowo, mięsny sos, cheddar i mozzarella. Michał Rybak pokazuje, że forma może zaskakiwać, a smak nadal pozostać konkretny i czytelny.'
+seoTitle: 'Wytrawny sernik z makaronu paccheri'
+seoDescription: 'Paccheri ustawione pionowo, gęsty sos mięsny, cheddar i mozzarella. Michał Rybak pokazuje przepis na wytrawny „sernik” z makaronu.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-post-sernik-ktory-nie-jest-deserem'
   alt: 'Tarty ser sypany do sosu na patelni podczas przygotowania wytrawnego sernika z makaronu'

@@ -15,6 +15,7 @@ interface Slide {
 }
 
 interface Props {
+  heading?: string;
   slides?: Slide[];
   intervalMs?: number;
   menuHref?: string;
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const {
+  heading = 'Restauracja nad Motławą w Gdańsku',
   slides = [
     {
       type: 'image',
@@ -144,6 +146,8 @@ const {
     <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-48 md:pt-52 pb-16 lg:pb-20">
       {/* All slide texts share one grid cell, so the block is as tall as the longest one
           and never overlaps the buttons below. */}
+      {/* H1 strony głównej — stała fraza kluczowa; hasła slajdów są nagłówkami H2. */}
+      <h1 class="mb-4 font-sans! text-sm md:text-base font-semibold uppercase tracking-[0.2em] text-glass-white [text-shadow:0_1px_8px_rgba(0,0,0,0.8)]">{heading}</h1>
       <div class="grid mb-8">
         {slides.map((slide, i) => (
           <div
@@ -151,15 +155,9 @@ const {
             x-bind:class={`{ 'opacity-0': active !== ${i} }`}
             x-bind:aria-hidden={`active !== ${i}`}
           >
-            {i === 0 ? (
-              <h1 class="font-heading max-w-3xl text-[clamp(2rem,min(10vw,6.5svh),6rem)] md:text-[clamp(2.5rem,min(8vw,7svh),6rem)] leading-[1.1] tracking-tighter mb-4 lg:mb-6 drop-shadow-lg text-balance">
-                {slide.title}
-              </h1>
-            ) : (
-              <h2 class="font-heading max-w-3xl text-[clamp(2rem,min(10vw,6.5svh),6rem)] md:text-[clamp(2.5rem,min(8vw,7svh),6rem)] leading-[1.1] tracking-tighter mb-4 lg:mb-6 drop-shadow-lg text-balance">
-                {slide.title}
-              </h2>
-            )}
+            <h2 class="font-heading max-w-3xl text-[clamp(2rem,min(10vw,6.5svh),6rem)] md:text-[clamp(2.5rem,min(8vw,7svh),6rem)] leading-[1.1] tracking-tighter mb-4 lg:mb-6 drop-shadow-lg text-balance">
+              {slide.title}
+            </h2>
             <p class="prose-p max-w-lg !mb-0 [@media(max-height:640px)]:hidden">
               {slide.description}
             </p>

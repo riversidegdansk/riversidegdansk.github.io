@@ -31,6 +31,8 @@ collections:
       - { name: author, label: Autor, widget: string, default: Riverside Dym i Ogień, required: false }
       - { name: date,      label: Data,          widget: datetime, format: "YYYY-MM-DD" }
       - { name: excerpt,   label: Zajawka,       widget: text }
+      - { name: seoTitle,  label: Tytuł SEO, widget: string, required: false, hint: "Tytuł w Google, bez nazwy restauracji (dopisuje się sama). Najlepiej do 35 znaków. Puste = tytuł wpisu." }
+      - { name: seoDescription, label: Opis SEO, widget: text, required: false, hint: "Opis w wynikach Google, 120–155 znaków, z główną frazą wpisu. Puste = zajawka." }
       - name: cover
         label: Zdjęcie główne
         widget: object

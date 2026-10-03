@@ -16,9 +16,31 @@ const hoursSchema = [
   `Su ${parseHoursValue(settingsData.hours_sunday)}`,
 ].filter((slot) => slot.includes('-')).join('; ');
 
+// Godziny w formacie schema.org (OpeningHoursSpecification) — dla danych strukturalnych restauracji.
+const DAYS = [
+  ['Monday',    settingsData.hours_monday],
+  ['Tuesday',   settingsData.hours_tuesday],
+  ['Wednesday', settingsData.hours_wednesday],
+  ['Thursday',  settingsData.hours_thursday],
+  ['Friday',    settingsData.hours_friday],
+  ['Saturday',  settingsData.hours_saturday],
+  ['Sunday',    settingsData.hours_sunday],
+] as const;
+
+const openingHoursSpecification = DAYS.flatMap(([day, value]) => {
+  const [opens, closes] = parseHoursValue(value).split('-');
+  return opens && closes
+    ? [{ '@type': 'OpeningHoursSpecification', dayOfWeek: `https://schema.org/${day}`, opens, closes }]
+    : [];
+});
+
+// „80-748 Gdańsk” → kod pocztowy i miejscowość osobno (schema.org PostalAddress).
+const cityMatch = settingsData.city.match(/^(\d{2}-\d{3})\s+(.+)$/);
+
 export const SITE = {
   name: 'Riverside. Dym i Ogień',
   fullName: 'Restauracja Riverside. Dym i Ogień',
+  alternateName: ['Riverside Dym i Ogień', 'Riverside Gdańsk'],
   description: 'Riverside. Dym i Ogień — restauracja nad Motławą w Gdańsku. Kuchnia na żywym ogniu, piwo Pilsner Urquell prosto z tanka.',
   url: 'https://www.riversidegdansk.pl',
   finalUrl: 'https://www.riversidegdansk.pl',
@@ -32,6 +54,8 @@ export const SITE = {
 export const CONTACT = {
   address:      settingsData.address,
   city:         settingsData.city,
+  postalCode:   cityMatch?.[1] ?? '',
+  locality:     cityMatch?.[2] ?? settingsData.city,
   phone:        settingsData.phone,
   phoneWork:    settingsData.phone_bot,
   phoneEvents:    settingsData.phone_manager,
@@ -55,6 +79,7 @@ export const CONTACT = {
   nip: '',
   regon: '',
   hoursSchema,
+  openingHoursSpecification,
   lat: 54.34801648908613,
   lng: 18.656882571164516,
   mapsUrl: 'https://maps.app.goo.gl/8UKffkh9tswHGx647',
@@ -89,7 +114,7 @@ export const NAV = [
   { label: 'O nas',                href: '/about' },
   { label: 'Menu',                 href: '/menu' },
   { label: 'Imprezy',              href: '/events' },
-  { label: 'Poznaj Riverside',     href: '/gallery' },
+  { label: 'Galeria',              href: '/gallery' },
   { label: 'Riverside od Kuchni',  href: '/posts' },
   { label: 'FAQ',                  href: '/faq' },
   { label: 'Kontakt',              href: '/contact' },
@@ -105,7 +130,7 @@ export const FOOTER_NAV = [
   { label: 'O nas',                 href: '/about' },
   { label: 'Imprezy',               href: '/events' },
   { label: 'Rezerwacje',            href: NAV_CTA.href },
-  { label: 'Poznaj Riverside',      href: '/gallery' },
+  { label: 'Galeria',               href: '/gallery' },
   { label: 'Riverside od Kuchni',   href: '/posts' },
   { label: 'FAQ',                   href: '/faq' },
   { label: 'Kontakt',               href: '/contact' },
@@ -124,6 +149,26 @@ export const BUSINESS = {
 } as const;
 
 export const SAME_AS = Object.values(SOCIAL).filter(Boolean);
+
+// Szef kuchni — osoba w danych strukturalnych (autor przepisów, E-E-A-T).
+export const CHEF = {
+  name:     'Michał Rybak',
+  jobTitle: 'Szef kuchni',
+  image:    'riverside-dym-ogien-gdansk-chef-michal-rybak',
+  url:      '/posts/06-chef-michal-rybak/',
+  sameAs:   ['https://www.tiktok.com/@rybalikeachef'],
+} as const;
+
+// Kuchnie i zdjęcia restauracji do danych strukturalnych (Restaurant).
+export const RESTAURANT = {
+  servesCuisine: ['Polska', 'Europejska', 'Włoska', 'Grill', 'Azjatycka'],
+  images: [
+    'riverside-dym-ogien-gdansk-galeria-otoczenie-fot-2',
+    'riverside-dym-ogien-gdansk-galeria-wnetrza-fot-5',
+    'riverside-dym-ogien-gdansk-galeria-tank-fot-12',
+    'riverside-dym-ogien-gdansk-sekcja-menu-golonka',
+  ],
+} as const;
 
 export const MEDIA = {
   logo: {
@@ -147,8 +192,14 @@ export const MEDIA = {
 
 export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+// Ścieżki stron zawsze z końcowym „/” — tak jak w canonical i sitemapie
+// (GitHub Pages przekierowuje /menu na /menu/, co kosztuje dodatkowe przejście).
 export function withBase(path: string): string {
-  return `${BASE}${path}`;
+  const cut = path.search(/[?#]/);
+  const pathname = cut === -1 ? path : path.slice(0, cut);
+  const suffix = cut === -1 ? '' : path.slice(cut);
+  const isPage = pathname !== '' && !pathname.endsWith('/') && !/\.[a-z0-9]+$/i.test(pathname);
+  return `${BASE}${isPage ? `${pathname}/` : pathname}${suffix}`;
 }
 
 export const ANALYTICS = {

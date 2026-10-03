@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import { cloudinaryUrl } from '../utils/cloudinary';
 import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
-import { withBase } from '../config/site';
+import { withBase, SITE } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 interface Props {
@@ -39,11 +39,43 @@ const categories = categoryNames.map((name) => ({
 }));
 
 const pdfHref = menuPdf ? withBase(menuPdf) : null;
+
+// Dane strukturalne Menu → MenuSection → MenuItem (ceny dla wyszukiwarek i asystentów AI).
+// Cena „21,90 / 36,90 zł” daje dwie oferty (np. dwa rozmiary porcji).
+const parsePrices = (price: string) =>
+  (price.match(/\d+(?:[.,]\d{1,2})?/g) ?? []).map((p) => p.replace(',', '.'));
+
+const menuUrl = `${SITE.finalUrl}/menu/`;
+const menuJsonLd = {
+  '@context':  'https://schema.org',
+  '@type':     'Menu',
+  '@id':       `${menuUrl}#menu`,
+  name:        `Menu ${SITE.name}`,
+  url:         menuUrl,
+  inLanguage:  'pl-PL',
+  hasMenuSection: categories.map((category) => ({
+    '@type': 'MenuSection',
+    name:    category.name,
+    hasMenuItem: category.dishes.map(({ data }) => ({
+      '@type':       'MenuItem',
+      name:          data.name,
+      ...(data.description ? { description: data.description.trim() } : {}),
+      ...(data.tags.includes('Wegetariańskie') ? { suitableForDiet: 'https://schema.org/VegetarianDiet' } : {}),
+      offers: parsePrices(data.price).map((price) => ({
+        '@type':       'Offer',
+        price,
+        priceCurrency: 'PLN',
+      })),
+    })),
+  })),
+};
 ---
 
 <BaseLayout
-  title="Menu"
-  description="Menu Riverside. Dym i Ogień — przekąski, zupy, makarony, sałatki, specjalności znad ognia, dania główne, desery i pizza z pieca. Sprawdź pełną kartę dań i ceny."
+  title="Menu — golonka, żeberka BBQ i pizza"
+  ogImage={cloudinaryUrl('riverside-dym-ogien-gdansk-menu-dania', { width: 1200, height: 630, crop: 'fill' })}
+  jsonLd={menuJsonLd}
+  description="Menu Riverside w Gdańsku: tatar, zupy, makarony, pizza, 12-godzinna golonka i żeberka BBQ. Pełna karta dań z cenami, także dania wegetariańskie."
 >
 
   {/* Hero */}
@@ -52,7 +84,7 @@ const pdfHref = menuPdf ? withBase(menuPdf) : null;
       <div class="max-w-3xl">
         <h1 class="font-heading text-4xl md:text-6xl mb-8 text-glass-white">Menu</h1>
         <p class="prose-p">Menu tworzone przez naszego Chefa Michała łączy różnorodne inspiracje – od ręcznie siekanego tatara, przez ryby, pizzę, golonkę i żeberka, po smaki inspirowane kuchnią azjatycką. Dopełnieniem jest niepasteryzowany Pilsner Urquell serwowany prosto z tanka.</p>
-        <p class="prose-p">Poniżej znajdziesz pełną kartę dań wraz z cenami.</p>
+        <p class="prose-p">Poniżej znajdziesz pełną kartę dań wraz z cenami. Chcesz wiedzieć, jak powstają nasze specjalności? Przeczytaj o <a href={withBase('/posts/04-golonka-12-godzin/')}>12-godzinnej golonce</a> i <a href={withBase('/posts/05-zeberka-bbq/')}>żeberkach BBQ</a>.</p>
       </div>
     </div>
   </section>

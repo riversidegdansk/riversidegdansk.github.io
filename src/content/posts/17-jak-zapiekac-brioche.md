@@ -1,8 +1,10 @@
 ---
 title: 'Jak zapiekać brioche, żeby była miękka w środku i złota na zewnątrz?'
-author: 'Riverside Dym i Ogień'
+author: 'Michał Rybak'
 date: 2026-11-19
 excerpt: 'Najpierw pod folią, później bez niej. Prosty sposób pozwala równomiernie rozgrzać nadzienie, stopić ser i dopiero na końcu mocno zrumienić brioche.'
+seoTitle: 'Jak zapiekać brioche z nadzieniem?'
+seoDescription: 'Najpierw 10 minut pod folią w 180°C, potem bez niej. Prosty sposób na brioche miękką w środku, złotą na zewnątrz i z roztopionym serem.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-post-jak-zapiekac-brioche-zeby-byla-miekka-w-srodku'
   alt: 'Brioche Pull-Apart smarowane masłem czosnkowym przed pieczeniem'

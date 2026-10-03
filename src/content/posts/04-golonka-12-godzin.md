@@ -1,8 +1,10 @@
 ---
-title: '12 godzin dla jednej golonki - dlaczego warto czekać?'
+title: '12 godzin dla jednej golonki — dlaczego warto czekać?'
 author: 'Riverside Dym i Ogień'
 date: 2026-07-15
 excerpt: 'Nasza golonka potrzebuje około 12 godzin przygotowania. Wyjaśniamy, dlaczego czas i temperatura mają tak duże znaczenie dla jej smaku i struktury.'
+seoTitle: 'Golonka 12 godzin — dlaczego warto?'
+seoDescription: 'Wolno gotowana golonka w Riverside przygotowywana przez 12 godzin: miękkie mięso, chrupiąca skórka i sos. Sprawdź, dlaczego czas robi różnicę.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-dania-fot-21'
   alt: 'Wolno gotowana golonka polewana sosem na puree w Riverside'

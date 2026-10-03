@@ -1,0 +1,203 @@
+---
+// Baner „Zainstaluj aplikację” (PWA).
+// Android / Chrome / Edge: przechwytuje beforeinstallprompt i pokazuje natywne okno instalacji.
+// iOS / iPadOS: brak API instalacji — pokazujemy instrukcję „Udostępnij → Do ekranu początkowego”.
+// Podgląd na dowolnym urządzeniu: ?pwa-demo=android albo ?pwa-demo=ios
+import { MEDIA, withBase } from '../config/site';
+---
+
+<div
+  id="pwa-install"
+  hidden
+  role="dialog"
+  aria-labelledby="pwa-install-title"
+  class="fixed inset-x-3 bottom-3 z-40 mx-auto max-w-md rounded-2xl bg-white p-4 text-glass-black shadow-[0_10px_40px_rgba(0,0,0,0.45)] sm:inset-x-auto sm:left-1/2 sm:w-[28rem] sm:-translate-x-1/2"
+>
+  <div class="flex items-start gap-3">
+    <img
+      src={withBase(MEDIA.favicon.icon192)}
+      alt=""
+      width="48"
+      height="48"
+      class="h-12 w-12 shrink-0 rounded-xl ring-1 ring-black/10"
+    />
+    <div class="min-w-0 flex-1">
+      <p id="pwa-install-title" class="font-heading text-base font-bold text-glass-black">
+        Zainstaluj aplikację Riverside
+      </p>
+
+      <p class="mt-1 text-sm text-zinc-600">
+        Menu, rezerwacja i dojazd zawsze pod ręką — prosto z ekranu głównego, także bez internetu.
+      </p>
+
+      <div data-pwa-variant="ios" class="mt-3 text-sm text-zinc-600">
+        <p class="font-semibold text-glass-black">Jak dodać:</p>
+        <ol class="mt-2 space-y-1.5 list-none p-0">
+          <li class="flex items-center gap-2">
+            <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-xs font-semibold text-glass-black">1</span>
+            <span>
+              Stuknij
+              <svg class="mx-0.5 inline h-4 w-4 -translate-y-px text-glass-accent-amber" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-label="Udostępnij">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12M8 7l4-4 4 4M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/>
+              </svg>
+              <strong class="text-glass-black">Udostępnij</strong>
+            </span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-xs font-semibold text-glass-black">2</span>
+            <span>Wybierz <strong class="text-glass-black">Do ekranu początkowego</strong></span>
+          </li>
+        </ol>
+      </div>
+
+      <div class="mt-4 flex items-center gap-2">
+        <button type="button" data-pwa-action="install" data-pwa-variant="android" class="btn-primary !px-5 !py-2">
+          Zainstaluj
+        </button>
+        <button type="button" data-pwa-action="dismiss" class="btn-secondary !px-5 !py-2 !border-zinc-300 !text-glass-black hover:!border-zinc-500 hover:!bg-zinc-50">
+          Nie teraz
+        </button>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      data-pwa-action="dismiss"
+      aria-label="Zamknij"
+      class="-mr-1 -mt-1 rounded-full p-1 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-glass-black"
+    >
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  const DISMISS_KEY  = 'pwa-install-dismissed';
+  const DISMISS_DAYS = 30;
+  const SHOW_DELAY   = 4000;
+
+  type InstallEvent = Event & {
+    prompt: () => Promise<void>;
+    userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+  };
+
+  const banner = document.getElementById('pwa-install');
+  const demo   = new URLSearchParams(location.search).get('pwa-demo');
+
+  const isStandalone =
+    matchMedia('(display-mode: standalone)').matches ||
+    (navigator as Navigator & { standalone?: boolean }).standalone === true;
+  const isIos =
+    /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isMobile = matchMedia('(pointer: coarse)').matches;
+
+  let deferred: InstallEvent | null = null;
+
+  const storage = {
+    get(key: string) { try { return localStorage.getItem(key); } catch { return null; } },
+    set(key: string, value: string) { try { localStorage.setItem(key, value); } catch {} },
+  };
+
+  const recentlyDismissed = () => {
+    const at = Number(storage.get(DISMISS_KEY));
+    return at > 0 && Date.now() - at < DISMISS_DAYS * 864e5;
+  };
+
+  // Baner nie może zasłaniać okna zgody na cookies — czekamy, aż użytkownik je zamknie.
+  const consentGiven = () => document.cookie.includes('cc_cookie=');
+
+  function setVariant(variant: 'android' | 'ios') {
+    banner?.querySelectorAll<HTMLElement>('[data-pwa-variant]').forEach((el) => {
+      el.hidden = el.dataset.pwaVariant !== variant;
+    });
+  }
+
+  function show(variant: 'android' | 'ios') {
+    if (!banner) return;
+    setVariant(variant);
+    banner.hidden = false;
+    document.documentElement.classList.add('pwa-banner-open');
+  }
+
+  function hide(remember: boolean) {
+    if (banner) banner.hidden = true;
+    document.documentElement.classList.remove('pwa-banner-open');
+    if (remember) storage.set(DISMISS_KEY, String(Date.now()));
+  }
+
+  function afterConsent(fn: () => void) {
+    if (consentGiven()) fn();
+    else window.addEventListener('cc:onConsent', fn, { once: true });
+  }
+
+  function scheduleBanner(variant: 'android' | 'ios') {
+    if (!isMobile || recentlyDismissed()) return;
+    afterConsent(() => setTimeout(() => show(variant), SHOW_DELAY));
+  }
+
+  // Przyciski „Zainstaluj aplikację” w innych miejscach strony (np. stopka) — zawsze otwierają nasz baner,
+  // a dopiero „Zainstaluj” na banerze wywołuje systemowe okno instalacji przeglądarki.
+  let triggerVariant: 'android' | 'ios' | null = null;
+  const triggers = () => document.querySelectorAll<HTMLElement>('[data-pwa-open]');
+
+  function setTriggers(variant: 'android' | 'ios' | null) {
+    triggerVariant = variant;
+    triggers().forEach((el) => (el.hidden = !variant));
+  }
+
+  triggers().forEach((el) =>
+    el.addEventListener('click', () => triggerVariant && show(triggerVariant)));
+
+  async function install() {
+    if (!deferred) {
+      if (demo) alert('Podgląd: tutaj przeglądarka pokaże systemowe okno instalacji aplikacji.');
+      else { hide(false); setTriggers(null); }
+      return;
+    }
+    const prompt = deferred;
+    deferred = null; // zdarzenie można użyć tylko raz; przeglądarka wyśle nowe przy kolejnej wizycie
+    await prompt.prompt();
+    const { outcome } = await prompt.userChoice;
+    hide(outcome === 'dismissed');
+    if (outcome === 'dismissed') setTriggers(null);
+    (window as Window & { dataLayer?: object[] }).dataLayer?.push({ event: 'pwa_install_prompt', outcome });
+  }
+
+  banner?.addEventListener('click', (e) => {
+    const action = (e.target as HTMLElement).closest<HTMLElement>('[data-pwa-action]')?.dataset.pwaAction;
+    if (action === 'install') install();
+    if (action === 'dismiss') hide(!demo);
+  });
+
+  if (demo === 'android' || demo === 'ios') {
+    const variant = demo;
+    afterConsent(() => show(variant));
+    setTriggers(variant);
+  } else if (!isStandalone) {
+    if (isIos) {
+      setTriggers('ios');
+      scheduleBanner('ios');
+    } else {
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        const first = !deferred && !triggerVariant;
+        deferred = e as InstallEvent;
+        setTriggers('android');
+        if (first) scheduleBanner('android');
+      });
+    }
+  }
+
+  window.addEventListener('appinstalled', () => {
+    hide(true);
+    setTriggers(null);
+  });
+</script>
+
+<style is:global>
+  /* Pływający przełącznik języka nachodziłby na baner — chowamy go na czas wyświetlania. */
+  .pwa-banner-open .gtranslate_wrapper { display: none; }
+</style>

@@ -1,8 +1,10 @@
 ---
 title: 'Demi-glace — po co dodaje się go do mięsa?'
-author: 'Riverside Dym i Ogień'
+author: 'Michał Rybak'
 date: 2026-11-05
 excerpt: 'Demi-glace nie ma przykrywać smaku mięsa. Ma go pogłębić, połączyć składniki i zbudować intensywną bazę sosu. Pokazujemy, jak wykorzystuje go Michał Rybak.'
+seoTitle: 'Demi-glace: co to jest i po co?'
+seoDescription: 'Demi-glace to skoncentrowana baza sosu, która pogłębia smak mięsa. Michał Rybak pokazuje, jak dodać go do wołowiny i dobrze zredukować.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-post-demi-glace-po-co-dodaje-sie-go-do-miesa'
   alt: 'Demi-glace dodawany łyżką do smażonej wołowiny z cebulą'

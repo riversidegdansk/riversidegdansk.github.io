@@ -5,6 +5,7 @@ import Header    from '../components/Header.astro';
 import Footer    from '../components/Footer.astro';
 import GTranslate from '../components/GTranslate.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import InstallPrompt from '../components/InstallPrompt.astro';
 import { ANALYTICS } from '../config/site';
 
 const isProd = import.meta.env.PROD;
@@ -17,6 +18,8 @@ interface Props {
   canonical?:   string;
   noindex?:     boolean;
   jsonLd?:      object | object[];
+  article?:     { publishedTime: string; modifiedTime?: string };
+  breadcrumbs?: { name: string; path: string }[];
 }
 
 const props = Astro.props;
@@ -90,6 +93,16 @@ const isHome = pathname === '/';
     });
   </script>
 )}
+
+{isProd && (
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function() {});
+      });
+    }
+  </script>
+)}
   </head>
   <body class="antialiased min-h-screen flex flex-col">
 
@@ -121,6 +134,7 @@ const isHome = pathname === '/';
 
     <Footer />
     <CookieConsent />
+    <InstallPrompt />
     <GTranslate />
 
   </body>

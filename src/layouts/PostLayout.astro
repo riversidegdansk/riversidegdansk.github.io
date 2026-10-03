@@ -2,7 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import { cloudinaryUrl } from '../utils/cloudinary';
 import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
-import { SITE } from '../config/site';
+import { SITE, CHEF } from '../config/site';
 
 interface NavPost {
   title: string;
@@ -14,6 +14,8 @@ interface Props {
   date:           Date;
   dateModified?:  Date;
   excerpt:        string;
+  seoTitle?:      string;
+  seoDescription?: string;
   cover:          { public_id: string; alt: string };
   author?:        string;
   prev?:          NavPost | null;
@@ -25,6 +27,8 @@ const {
   date,
   dateModified,
   excerpt,
+  seoTitle,
+  seoDescription,
   cover,
   author = 'Riverside Dym i Ogień',
   prev = null,
@@ -38,35 +42,45 @@ const dateStr = date.toLocaleDateString('pl-PL', {
   day: 'numeric', month: 'long', year: 'numeric',
 });
 
+const postUrl   = new URL(Astro.url.pathname, SITE.url).href;
+const published = date.toISOString();
+const modified  = (dateModified ?? date).toISOString();
+const ogImage   = cloudinaryUrl(coverId, { width: 1200, height: 630, crop: 'fill' });
+
+// Autor: Chef, gdy wpis jest podpisany jego nazwiskiem; w pozostałych przypadkach restauracja.
+const authorRef = author.includes(CHEF.name)
+  ? { '@id': `${SITE.finalUrl}/#michal-rybak` }
+  : { '@id': `${SITE.finalUrl}/#organization` };
+
 const jsonLd = {
-  '@context':    'https://schema.org',
-  '@type':       'BlogPosting',
-  headline:      title,
-  description:   excerpt,
-  image:         cloudinaryUrl(coverId, { width: 1200, height: 630, crop: 'fill' }),
-  datePublished: date.toISOString(),
-  dateModified:  (dateModified ?? date).toISOString(),
-  author: {
-    '@type': 'Person',
-    name:    author,
-    url:     `${SITE.finalUrl}/about`,
+  '@context':       'https://schema.org',
+  '@type':          'BlogPosting',
+  '@id':            `${postUrl}#article`,
+  mainEntityOfPage: postUrl,
+  url:              postUrl,
+  headline:         title,
+  description:      seoDescription ?? excerpt,
+  image: {
+    '@type': 'ImageObject',
+    url:     ogImage,
+    width:   1200,
+    height:  630,
   },
-  publisher: {
-    '@type': 'Organization',
-    name:    SITE.name,
-    logo: {
-      '@type': 'ImageObject',
-      url:     `${SITE.finalUrl}/favicons/web-app-manifest-512x512.png`,
-    },
-  },
+  datePublished: published,
+  dateModified:  modified,
+  inLanguage:    'pl-PL',
+  author:        authorRef,
+  publisher:     { '@id': `${SITE.finalUrl}/#organization` },
+  isPartOf:      { '@id': `${SITE.finalUrl}/#website` },
 };
 ---
 
 <BaseLayout
-  title={`${title} — ${SITE.name}`}
-  description={excerpt}
-  ogImage={cloudinaryUrl(coverId, { width: 1200, height: 630, crop: 'fill' })}
+  title={seoTitle ?? title}
+  description={seoDescription ?? excerpt}
+  ogImage={ogImage}
   ogType="article"
+  article={{ publishedTime: published, modifiedTime: modified }}
   jsonLd={jsonLd}
 >
 

@@ -1,6 +1,7 @@
 ---
 import { cloudinaryVideoUrl, cloudinaryVideoPoster } from '../utils/cloudinary';
 import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
+import { withBase } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionGallery from '../components/ui/SectionGallery.astro';
 import SectionBooking from '../components/ui/SectionBooking.astro';
@@ -39,8 +40,8 @@ const actionVideos = [chefVideo1, chefVideo2, chefVideo3].map((video) => ({
 ---
 
 <BaseLayout
-  title="O restauracji"
-  description="Poznaj Riverside. Dym i Ogień — restaurację nad Motławą w Gdańsku od 2019 roku. Kuchnia szefa Michała Rybackiego, Pilsner Urquell prosto z tanka i ludzie, którzy tworzą to miejsce."
+  title="O nas — restauracja od 2019 roku"
+  description="Riverside. Dym i Ogień nad Motławą w Gdańsku od 2019 roku: kuchnia Chefa Michała Rybaka od podstaw, Pilsner Urquell z tanka i swobodna atmosfera."
 >
 
   {/* Intro + statystyki */}
@@ -51,8 +52,8 @@ const actionVideos = [chefVideo1, chefVideo2, chefVideo3].map((video) => ({
           <div class="lg:max-w-md xl:max-w-xl">
             <h1 class="font-heading text-4xl md:text-6xl mb-10 text-glass-white">O restauracji</h1>
             <p class="prose-p">Riverside działa nad Motławą, w samym sercu Gdańska, od 2019 roku. Od początku stawiamy na kuchnię opartą na jakości i przygotowywaniu dań od podstaw, bez kompromisów i półproduktów.</p>
-            <p class="prose-p">Menu tworzone przez naszego Chefa Michała łączy różnorodne inspiracje – od ręcznie siekanego tatara, przez ryby, pizzę, golonkę i żeberka, po smaki inspirowane kuchnią azjatycką. Dopełnieniem jest niepasteryzowany Pilsner Urquell serwowany prosto z tanka.</p>
-            <p class="prose-p">O wyjątkowej atmosferze Riverside decydują jednak przede wszystkim ludzie – zespół, który tworzy to miejsce każdego dnia, i goście, którzy chętnie do nas wracają.</p>
+            <p class="prose-p"><a href={withBase('/menu')}>Menu</a> tworzone przez naszego <a href={withBase('/posts/06-chef-michal-rybak/')}>Chefa Michała</a> łączy różnorodne inspiracje – od ręcznie siekanego tatara, przez ryby, pizzę, <a href={withBase('/posts/04-golonka-12-godzin/')}>golonkę</a> i <a href={withBase('/posts/05-zeberka-bbq/')}>żeberka</a>, po smaki inspirowane kuchnią azjatycką. Dopełnieniem jest niepasteryzowany Pilsner Urquell serwowany prosto z tanka.</p>
+            <p class="prose-p">O wyjątkowej atmosferze Riverside decydują jednak przede wszystkim ludzie – zespół, który tworzy to miejsce każdego dnia, i goście, którzy chętnie do nas wracają. U nas zorganizujesz też <a href={withBase('/events')}>imprezę prywatną lub spotkanie firmowe</a>.</p>
           </div>
         </div>
 
@@ -96,7 +97,7 @@ const actionVideos = [chefVideo1, chefVideo2, chefVideo3].map((video) => ({
         <div class="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
           <div class="max-w-md">
             <h2 class="section-heading lg:max-w-md">Pilsner Urquell prosto z tanka</h2>
-            <p class="prose-p mt-10">W 2019 roku jako pierwszy lokal na Pomorzu zaczęliśmy serwować niepasteryzowanego Pilsnera Urquell prosto z tanka – świeżego, niefiltrowanego i zawsze w idealnej temperaturze.</p>
+            <p class="prose-p mt-10">W 2019 roku jako pierwszy lokal na Pomorzu zaczęliśmy serwować niepasteryzowanego <a href={withBase('/posts/01-piwo-z-tanka-jak-to-dziala/')}>Pilsnera Urquell prosto z tanka</a> – świeżego, niefiltrowanego i zawsze w idealnej temperaturze.</p>
             <p class="prose-p">Bo wierzymy, że dbałość o jakość nie kończy się na kuchni. Dlatego równie dużą wagę przykładamy do tego, co trafia do kufla. Piwo z tanka nie jest u nas atrakcją – jest standardem.</p>
           </div>
         </div>

@@ -1,8 +1,10 @@
 ---
 title: 'Cheese pull to nie przypadek — jakie sery dobrze się topią?'
-author: 'Riverside Dym i Ogień'
+author: 'Michał Rybak'
 date: 2026-11-12
 excerpt: 'Dobry smak sera i efekt ciągnięcia nie zawsze idą w parze. Dlatego w jednym daniu warto czasem połączyć dwa sery o różnych zadaniach.'
+seoTitle: 'Jakie sery dobrze się topią?'
+seoDescription: 'Cheddar dla smaku, provolone dla efektu ciągnięcia. Wyjaśniamy, jakie sery dobrze się topią i jak uzyskać idealny cheese pull w zapiekance.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-post-jakie-sery-dobrze-sie-topia'
   alt: 'Plastry sera provolone układane na farszu w Brioche Pull-Apart'

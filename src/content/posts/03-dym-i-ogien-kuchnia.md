@@ -1,8 +1,10 @@
 ---
-title: 'Dym i Ogień - co oznaczają w naszej kuchni?'
+title: 'Dym i Ogień — co oznaczają w naszej kuchni?'
 author: 'Riverside Dym i Ogień'
 date: 2026-07-01
 excerpt: 'Dym i Ogień to nie tylko część naszej nazwy. To temperatura, czas, pieczenie, grillowanie i techniki, dzięki którym budujemy smak.'
+seoTitle: 'Dym i Ogień w kuchni Riverside'
+seoDescription: 'Temperatura, czas, grillowanie i pieczenie. Wyjaśniamy, jak dym i ogień budują smak dań w Riverside, restauracji nad Motławą w Gdańsku.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-chef-fot-7'
   alt: 'Flambirowanie dania nad otwartym ogniem w kuchni Riverside Dym i Ogień'

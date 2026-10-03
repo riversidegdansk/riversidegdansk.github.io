@@ -1,8 +1,10 @@
 ---
 title: 'Dlaczego sos do zapiekanego makaronu powinien być naprawdę gęsty?'
-author: 'Riverside Dym i Ogień'
+author: 'Michał Rybak'
 date: 2026-10-15
 excerpt: 'Redukcja sosu to nie detal. Przy zapiekanym makaronie decyduje o strukturze, intensywności smaku i tym, czy danie zachowa formę po wyjęciu z pieca.'
+seoTitle: 'Gęsty sos do zapiekanego makaronu'
+seoDescription: 'Redukcja sosu mięsno-pomidorowego decyduje o smaku i strukturze zapiekanego makaronu. Michał Rybak wyjaśnia, jak gęsty powinien być sos.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-chef-fot-8'
   alt: 'Michał Rybak próbuje dania prosto z patelni w kuchni Riverside'

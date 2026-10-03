@@ -1,8 +1,10 @@
 ---
-title: 'Od tatara po smaki Azji - skąd bierze się nasze menu?'
+title: 'Od tatara po smaki Azji — skąd bierze się nasze menu?'
 author: 'Riverside Dym i Ogień'
 date: 2026-08-26
 excerpt: 'Polska klasyka, ryby, pizza i inspiracje azjatyckie w jednym menu. Wyjaśniamy, co łączy pozornie różne kierunki kuchni Riverside.'
+seoTitle: 'Menu Riverside: od tatara po Azję'
+seoDescription: 'Tatar, ryby, pizza, wolno pieczone mięsa i inspiracje azjatyckie w jednym menu. Wyjaśniamy, co łączy kuchnię restauracji Riverside w Gdańsku.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-galeria-dania-fot-19'
   alt: 'Wspólny stół z krewetkami, krokietami, pieczywem i koktajlami w Riverside'
