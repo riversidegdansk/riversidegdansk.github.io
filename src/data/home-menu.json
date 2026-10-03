@@ -1,0 +1,23 @@
+{
+  "title": "Tego musisz spróbować",
+  "dishes": [
+    {
+      "image": "riverside-dym-ogien-gdansk-sekcja-menu-golonka",
+      "imageAlt": "Wolno gotowana golonka z chrupiącą skórą na puree w Riverside",
+      "title": "Wolno gotowana golonka",
+      "description": "Golonka pieczona 12 godzin – miękka, soczysta, rozpada się przy pierwszym ruchu."
+    },
+    {
+      "image": "riverside-dym-ogien-gdansk-sekcja-menu-zeberka",
+      "imageAlt": "Żeberka BBQ w autorskim sosie z ziemniakami i sałatką w Riverside",
+      "title": "Żeberka pieczone BBQ",
+      "description": "Żeberka BBQ – wolno pieczone, w autorskim sosie, dokładnie takie, jakie mają być."
+    },
+    {
+      "image": "riverside-dym-ogien-gdansk-sekcja-menu-burger",
+      "imageAlt": "Cheesy Bacon Burger z roztopionym serem i frytkami w Riverside",
+      "title": "Cheesy Bacon Burger",
+      "description": "Soczyste, delikatne mięso z wyczuwalną nutą dymu, autorskie sosy i składniki. Każdy kęs to konkretny smak."
+    }
+  ]
+}

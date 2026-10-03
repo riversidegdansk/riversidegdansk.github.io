@@ -83,11 +83,13 @@ interface MediaTransformOptions {
   gravity?:     'auto' | 'face' | 'center' | 'north' | 'south';
   aspectRatio?: string;
   quality?:     'auto' | 'auto:best' | 'auto:good' | number;
-  startOffset?: number;
+  // Sekundy (4) albo procent długości filmu ('25p').
+  startOffset?: number | string;
 }
 
 interface VideoTransformOptions extends MediaTransformOptions {
-  format?: 'auto' | 'mp4' | 'webm' | 'ogv';
+  format?:    'auto' | 'mp4' | 'webm' | 'ogv';
+  endOffset?: number | string;
 }
 
 export function cloudinaryVideoUrl(publicIdOrUrl: string, opts: VideoTransformOptions = {}): string {
@@ -101,6 +103,8 @@ export function cloudinaryVideoUrl(publicIdOrUrl: string, opts: VideoTransformOp
     format = 'auto',
     quality = 'auto',
     aspectRatio,
+    startOffset,
+    endOffset,
   } = opts;
 
   const t: string[] = [`f_${format}`, `q_${quality}`];
@@ -116,6 +120,13 @@ export function cloudinaryVideoUrl(publicIdOrUrl: string, opts: VideoTransformOp
     // g_auto dla wideo wymaga bycia w osobnym, samodzielnym komponencie transformacji.
     transform += gravity === 'auto' ? '/g_auto' : `,g_${gravity}`;
   }
+
+  // Przycięcie fragmentu filmu — osobny komponent transformacji, przed formatowaniem.
+  const trim = [
+    startOffset !== undefined ? `so_${startOffset}` : '',
+    endOffset   !== undefined ? `eo_${endOffset}`   : '',
+  ].filter(Boolean).join(',');
+  if (trim) transform = `${trim}/${transform}`;
 
   if (publicIdOrUrl.startsWith('https://res.cloudinary.com/')) {
     // Normalizujemy na /video/upload/ (na wypadek błędnie zapisanego /image/upload/) i wstawiamy transformację.
@@ -196,16 +207,70 @@ export function resolveMedia(publicIdOrUrl: string, opts: MediaTransformOptions 
   };
 }
 
-export const img = {
-  hero:          (id: string) => cloudinaryUrl(id, { width: 1200, aspectRatio: '4:3',  crop: 'fill' }),
-  section:       (id: string) => cloudinaryUrl(id, { width: 900,  aspectRatio: '4:3',  crop: 'fill' }),
-  portfolioCard: (id: string) => cloudinaryUrl(id, { width: 800,  aspectRatio: '4:3',  crop: 'fill' }),
-  portfolioFull: (id: string) => cloudinaryUrl(id, { width: 1600, format: 'auto' }),
-  postCover:     (id: string) => cloudinaryUrl(id, { width: 1200, aspectRatio: '16:9', crop: 'fill' }),
-  postThumb:     (id: string) => cloudinaryUrl(id, { width: 600,  aspectRatio: '16:9', crop: 'fill' }),
-  og:            (id: string) => cloudinaryUrl(id, { width: 1200, height: 630,         crop: 'fill' }),
-  portrait:      (id: string) => cloudinaryUrl(id, { width: 600,  aspectRatio: '3:4',  crop: 'fill' }),  
-  story:         (id: string) => cloudinaryUrl(id, { width: 600,  aspectRatio: '9:16', crop: 'fill' }),  
-  square:        (id: string) => cloudinaryUrl(id, { width: 800,  aspectRatio: '1:1',  crop: 'fill' }),  
-  wide:          (id: string) => cloudinaryUrl(id, { width: 1600, aspectRatio: '21:9', crop: 'fill' }), 
-};
+// ── Presety zdjęć responsywnych ───────────────────────────────────────────
+// Jedno miejsce, w którym ustalamy wymiarowanie zdjęć w całym serwisie:
+//   aspectRatio — kadr przycinany przez Cloudinary (brak = oryginalne proporcje),
+//   widths      — szerokości plików w srcset,
+//   sizes       — jak szeroko zdjęcie jest wyświetlane w danym układzie strony
+//                 (na tej podstawie przeglądarka wybiera plik z srcset).
+export interface ImagePreset {
+  aspectRatio?: string;
+  widths:       number[];
+  sizes:        string;
+}
+
+export const IMAGE_PRESETS = {
+  // Zdjęcie obok tekstu w sekcji dwukolumnowej (O nas, Rezerwacje, „Tego musisz spróbować”)
+  section:     { aspectRatio: '4:3',  widths: [600, 900, 1200], sizes: '(min-width: 1024px) 42vw, 100vw' },
+  // Zdjęcie na pół szerokości kontenera (typy imprez)
+  half:        { aspectRatio: '4:3',  widths: [600, 900, 1200], sizes: '(min-width: 1024px) 50vw, 100vw' },
+  // Karta wpisu w siatce 3 kolumn
+  card:        { aspectRatio: '4:3',  widths: [400, 600, 800],  sizes: '(min-width: 768px) 33vw, 100vw' },
+  // Pionowy portret (sekcja „Planujesz imprezę?”)
+  portrait:    { aspectRatio: '3:4',  widths: [400, 700, 900],  sizes: '(min-width: 1280px) 24rem, (min-width: 1024px) 42vw, (min-width: 480px) 20rem, 80vw' },
+  // Kwadratowa miniatura 80 px (menu)
+  thumb:       { aspectRatio: '1:1',  widths: [80, 160, 240],   sizes: '80px' },
+  // Pełny ekran (slider) — bez przycinania, kadr robi CSS object-cover
+  hero:        {                      widths: [768, 1280, 1920, 2560], sizes: '100vw' },
+  // Okładka wpisu: 16:9 od tabletu, 4:3 na telefonie
+  cover:       { aspectRatio: '16:9', widths: [768, 1200, 1600], sizes: '(min-width: 1280px) 1216px, 100vw' },
+  coverMobile: { aspectRatio: '4:3',  widths: [400, 640],        sizes: '100vw' },
+  // Zdjęcie w treści wpisu (kolumna 672 px) — oryginalne proporcje
+  content:     {                      widths: [480, 768, 1200], sizes: '(min-width: 768px) 672px, 100vw' },
+} satisfies Record<string, ImagePreset>;
+
+export type ImagePresetName = keyof typeof IMAGE_PRESETS;
+
+export interface ResponsiveImage {
+  src:     string;
+  srcset:  string;
+  sizes:   string;
+  width?:  number;
+  height?: number;
+}
+
+// Atrybuty <img> dla presetu (z opcjonalnymi nadpisaniami). width/height wynikają z kadru —
+// przeglądarka rezerwuje miejsce przed pobraniem zdjęcia, więc treść nie „skacze” (CLS).
+export function responsiveImage(
+  publicIdOrUrl: string,
+  preset: ImagePresetName,
+  overrides: Partial<ImagePreset> = {},
+): ResponsiveImage {
+  const { aspectRatio, widths, sizes } = { ...IMAGE_PRESETS[preset], ...overrides } as ImagePreset;
+  const opts = aspectRatio ? { aspectRatio, crop: 'fill' as const } : {};
+  const fallbackWidth = widths[Math.min(1, widths.length - 1)];
+
+  const result: ResponsiveImage = {
+    src:    cloudinaryUrl(publicIdOrUrl, { ...opts, width: fallbackWidth }),
+    srcset: cloudinarySrcset(publicIdOrUrl, widths, opts),
+    sizes,
+  };
+
+  if (aspectRatio) {
+    const [w, h] = aspectRatio.split(':').map(Number);
+    result.width  = Math.max(...widths);
+    result.height = Math.round((result.width * h) / w);
+  }
+
+  return result;
+}

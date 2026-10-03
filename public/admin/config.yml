@@ -28,18 +28,22 @@ collections:
     slug: "{{slug}}"
     fields:
       - { name: title,     label: Tytuł,        widget: string }
-      - { name: author, label: Autor, widget: string, default: MR Glass Project, required: false }
+      - { name: author, label: Autor, widget: string, default: Riverside Dym i Ogień, required: false }
       - { name: date,      label: Data,          widget: datetime, format: "YYYY-MM-DD" }
       - { name: excerpt,   label: Zajawka,       widget: text }
       - name: cover
         label: Zdjęcie główne
-        widget: image
+        widget: object
+        fields:
+          - { name: public_id, label: Zdjęcie, widget: image }
+          - { name: alt, label: Tekst alternatywny (alt), widget: string, required: false }
       - { name: published, label: Opublikowany,  widget: boolean, default: false }
+      - { name: pinned,    label: Przypięty na górze listy, widget: boolean, default: false, required: false }
       - { name: body,      label: Treść,         widget: markdown }
 
   - name: gallery
-    label: Realizacje
-    label_singular: Realizacja
+    label: Galeria
+    label_singular: Album galerii
     folder: src/content/gallery
     create: true
     slug: "{{slug}}"
@@ -132,6 +136,29 @@ collections:
           - { name: title,     label: Tytuł,             widget: string }
           - { name: updatedAt, label: Data aktualizacji,  widget: datetime, required: true, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
           - { name: body,      label: Treść,              widget: markdown }
+
+  - name: homepage
+    label: Strona główna
+    files:
+      - name: section-menu
+        label: Sekcja „Tego musisz spróbować”
+        file: src/data/home-menu.json
+        fields:
+          - { name: title, label: Nagłówek sekcji, widget: string }
+          - name: dishes
+            label: Dania
+            label_singular: Danie
+            widget: list
+            summary: "{{fields.title}}"
+            thumbnail: image
+            collapsed: true
+            min: 1
+            hint: "Kolejność na liście = kolejność na stronie. Zdjęcia układają się naprzemiennie po prawej i lewej."
+            fields:
+              - { name: image,       label: Zdjęcie dania, widget: image, hint: "Wybierz z biblioteki Cloudinary. Zdjęcie jest przycinane do proporcji 4:3." }
+              - { name: imageAlt,    label: Tekst ALT (opis zdjęcia), widget: string, required: false, hint: "Co widać na zdjęciu, np. „Wolno gotowana golonka z chrupiącą skórą na puree”." }
+              - { name: title,       label: Nazwa dania, widget: string }
+              - { name: description, label: Opis, widget: text }
 
   - name: settings
     label: Ustawienia

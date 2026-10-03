@@ -1,14 +1,26 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { faqAnswerHtml, faqAnswerText } from '../utils/faq';
 
 const faqs = await getCollection('faq');
 const sorted = faqs.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: sorted.map((faq) => ({
+    '@type': 'Question',
+    name: faq.data.question,
+    acceptedAnswer: { '@type': 'Answer', text: faqAnswerText(faq.data.answer) },
+  })),
+};
 ---
 
 <BaseLayout
-  title="FAQ — zamówienia i wycena prac ze szkła dmuchanego"
-  description="Najczęstsze pytania o projekty ze szkła, wyceny, terminy realizacji i warsztaty w pracowni MR Glass Project w Warszawie."
+  title="FAQ — rezerwacje, menu i imprezy w Riverside nad Motławą"
+  description="Odpowiedzi na najczęstsze pytania o rezerwację stolika, godziny otwarcia, menu, piwo z tanka i organizację imprez w Riverside w Gdańsku."
+  jsonLd={jsonLd}
 >
 
   <section class="section-py">
@@ -58,7 +70,7 @@ const sorted = faqs.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
                   x-transition:leave-start="opacity-100 translate-y-0"
                   x-transition:leave-end="opacity-0 -translate-y-2"
                 >
-                  <p class="prose-p mt-4 max-w-2xl" set:html={faq.data.answer.replace(/\n/g, '<br/>')} />
+                  <p class="prose-p mt-4 max-w-2xl" set:html={faqAnswerHtml(faq.data.answer)} />
                 </div>
               </div>
             </li>

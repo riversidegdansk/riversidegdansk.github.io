@@ -1,5 +1,5 @@
 ---
-import { cloudinaryUrl, cloudinarySrcset } from '../../utils/cloudinary';
+import CloudinaryImage from './CloudinaryImage.astro';
 import { withBase } from '../../config/site';
 
 interface Props {
@@ -20,10 +20,6 @@ const {
   imageAlt = 'Chef Michał Rybak',
 } = Astro.props;
 
-const desktopSrc = image ? cloudinaryUrl(image, { width: 700, aspectRatio: '3:4', crop: 'fill' }) : null;
-const desktopSrcset = image ? cloudinarySrcset(image, [500, 700, 900], { aspectRatio: '3:4', crop: 'fill' }) : null;
-const mobileSrc = image ? cloudinaryUrl(image, { width: 700, aspectRatio: '3:4', crop: 'fill' }) : null;
-const mobileSrcset = image ? cloudinarySrcset(image, [400, 700, 900], { aspectRatio: '3:4', crop: 'fill' }) : null;
 ---
 
 <section class="section-py md:pb-0 overflow-hidden">
@@ -31,28 +27,13 @@ const mobileSrcset = image ? cloudinarySrcset(image, [400, 700, 900], { aspectRa
     <div class="px-0 sm:px-6 md:px-12">
       <div class="relative max-w-5xl mx-auto">
 
-        {image ? (
-          <img
-            class="hidden lg:block absolute bottom-0 right-0 lg:w-5/12 xl:w-96 z-10"
-            src={desktopSrc}
-            srcset={desktopSrcset}
-            sizes="(min-width: 1024px) 40vw, 50vw"
-            alt={imageAlt}
-            aria-hidden={imageAlt ? undefined : 'true'}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <div
-            class="hidden lg:flex absolute bottom-0 right-0 lg:w-5/12 xl:w-96 z-10 aspect-[3/4] items-center justify-center bg-glass-anthracite border border-glass-border rounded-2xl"
-            role="img"
-            aria-label={imageAlt || 'Zdjęcie wkrótce'}
-          >
-            <svg class="w-12 h-12 text-glass-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v14H4V5zm0 14 5-6 3 3 4-5 4 4M9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-            </svg>
-          </div>
-        )}
+        <CloudinaryImage
+          publicId={image}
+          alt={imageAlt}
+          preset="portrait"
+          class="hidden lg:block absolute bottom-0 right-0 lg:w-5/12 xl:w-96 z-10"
+          placeholderClass="hidden lg:flex absolute bottom-0 right-0 lg:w-5/12 xl:w-96 z-10 rounded-2xl"
+        />
 
         <div class="relative pt-12 md:pt-24 md:pb-36 xl:pt-36 lg:max-w-3xl">
           <div class="max-w-sm sm:max-w-none">
@@ -64,28 +45,13 @@ const mobileSrcset = image ? cloudinarySrcset(image, [400, 700, 900], { aspectRa
             </p>
           </div>
 
-          {image ? (
-            <img
-              class="block mb-8 max-w-xs lg:hidden rounded-2xl shadow-2xl shadow-black/50 ring-1 ring-glass-border"
-              src={mobileSrc}
-              srcset={mobileSrcset}
-              sizes="(min-width: 480px) 20rem, 80vw"
-              alt={imageAlt}
-              aria-hidden={imageAlt ? undefined : 'true'}
-              loading="lazy"
-              decoding="async"
-            />
-          ) : (
-            <div
-              class="flex mb-8 max-w-xs aspect-[3/4] lg:hidden items-center justify-center bg-glass-anthracite border border-glass-border rounded-2xl"
-              role="img"
-              aria-label={imageAlt || 'Zdjęcie wkrótce'}
-            >
-              <svg class="w-12 h-12 text-glass-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v14H4V5zm0 14 5-6 3 3 4-5 4 4M9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-              </svg>
-            </div>
-          )}
+          <CloudinaryImage
+            publicId={image}
+            alt={imageAlt}
+            preset="portrait"
+            class="block mb-8 max-w-xs lg:hidden rounded-2xl shadow-2xl shadow-black/50 ring-1 ring-glass-border"
+            placeholderClass="flex mb-8 max-w-xs lg:hidden rounded-2xl"
+          />
 
           <div class="relative z-10 flex flex-col sm:flex-row flex-wrap">
             <a

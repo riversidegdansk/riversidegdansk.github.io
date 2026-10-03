@@ -1,46 +1,105 @@
 ---
-import { cloudinaryUrl, cloudinarySrcset } from '../../utils/cloudinary';
+// Responsywne zdjęcie z Cloudinary oparte na presetach z utils/cloudinary.ts.
+//
+//   <CloudinaryImage publicId={image} alt="Opis" preset="section" class="block w-full rounded-3xl" />
+//
+// - preset ustala kadr, szerokości w srcset i sizes; każdy z nich można nadpisać propsem,
+// - width/height liczone z kadru — przeglądarka rezerwuje miejsce przed załadowaniem,
+// - mobilePreset dodaje <picture> z innym kadrem na telefonie (np. okładka wpisu),
+// - pusty alt = zdjęcie dekoracyjne (ukryte przed czytnikami ekranu),
+// - bez publicId renderuje placeholder „Zdjęcie wkrótce”.
+import {
+  IMAGE_PRESETS,
+  responsiveImage,
+  type ImagePreset,
+  type ImagePresetName,
+} from '../../utils/cloudinary';
 
 interface Props {
-  publicId:    string;
-  alt:         string;
-  width?:      number;
-  height?:     number;
-  aspectRatio?: string;
-  crop?:       'fill' | 'fit' | 'scale' | 'crop' | 'thumb';
-  sizes?:      string;
-  loading?:    'lazy' | 'eager';
-  decoding?:   'async' | 'sync' | 'auto';
-  class?:      string;
-  widths?:     number[];
+  publicId?:         string | null;
+  alt?:              string;
+  preset:            ImagePresetName;
+  aspectRatio?:      string;
+  widths?:           number[];
+  sizes?:            string;
+  mobilePreset?:     ImagePresetName;
+  mobileMedia?:      string;
+  loading?:          'lazy' | 'eager';
+  fetchpriority?:    'high' | 'low' | 'auto';
+  class?:            string;
+  placeholderClass?: string;
+  placeholderLabel?: string;
 }
 
 const {
   publicId,
-  alt,
-  width,
-  height,
+  alt = '',
+  preset,
   aspectRatio,
-  crop      = 'fill',
-  sizes     = '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 800px',
-  loading   = 'lazy',
-  decoding  = 'async',
-  class:    className,
-  widths    = [400, 800, 1200],
+  widths,
+  sizes,
+  mobilePreset,
+  mobileMedia = '(max-width: 640px)',
+  loading = 'lazy',
+  fetchpriority,
+  class: className,
+  placeholderClass,
+  placeholderLabel = 'Zdjęcie wkrótce',
 } = Astro.props;
 
-const src    = cloudinaryUrl(publicId, { width: width ?? 800, height, aspectRatio, crop });
-const srcset = cloudinarySrcset(publicId, widths, { height, aspectRatio, crop });
+const overrides: Partial<ImagePreset> = {};
+if (aspectRatio) overrides.aspectRatio = aspectRatio;
+if (widths)      overrides.widths      = widths;
+if (sizes)       overrides.sizes       = sizes;
+
+const image  = publicId ? responsiveImage(publicId, preset, overrides) : null;
+const mobile = publicId && mobilePreset ? responsiveImage(publicId, mobilePreset) : null;
+
+const placeholderRatio = (aspectRatio ?? IMAGE_PRESETS[preset].aspectRatio)?.replace(':', ' / ');
 ---
 
-<img
-  src={src}
-  srcset={srcset}
-  sizes={sizes}
-  alt={alt}
-  width={width}
-  height={height}
-  loading={loading}
-  decoding={decoding}
-  class={className}
->
+{image ? (
+  mobile ? (
+    <picture>
+      <source media={mobileMedia} srcset={mobile.srcset} sizes={mobile.sizes} width={mobile.width} height={mobile.height} />
+      <img
+        class={className}
+        src={image.src}
+        srcset={image.srcset}
+        sizes={image.sizes}
+        width={image.width}
+        height={image.height}
+        alt={alt}
+        aria-hidden={alt ? undefined : 'true'}
+        loading={loading}
+        fetchpriority={fetchpriority}
+        decoding="async"
+      />
+    </picture>
+  ) : (
+    <img
+      class={className}
+      src={image.src}
+      srcset={image.srcset}
+      sizes={image.sizes}
+      width={image.width}
+      height={image.height}
+      alt={alt}
+      aria-hidden={alt ? undefined : 'true'}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding="async"
+    />
+  )
+) : (
+  <div
+    class:list={['flex items-center justify-center bg-glass-anthracite border border-glass-border', placeholderClass ?? className]}
+    style={placeholderRatio ? `aspect-ratio: ${placeholderRatio}` : undefined}
+    role="img"
+    aria-label={alt || placeholderLabel}
+  >
+    <svg class="w-12 h-12 text-glass-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v14H4V5zm0 14 5-6 3 3 4-5 4 4M9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+    </svg>
+  </div>
+)}

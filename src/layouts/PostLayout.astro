@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
-import { cloudinaryUrl, cloudinarySrcset } from '../utils/cloudinary';
+import { cloudinaryUrl } from '../utils/cloudinary';
+import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
 import { SITE } from '../config/site';
 
 interface NavPost {
@@ -13,7 +14,7 @@ interface Props {
   date:           Date;
   dateModified?:  Date;
   excerpt:        string;
-  cover:          string;
+  cover:          { public_id: string; alt: string };
   author?:        string;
   prev?:          NavPost | null;
   next?:          NavPost | null;
@@ -30,6 +31,9 @@ const {
   next = null,
 } = Astro.props;
 
+const coverId  = cover.public_id;
+const coverAlt = cover.alt || title;
+
 const dateStr = date.toLocaleDateString('pl-PL', {
   day: 'numeric', month: 'long', year: 'numeric',
 });
@@ -39,7 +43,7 @@ const jsonLd = {
   '@type':       'BlogPosting',
   headline:      title,
   description:   excerpt,
-  image:         cloudinaryUrl(cover, { width: 1200, height: 630, crop: 'fill' }),
+  image:         cloudinaryUrl(coverId, { width: 1200, height: 630, crop: 'fill' }),
   datePublished: date.toISOString(),
   dateModified:  (dateModified ?? date).toISOString(),
   author: {
@@ -61,7 +65,7 @@ const jsonLd = {
 <BaseLayout
   title={`${title} — ${SITE.name}`}
   description={excerpt}
-  ogImage={cloudinaryUrl(cover, { width: 1200, height: 630, crop: 'fill' })}
+  ogImage={cloudinaryUrl(coverId, { width: 1200, height: 630, crop: 'fill' })}
   ogType="article"
   jsonLd={jsonLd}
 >
@@ -71,28 +75,16 @@ const jsonLd = {
 
       {/* ── Cover ─────────────────────────────────────────────── */}
       <div class="relative h-64 md:h-96 mb-16">
-        <div class="absolute inset-0 bg-glass-accent-fire opacity-10 rounded-2xl blur-3xl pointer-events-none" aria-hidden="true"></div>
         <div class="relative p-1 border border-white/20 rounded-2xl h-full">
-          <picture>
-            <source
-              media="(max-width: 640px)"
-              srcset={cloudinarySrcset(cover, [400, 640], { aspectRatio: '4:3', crop: 'fill' })}
-              sizes="100vw"
-            />
-            <source
-              media="(min-width: 641px)"
-              srcset={cloudinarySrcset(cover, [768, 1200], { aspectRatio: '16:9', crop: 'fill' })}
-              sizes="100vw"
-            />
-            <img
-              src={cloudinaryUrl(cover, { width: 1200, aspectRatio: '16:9', crop: 'fill' })}
-              alt={title}
-              class="relative w-full h-full object-cover rounded-xl"
-              loading="eager"
-              decoding="async"
-              fetchpriority="high"
-            />
-          </picture>
+          <CloudinaryImage
+            publicId={coverId}
+            alt={coverAlt}
+            preset="cover"
+            mobilePreset="coverMobile"
+            loading="eager"
+            fetchpriority="high"
+            class="relative w-full h-full object-cover rounded-xl"
+          />
         </div>
       </div>
 

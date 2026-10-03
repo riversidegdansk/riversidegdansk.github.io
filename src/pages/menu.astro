@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { cloudinaryUrl } from '../utils/cloudinary';
+import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
 import { withBase } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
@@ -71,26 +72,18 @@ const pdfHref = menuPdf ? withBase(menuPdf) : null;
             <div class="w-full lg:w-2/3 px-4">
               <div class="flex flex-col gap-6">
                 {dishes.map(({ data }) => {
-                  const thumb = data.image ? cloudinaryUrl(data.image, { width: 200, aspectRatio: '1:1', crop: 'fill' }) : null;
                   const full = data.image ? cloudinaryUrl(data.image, { width: 1400 }) : null;
 
                   return (
                     <div class="flex items-start gap-6 p-6 border border-glass-border rounded-2xl transition-colors duration-300 hover:border-glass-accent-amber">
-                      {thumb ? (
+                      {data.image ? (
                         <button
                           type="button"
                           class="block flex-shrink-0 group cursor-zoom-in"
                           x-on:click={`activeImage = ${JSON.stringify(full)}; activeAlt = ${JSON.stringify(data.name)}; lightbox = true`}
                           aria-label={`Powiększ zdjęcie: ${data.name}`}
                         >
-                          <img
-                            class="w-20 h-20 rounded-xl object-cover transition-opacity duration-200 group-hover:opacity-80"
-                            src={thumb}
-                            alt=""
-                            aria-hidden="true"
-                            loading="lazy"
-                            decoding="async"
-                          />
+                          <CloudinaryImage publicId={data.image} preset="thumb" class="w-20 h-20 rounded-xl object-cover transition-opacity duration-200 group-hover:opacity-80" />
                         </button>
                       ) : (
                         <div

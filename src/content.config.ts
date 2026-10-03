@@ -8,8 +8,13 @@ const posts = defineCollection({
     author: z.string().default('Riverside Dym i Ogień'),
     date:      z.coerce.date(),
     excerpt:   z.string(),
-    cover:     z.string(),
+    cover: z.object({
+      public_id: z.string(),
+      alt:       z.string().default(''),
+    }),
     published: z.boolean().default(false),
+    // Przypięty post zawsze otwiera listing /posts, niezależnie od daty.
+    pinned:    z.boolean().default(false),
   }),
 });
 

@@ -1,5 +1,6 @@
 ---
-import { cloudinaryUrl, cloudinarySrcset, cloudinaryVideoUrl, cloudinaryVideoPoster } from '../utils/cloudinary';
+import { cloudinaryVideoUrl, cloudinaryVideoPoster } from '../utils/cloudinary';
+import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionGallery from '../components/ui/SectionGallery.astro';
 import SectionBooking from '../components/ui/SectionBooking.astro';
@@ -27,11 +28,6 @@ const stats = [
   { number: '04', value: '4.6', suffix: ' ★', label: 'To ocena naszego lokalu w Google.' },
 ];
 
-const tankSrc = tankImage ? cloudinaryUrl(tankImage, { width: 900, aspectRatio: '4:3', crop: 'fill' }) : null;
-const tankSrcset = tankImage ? cloudinarySrcset(tankImage, [600, 900, 1200], { aspectRatio: '4:3', crop: 'fill' }) : null;
-
-const chefSrc = chefImage ? cloudinaryUrl(chefImage, { width: 900, aspectRatio: '4:3', crop: 'fill' }) : null;
-const chefSrcset = chefImage ? cloudinarySrcset(chefImage, [600, 900, 1200], { aspectRatio: '4:3', crop: 'fill' }) : null;
 
 // Poster proponowany na 3. sekundzie — oryginalny szablon miał podpowiedź data-frame-time="3" przy każdym wideo.
 const POSTER_OFFSET = 3;
@@ -107,23 +103,10 @@ const actionVideos = [chefVideo1, chefVideo2, chefVideo3].map((video) => ({
         <div class="w-full lg:w-1/2 px-4">
           {tankImage ? (
             <div class="relative rounded-3xl overflow-hidden shadow-2xl">
-              <img
-                class="block w-full rounded-3xl"
-                src={tankSrc}
-                srcset={tankSrcset}
-                sizes="(min-width: 1024px) 42vw, 100vw"
-                alt=""
-                aria-hidden="true"
-                loading="lazy"
-                decoding="async"
-              />
+              <CloudinaryImage publicId={tankImage} preset="section" class="block w-full rounded-3xl" />
             </div>
           ) : (
-            <div class="flex aspect-[4/3] items-center justify-center bg-glass-anthracite border border-glass-border rounded-3xl" role="img" aria-label="Zdjęcie wkrótce">
-              <svg class="w-12 h-12 text-glass-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v14H4V5zm0 14 5-6 3 3 4-5 4 4M9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-              </svg>
-            </div>
+            <CloudinaryImage preset="section" placeholderClass="rounded-3xl" />
           )}
         </div>
       </div>
@@ -137,22 +120,10 @@ const actionVideos = [chefVideo1, chefVideo2, chefVideo3].map((video) => ({
         <div class="w-full lg:w-1/2 px-4 mb-12 lg:mb-0">
           {chefImage ? (
             <div class="rounded-3xl overflow-hidden">
-              <img
-                class="block w-full rounded-3xl"
-                src={chefSrc}
-                srcset={chefSrcset}
-                sizes="(min-width: 1024px) 42vw, 100vw"
-                alt="Michał Rybak"
-                loading="lazy"
-                decoding="async"
-              />
+              <CloudinaryImage publicId={chefImage} alt="Michał Rybak" preset="section" class="block w-full rounded-3xl" />
             </div>
           ) : (
-            <div class="flex aspect-[4/3] items-center justify-center bg-glass-anthracite border border-glass-border rounded-3xl" role="img" aria-label="Zdjęcie wkrótce">
-              <svg class="w-12 h-12 text-glass-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v14H4V5zm0 14 5-6 3 3 4-5 4 4M9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-              </svg>
-            </div>
+            <CloudinaryImage preset="section" placeholderClass="rounded-3xl" />
           )}
         </div>
         <div class="w-full lg:w-1/2 px-4">

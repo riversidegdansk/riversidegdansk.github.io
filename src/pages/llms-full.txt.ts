@@ -3,22 +3,31 @@
 // Przeznaczona dla modeli które indeksują głębiej
 
 import type { APIRoute } from 'astro';
-import { SITE, CONTACT } from '../config/site';
+import { faqAnswerText } from '../utils/faq';
+import { SITE, CONTACT, SOCIAL } from '../config/site';
 import { getCollection } from 'astro:content';
 
 export const GET: APIRoute = async () => {
   const faqEntries = await getCollection('faq');
-  const projects   = await getCollection('gallery',    e => e.data.published);
-  const posts      = await getCollection('posts',      e => e.data.published);
+  const dishes     = await getCollection('menu',  ({ data }) => data.published);
+  const posts      = await getCollection('posts', ({ data }) => data.published);
 
-  const sortedFaq     = faqEntries.sort((a, b) => a.data.order - b.data.order);
-  const sortedProj    = projects.sort((a, b) => a.data.order - b.data.order);
-  const sortedPosts   = posts.sort((a, b) =>
-    b.data.date.valueOf() - a.data.date.valueOf()
-  );
+  const sortedFaq   = faqEntries.sort((a, b) => a.data.order - b.data.order);
+  const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-  const projectsDom = sortedProj.filter(p => p.data.category === 'dla-domu');
-  const projectsFirm = sortedProj.filter(p => p.data.category === 'dla-firm');
+  // Menu pogrupowane jak na stronie /menu: kategorie wg najniższego „order”, dania wg „order”.
+  const categories = new Map<string, typeof dishes>();
+  for (const dish of [...dishes].sort((a, b) => a.data.order - b.data.order)) {
+    const list = categories.get(dish.data.category) ?? [];
+    list.push(dish);
+    categories.set(dish.data.category, list);
+  }
+  const menuText = [...categories.entries()].map(([category, list]) =>
+    `### ${category}\n\n` + list.map(({ data }) => {
+      const meta = [data.weight, data.tags.length ? data.tags.join(', ') : ''].filter(Boolean).join(' · ');
+      return `- **${data.name}** — ${data.price}${meta ? ` (${meta})` : ''}${data.description ? `\n  ${data.description.trim()}` : ''}`;
+    }).join('\n')
+  ).join('\n\n');
 
   const content = `# ${SITE.fullName} — pełna treść
 
@@ -27,80 +36,79 @@ URL: ${SITE.finalUrl}
 
 ---
 
-## O pracowni
+## O restauracji
 
-Pracownia Szkła Artystycznego Maciej Rafalski Glass Project mieści się w Warszawie na Ochocie (ul. Grójecka 79). Maciej Rafalski to hutnik i artysta szkła z ponad 20-letnim doświadczeniem — wiedzę przekazywali mu hutnicy pracujący w rodzinnej hucie szkła od 5. roku życia. W 2005 roku założył własną pracownię.
+Riverside. Dym i Ogień działa nad Motławą, w samym sercu Gdańska, od 2019 roku. Od początku stawiamy na kuchnię opartą na jakości i przygotowywaniu dań od podstaw, bez kompromisów i półproduktów.
 
-Pracownia specjalizuje się w dwóch technikach:
+Kuchnię prowadzi Chef Michał Rybak — szef kuchni znany także z TikToka (@rybalikeachef). Menu łączy różnorodne inspiracje: od ręcznie siekanego tatara, przez ryby, makarony i pizzę, wolno pieczoną golonkę (ok. 12 godzin przygotowania) i żeberka BBQ w autorskim sosie, po smaki inspirowane kuchnią azjatycką. Obok sprawdzonych dań regularnie pojawiają się nowe kompozycje.
 
-1. **Hutnictwo szkła (szkło dmuchane)** — ręczne formowanie rozgrzanej masy szklanej w temperaturze 1200°C przy użyciu piszczeli szklanej. Każdy obiekt jest niepowtarzalny. Przy piecu pracuje Józef Badzioch — wieloletni mistrz i współpracownik.
+W 2019 roku Riverside jako pierwszy lokal na Pomorzu zaczął serwować niepasteryzowanego Pilsnera Urquell prosto z tanka — świeżego i zawsze w odpowiedniej temperaturze.
 
-2. **Fusing** — stapianie kawałków szkła w piecu hutniczym. Technika umożliwia tworzenie dużych obiektów, paneli architektonicznych i form przestrzennych niemożliwych do uzyskania metodą dmuchania.
-
-Materiały: głównie szkło recyklingowe — stłuczka szklana z odpadów przemysłowych.
-
-Filozofia: szkło stawia warunki — nie da się go zmusić do określonego zachowania. Finalna forma jest zapisem konkretnego dnia, warunków i decyzji. Nie ma dwóch takich samych obiektów.
+Lokalizacja: ${CONTACT.address}, ${CONTACT.city}. Z Długiego Targu przez Zieloną Bramę i Most Zielony — restauracja jest tuż za mostem, z widokiem na Motławę, Żuraw i Zieloną Bramę. Taras jest oszklony i ogrzewany, dostępny przez cały rok. Psy są mile widziane.
 
 ---
 
-## Realizacje portfolio
+## Godziny otwarcia
 
-### Dla firm (${projectsFirm.length} realizacji)
-
-${projectsFirm.map(p => `- **${p.data.title}**`).join('\n') || '- Realizacje dostępne na stronie portfolio'}
-
-### Dla domu (${projectsDom.length} realizacji)
-
-${projectsDom.map(p => `- **${p.data.title}**`).join('\n') || '- Realizacje dostępne na stronie portfolio'}
+${CONTACT.hours.map(h => `- ${h}`).join('\n')}
 
 ---
 
-## Oferta szczegółowa
+## Rezerwacje
 
-### Dla firm i instytucji
+- Online: ${CONTACT.reservationUrl} (system zjedz.my, maksymalnie 10 miejsc w jednej rezerwacji)
+- Telefonicznie: ${CONTACT.phoneWork}
+- Większe grupy i imprezy: ${SITE.finalUrl}/events/
 
-**Przestrzenie komercyjne (hotele, restauracje, biura):**
-Tworzymy obiekty dekoracyjne, elementy świetlne oraz formy dedykowane recepcjom, lobby, restauracjom i przestrzeniom eventowym. Obiekty, które definiują charakter miejsca — nie zdobią go, lecz go tworzą.
+---
 
-**Elementy architektoniczne:**
-Wytwarzamy szklane formy będące integralną częścią architektury — od rzeźb i instalacji artystycznych, przez dekoracyjne panele i moduły ścienne z reliefem, po podświetlane sufity oraz elementy fasad. Realizujemy według dokumentacji projektowej, dostarczamy specyfikację techniczną. Chętnie współpracujemy z architektami i projektantami wnętrz.
+## Menu
 
-**Identyfikacja wizualna i projekty specjalne:**
-Nagrody, statuetki, obiekty okolicznościowe, limitowane edycje produktowe, upominki biznesowe z logo firmy. Techniki nanoszenia logo: dostępne — skonsultuj indywidualnie.
+Aktualna karta: ${SITE.finalUrl}/menu/
 
-**Proces B2B:**
-Brief → konsultacja (spotkanie w pracowni lub online) → oferta z opisem technicznym i harmonogramem (5–7 dni roboczych) → umowa o dzieło + zaliczka → realizacja z raportowaniem postępu → dostawa z dokumentacją techniczną. Możliwy harmonogram płatności etapowych. Faktury VAT.
+${menuText}
 
-### Dla osób prywatnych
+---
 
-Formy dekoracyjne (rzeźby, misy, dekoracje ścienne), szkło użytkowe (wazony, naczynia, patery, oświetlenie, detale meblowe), personalizowane upominki i prezenty, obiekty na zamówienie według pomysłu klienta. Możliwa dostawa kurierska w specjalnym opakowaniu na terenie całej Polski.
+## Imprezy i wydarzenia
+
+Organizujemy imprezy prywatne (urodziny, komunie, chrzciny, wesela, jubileusze) i wydarzenia firmowe (spotkania, integracje, kolacje biznesowe, szkolenia) dla grup od kilkunastu do 150 osób, z widokiem na Motławę.
+
+- **Sala VIP** — do 50 gości. Mniejsze spotkania biznesowe, prywatne kolacje, jubileusze, warsztaty w zamkniętym gronie.
+- **Cały lokal na wyłączność** — około 150 gości. Duże eventy firmowe, bankiety i gale, pełna prywatność.
+
+Nie obsługujemy koncertów i głośnych atrakcji — stawiamy na komfort i prywatność. Na życzenie: nagłośnienie, oprawa tematyczna, menu degustacyjne.
+
+Zapytanie o imprezę: ${SITE.finalUrl}/events-booking/ · telefon ${CONTACT.phoneEvents} · e-mail ${CONTACT.email}
 
 ---
 
 ## FAQ — pełne odpowiedzi
 
-${sortedFaq.map(f => `### ${f.data.question}\n\n${f.data.answer}`).join('\n\n---\n\n')}
+${sortedFaq.map(f => `### ${f.data.question}\n\n${faqAnswerText(f.data.answer)}`).join('\n\n---\n\n')}
 
 ---
 
-## Posty i aktualności
+## Blog „Riverside od Kuchni”
 
 ${sortedPosts.length > 0
-  ? sortedPosts.map(p => `### ${p.data.title} (${p.data.date.toLocaleDateString('pl-PL')})\n\n${p.data.excerpt}\n\nURL: ${SITE.finalUrl}/posts/${p.slug}`).join('\n\n')
+  ? sortedPosts.map(p => `### ${p.data.title} (${p.data.date.toLocaleDateString('pl-PL')})\n\n${p.data.excerpt}\n\nURL: ${SITE.finalUrl}/posts/${p.id}/`).join('\n\n')
   : 'Brak opublikowanych postów.'}
 
 ---
 
-## Dane kontaktowe i firmowe
+## Dane kontaktowe
 
 - **Nazwa:** ${SITE.fullName}
 - **Adres:** ${CONTACT.address}, ${CONTACT.city}
-- **Telefon:** ${CONTACT.phone}
-- **Email:** ${CONTACT.email}
-- **Godziny pracy:** ${CONTACT.hours}
-- **NIP:** ${CONTACT.nip}
-- **REGON:** ${CONTACT.regon}
+- **Rezerwacje:** ${CONTACT.phoneWork}
+- **Imprezy:** ${CONTACT.phoneEvents}
+- **E-mail:** ${CONTACT.email}
 - **Google Maps:** ${CONTACT.mapsUrl}
+- **Facebook:** ${SOCIAL.facebook}
+- **Instagram:** ${SOCIAL.instagram}
+- **TikTok:** ${SOCIAL.tiktok}
+- **YouTube:** ${SOCIAL.youtube}
 `;
 
   return new Response(content, {

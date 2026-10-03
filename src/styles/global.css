@@ -1,5 +1,5 @@
 /* ============================================
-   Glass Project — Global Styles
+   Riverside — Global Styles
    Tailwind CSS v4
    ============================================ */
 
@@ -259,6 +259,60 @@
   margin-bottom: 1.5rem;
   border: 1px solid var(--color-glass-border);
   border-radius: 0.75rem;
+}
+
+/* Zdjęcia i filmy wstawiane w treść postów (src/plugins/post-media.mjs) */
+.prose-content .post-media {
+  margin: 2rem 0 2.5rem;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+}
+
+.prose-content .post-media img,
+.prose-content .post-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  background: var(--color-glass-smoke);
+}
+
+/* Zdjęcia — wysokość ograniczona do 75vh; ramka zwęża się do szerokości zdjęcia
+   (pionowe kadry są wyśrodkowane, poziome zajmują pełną szerokość kolumny) */
+.prose-content .post-media--image {
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose-content .post-media--image img {
+  width: auto;
+  max-width: 100%;
+  max-height: 75vh;
+}
+
+/* Podpis nie poszerza ramki — zawija się do szerokości zdjęcia */
+.prose-content .post-media--image figcaption {
+  width: 0;
+  min-width: 100%;
+}
+
+/* Pionowe filmy (9:16) — węższe i wyśrodkowane, żeby nie zajmowały kilku ekranów */
+.prose-content .post-media--vertical {
+  max-width: min(24rem, calc(75vh * 9 / 16 + 10px));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose-content .post-media figcaption {
+  padding: 0.75rem 0.5rem 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--color-glass-muted);
 }
 
   /* Wrapper zdjęcia — standard dla całego serwisu */

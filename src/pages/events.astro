@@ -1,5 +1,6 @@
 ---
-import { cloudinaryUrl, cloudinarySrcset, cloudinaryVideoUrl, cloudinaryVideoPoster } from '../utils/cloudinary';
+import { cloudinaryVideoUrl, cloudinaryVideoPoster } from '../utils/cloudinary';
+import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionGallery from '../components/ui/SectionGallery.astro';
 import SectionBookingEvent from '../components/ui/SectionBookingEvent.astro';
@@ -151,22 +152,15 @@ const eventTypes = [
 
       <div class="flex flex-col gap-12 lg:gap-20">
         {eventTypes.map(({ kicker, kickerClass, dotClass, title, description, image, imageAlt, reverse }) => {
-          const photoSrc = image ? cloudinaryUrl(image, { width: 900, aspectRatio: '4:3', crop: 'fill' }) : null;
-          const photoSrcset = image ? cloudinarySrcset(image, [600, 900, 1200], { aspectRatio: '4:3', crop: 'fill' }) : null;
-
           return (
             <div class="flex flex-wrap items-center gap-8 lg:gap-0">
               <div class:list={['w-full lg:w-1/2', reverse ? 'order-1 lg:order-2' : '']}>
                 {image ? (
                   <div class="overflow-hidden rounded-3xl border border-glass-border shadow-xl shadow-black/40">
-                    <img class="w-full h-full object-cover" src={photoSrc} srcset={photoSrcset} sizes="(min-width: 1024px) 50vw, 100vw" alt={imageAlt} loading="lazy" decoding="async" />
+                    <CloudinaryImage publicId={image} alt={imageAlt} preset="half" class="w-full h-full object-cover" />
                   </div>
                 ) : (
-                  <div class="flex aspect-[4/3] items-center justify-center bg-glass-anthracite border border-glass-border rounded-3xl" role="img" aria-label="Zdjęcie wkrótce">
-                    <svg class="w-12 h-12 text-glass-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v14H4V5zm0 14 5-6 3 3 4-5 4 4M9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                    </svg>
-                  </div>
+                  <CloudinaryImage preset="half" placeholderClass="rounded-3xl" />
                 )}
               </div>
               <div class:list={['w-full lg:w-1/2', reverse ? 'order-2 lg:order-1' : '']}>

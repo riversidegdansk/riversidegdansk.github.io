@@ -26,7 +26,7 @@ export const SITE = {
   locale: 'pl_PL',
   themeColor: '#C95A1A',
   bgColor: '#111315',
-  ogImage: 'https://res.cloudinary.com/riverside/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/home/riverside-og-default',
+  ogImage: 'https://res.cloudinary.com/riverside/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/riverside-og-default',
 } as const;
 
 export const CONTACT = {
@@ -91,6 +91,7 @@ export const NAV = [
   { label: 'Imprezy',              href: '/events' },
   { label: 'Poznaj Riverside',     href: '/gallery' },
   { label: 'Riverside od Kuchni',  href: '/posts' },
+  { label: 'FAQ',                  href: '/faq' },
   { label: 'Kontakt',              href: '/contact' },
 ] as const;
 
@@ -106,6 +107,7 @@ export const FOOTER_NAV = [
   { label: 'Rezerwacje',            href: NAV_CTA.href },
   { label: 'Poznaj Riverside',      href: '/gallery' },
   { label: 'Riverside od Kuchni',   href: '/posts' },
+  { label: 'FAQ',                   href: '/faq' },
   { label: 'Kontakt',               href: '/contact' },
 ] as const;
 
