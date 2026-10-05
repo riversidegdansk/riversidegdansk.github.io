@@ -1,15 +1,18 @@
 ---
+// Biblioteka z npm (vanilla-cookieconsent) — CSS trafia do wspólnego pakietu strony,
+// bez blokującego połączenia z CDN.
+import 'vanilla-cookieconsent/dist/cookieconsent.css';
 ---
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.css"/>
 
-<script type="module">
-import * as CookieConsent from 'https://cdn.jsdelivr.net/gh/orestbida/cookieconsent@3.1.0/dist/cookieconsent.esm.js';
+<script>
+import * as CookieConsent from 'vanilla-cookieconsent';
 
-window.CookieConsent = CookieConsent;
+(window as Window & { CookieConsent?: typeof CookieConsent }).CookieConsent = CookieConsent;
 
 // Cookies do usunięcia po odmowie lub wycofaniu zgody. Każda nazwa dwa razy:
 // bez domeny (cookie hosta) i z domeną główną (GA i Meta zapisują na .riversidegdansk.pl).
-const clear = (...names) => names.flatMap((name) => [{ name }, { name, domain: 'riversidegdansk.pl' }]);
+const clear = (...names: (string | RegExp)[]) =>
+  names.flatMap((name) => [{ name }, { name, domain: 'riversidegdansk.pl' }]);
 
 window.addEventListener('load', () => {
   CookieConsent.run({
@@ -38,7 +41,11 @@ window.addEventListener('load', () => {
           gtranslate: { label: 'GTranslate' },
         },
       },
-      functional: {},
+      functional: {
+        services: {
+          maps: { label: 'Mapy Google' },
+        },
+      },
       analytics: {
         autoClear: { cookies: clear(/^_ga/, '_gid') },
         services: {

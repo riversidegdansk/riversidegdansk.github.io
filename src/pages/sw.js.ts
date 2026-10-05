@@ -31,8 +31,8 @@ const PRECACHE    = ${JSON.stringify(precache)};
 const MAX_PAGES   = 40;
 const MAX_IMAGES  = 120;
 
-// Obce domeny, które warto cache'ować (obsługują CORS, więc odpowiedzi nie są „opaque”).
-const CACHEABLE_HOSTS = ['res.cloudinary.com', 'fonts.googleapis.com', 'fonts.gstatic.com'];
+// Obce domeny, które warto cache'ować (obsługują CORS, więc odpowiedzi nie są „opaque”). Fonty są lokalne.
+const CACHEABLE_HOSTS = ['res.cloudinary.com'];
 
 async function trimCache(name, max) {
   const cache = await caches.open(name);

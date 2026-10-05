@@ -1,6 +1,9 @@
 ---
 import { SITE, CONTACT, BUSINESS, MEDIA, SAME_AS, CHEF, RESTAURANT, NAV, FOOTER_NAV, withBase } from '../config/site';
 import { cloudinaryUrl } from '../utils/cloudinary';
+// Najważniejsze pliki czcionek — preload, żeby nagłówek i tekst nie czekały na CSS.
+import fontBody from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+import fontHeading from '@fontsource/libre-baskerville/files/libre-baskerville-latin-400-normal.woff2?url';
 
 interface Crumb {
   name: string;
@@ -190,8 +193,8 @@ const allJsonLd = [
 <meta name="apple-mobile-web-app-title" content="Riverside">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" href={fontHeading} as="font" type="font/woff2" crossorigin>
+<link rel="preload" href={fontBody} as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://res.cloudinary.com">
 
 {allJsonLd.map(schema => (

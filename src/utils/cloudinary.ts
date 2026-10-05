@@ -155,7 +155,8 @@ export function cloudinaryVideoPoster(publicIdOrUrl: string, opts: MediaTransfor
     startOffset = 0,
   } = opts;
 
-  const t: string[] = [`q_${quality}`, `so_${startOffset}`];
+  // f_auto: kadr jako WebP/AVIF tam, gdzie przeglądarka je obsługuje (rozszerzenie .jpg zostaje jako zapas).
+  const t: string[] = ['f_auto', `q_${quality}`, `so_${startOffset}`];
 
   if (width) t.push(`w_${width}`);
   if (height) t.push(`h_${height}`);
@@ -221,7 +222,8 @@ export interface ImagePreset {
 
 export const IMAGE_PRESETS = {
   // Zdjęcie obok tekstu w sekcji dwukolumnowej (O nas, Rezerwacje, „Tego musisz spróbować”)
-  section:     { aspectRatio: '4:3',  widths: [600, 900, 1200], sizes: '(min-width: 1024px) 42vw, 100vw' },
+  // Na telefonie zdjęcie ma marginesy karty (~85% szerokości ekranu) — stąd 85vw i plik 700 px.
+  section:     { aspectRatio: '4:3',  widths: [400, 700, 900, 1200], sizes: '(min-width: 1024px) 42vw, 85vw' },
   // Zdjęcie na pół szerokości kontenera (typy imprez)
   half:        { aspectRatio: '4:3',  widths: [600, 900, 1200], sizes: '(min-width: 1024px) 50vw, 100vw' },
   // Karta wpisu w siatce 3 kolumn

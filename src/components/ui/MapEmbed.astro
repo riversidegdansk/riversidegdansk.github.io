@@ -1,0 +1,72 @@
+---
+// Mapa Google ładowana na żądanie. Do czasu kliknięcia „Pokaż mapę” albo zgody na cookies
+// funkcjonalne (okno cookies → „Mapy Google”) strona nie łączy się z Google — bez ~500 KB
+// skryptów i bez cookies Google przed zgodą.
+import { CONTACT } from '../../config/site';
+
+interface Props {
+  src?:         string;
+  title:        string;
+  class?:       string;
+  iframeClass?: string;
+  iframeStyle?: string;
+}
+
+const {
+  src = CONTACT.mapsEmbed,
+  title,
+  class: className = '',
+  iframeClass = 'w-full h-full',
+  iframeStyle = 'border:0;',
+} = Astro.props;
+---
+
+<div
+  data-map
+  data-src={src}
+  data-title={title}
+  data-iframe-class={iframeClass}
+  data-iframe-style={iframeStyle}
+  class:list={['relative overflow-hidden bg-glass-anthracite', className]}
+>
+  <div data-map-placeholder class="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center">
+    <svg class="h-10 w-10 text-glass-accent-glow" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/>
+      <circle cx="12" cy="9.5" r="2.5"/>
+    </svg>
+    <p class="text-glass-white">{CONTACT.address}, {CONTACT.city}</p>
+    <button type="button" data-map-load class="btn-primary">Pokaż mapę</button>
+    <p class="max-w-xs text-xs text-glass-muted">
+      Mapa zostanie wczytana z Google Maps, który może zapisywać pliki cookie.
+      <a href={CONTACT.mapsUrl} target="_blank" rel="noopener noreferrer" class="underline hover:text-glass-white">Otwórz w Mapach Google</a>
+    </p>
+  </div>
+</div>
+
+<script>
+  function loadMap(box: HTMLElement) {
+    if (box.querySelector('iframe')) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = box.dataset.src ?? '';
+    iframe.title = box.dataset.title ?? '';
+    iframe.className = `absolute inset-0 ${box.dataset.iframeClass ?? ''}`;
+    iframe.setAttribute('style', box.dataset.iframeStyle ?? '');
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.referrerPolicy = 'no-referrer-when-downgrade';
+    box.querySelector('[data-map-placeholder]')?.remove();
+    box.append(iframe);
+  }
+
+  const maps = () => document.querySelectorAll<HTMLElement>('[data-map]');
+
+  maps().forEach((box) =>
+    box.querySelector('[data-map-load]')?.addEventListener('click', () => loadMap(box)));
+
+  // Zgoda na cookies funkcjonalne = mapy ładują się same.
+  type ConsentEvent = CustomEvent<{ cookie?: { categories?: string[] } }>;
+  const onConsent = (e: Event) => {
+    if ((e as ConsentEvent).detail?.cookie?.categories?.includes('functional')) maps().forEach(loadMap);
+  };
+  window.addEventListener('cc:onConsent', onConsent);
+  window.addEventListener('cc:onChange', onConsent);
+</script>

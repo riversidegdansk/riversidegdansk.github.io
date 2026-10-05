@@ -79,7 +79,7 @@ const {
         ? cloudinaryVideoUrl(slide.video, { width: 1080 })
         : null;
       const videoPoster = slide.type === 'video' && slide.video
-        ? cloudinaryVideoPoster(slide.poster ?? slide.video, { width: 1080 })
+        ? cloudinaryVideoPoster(slide.poster ?? slide.video, { width: 720 })
         : null;
 
       return (
@@ -89,17 +89,18 @@ const {
         >
           {slide.type === 'video' && slide.video ? (
             <video
+              data-hero-video
               class="absolute inset-0 h-full w-full object-cover"
-              autoplay
               muted
               loop
               playsinline
-              preload="auto"
+              preload="none"
               poster={videoPoster}
-              aria-label={slide.alt}
+              aria-hidden="true"
             >
-              <source media="(min-width: 1024px)" src={desktopVideoSrc} type="video/mp4" />
-              <source src={mobileVideoSrc} type="video/mp4" />
+              {/* Źródła podpinane po załadowaniu strony (skrypt niżej) — film nie konkuruje z treścią pierwszego ekranu. */}
+              <source media="(min-width: 1024px)" data-src={desktopVideoSrc} type="video/mp4" />
+              <source data-src={mobileVideoSrc} type="video/mp4" />
             </video>
           ) : slide.type === 'video' ? (
             <div
@@ -169,7 +170,7 @@ const {
         <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
           <a
             href={withBase(NAV_CTA.href)}
-            class="w-full sm:w-auto inline-flex items-center justify-center bg-glass-accent-amber text-glass-white font-medium px-8 py-4 rounded-full hover:bg-glass-accent-glow transition-colors active:scale-95 text-center"
+            class="w-full sm:w-auto inline-flex items-center justify-center bg-glass-accent-ember text-glass-white font-medium px-8 py-4 rounded-full hover:bg-glass-accent-amber transition-colors active:scale-95 text-center"
           >
             {NAV_CTA.label}
           </a>
@@ -185,15 +186,45 @@ const {
   </div>
 
   {/* Slide indicators */}
-  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-3">
+  <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-1">
     {slides.map((_, i) => (
       <button
         type="button"
-        class="h-2 rounded-full transition-all duration-300"
-        x-bind:class={`active === ${i} ? 'bg-glass-accent-amber w-6' : 'bg-glass-muted/50 w-2'`}
+        class="flex h-6 min-w-6 items-center justify-center"
         x-on:click={`stop(); goto(${i}); start()`}
         aria-label={`Przejdź do slajdu ${i + 1}`}
-      ></button>
+      >
+        {/* Obszar dotyku 24×24 px (WCAG), widoczna kropka zostaje mała */}
+        <span
+          class="block h-2 rounded-full transition-all duration-300"
+          x-bind:class={`active === ${i} ? 'bg-glass-accent-amber w-6' : 'bg-glass-muted/50 w-2'`}
+        ></span>
+      </button>
     ))}
   </div>
 </section>
+
+<script>
+  // Film w sliderze ładuje się dopiero po wczytaniu strony, gdy przeglądarka jest bezczynna.
+  // Przy włączonym oszczędzaniu danych albo ograniczeniu animacji zostaje sam kadr (poster).
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function startHeroVideos() {
+    document.querySelectorAll<HTMLVideoElement>('video[data-hero-video]').forEach((video) => {
+      video.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((source) => {
+        source.src = source.dataset.src ?? '';
+      });
+      video.preload = 'auto';
+      video.load();
+      video.play().catch(() => {});
+    });
+  }
+
+  if (!saveData && !reducedMotion) {
+    const idle = (cb: () => void) =>
+      'requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 3000 }) : setTimeout(cb, 1500);
+    if (document.readyState === 'complete') idle(startHeroVideos);
+    else window.addEventListener('load', () => idle(startHeroVideos), { once: true });
+  }
+</script>
