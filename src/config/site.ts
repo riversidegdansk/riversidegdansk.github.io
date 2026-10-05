@@ -6,16 +6,6 @@ const parseHoursValue = (value: string | undefined): string => {
   return match ? `${match[1]}-${match[2]}` : '';
 };
 
-const hoursSchema = [
-  `Mo ${parseHoursValue(settingsData.hours_monday)}`,
-  `Tu ${parseHoursValue(settingsData.hours_tuesday)}`,
-  `We ${parseHoursValue(settingsData.hours_wednesday)}`,
-  `Th ${parseHoursValue(settingsData.hours_thursday)}`,
-  `Fr ${parseHoursValue(settingsData.hours_friday)}`,
-  `Sa ${parseHoursValue(settingsData.hours_saturday)}`,
-  `Su ${parseHoursValue(settingsData.hours_sunday)}`,
-].filter((slot) => slot.includes('-')).join('; ');
-
 // Godziny w formacie schema.org (OpeningHoursSpecification) — dla danych strukturalnych restauracji.
 const DAYS = [
   ['Monday',    settingsData.hours_monday],
@@ -44,7 +34,6 @@ export const SITE = {
   description: 'Riverside. Dym i Ogień — restauracja nad Motławą w Gdańsku. Kuchnia na żywym ogniu, piwo Pilsner Urquell prosto z tanka.',
   url: 'https://www.riversidegdansk.pl',
   finalUrl: 'https://www.riversidegdansk.pl',
-  lang: 'pl',
   locale: 'pl_PL',
   themeColor: '#C95A1A',
   bgColor: '#111315',
@@ -76,9 +65,6 @@ export const CONTACT = {
   ],
   region: 'pomorskie',
   country: 'PL',
-  nip: '',
-  regon: '',
-  hoursSchema,
   openingHoursSpecification,
   lat: 54.34801648908613,
   lng: 18.656882571164516,
@@ -178,6 +164,10 @@ export const MEDIA = {
     height:    150,
     navWidth:  150,
     navHeight: 150,
+    // Animowane logo w nagłówku (test). true = SVG z animacją, false = obecne logo .webp.
+    // Plik SVG wrzuć do public/images/ pod nazwą z animatedSrc.
+    useAnimated: true,
+    animatedSrc: '/images/logo-riverside-biale-transparent-czerwone-plomienie-animated.svg',
   },
   favicon: {
   ico:            '/favicons/favicon.ico',
@@ -203,5 +193,5 @@ export function withBase(path: string): string {
 }
 
 export const ANALYTICS = {
-  gtmId: '',
+  gtmId: 'GTM-5TFQJC2',
 } as const;

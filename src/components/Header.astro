@@ -7,6 +7,9 @@ interface Props {
 
 const { transparent = false } = Astro.props;
 
+// Logo w nagłówku: animowane SVG albo dotychczasowe .webp — przełącznik MEDIA.logo.useAnimated w site.ts.
+const logoSrc = withBase(MEDIA.logo.useAnimated ? MEDIA.logo.animatedSrc : MEDIA.logo.src);
+
 const rawPath = Astro.url.pathname;
 const currentPath = BASE && rawPath.startsWith(BASE) ? rawPath.slice(BASE.length) || '/' : rawPath;
 const isActive = (href: string) => {
@@ -21,7 +24,7 @@ const isActive = (href: string) => {
 
       <a href={withBase('/')} aria-label={SITE.fullName} class="flex items-center">
         <img
-          src={withBase(MEDIA.logo.src)}
+          src={logoSrc}
           alt={MEDIA.logo.alt}
           width={MEDIA.logo.navWidth}
           height={MEDIA.logo.navHeight}
@@ -103,7 +106,7 @@ const isActive = (href: string) => {
     <div class="flex items-center justify-between mb-12">
       <a href={withBase('/')} aria-label={SITE.fullName}>
         <img
-          src={withBase(MEDIA.logo.src)}
+          src={logoSrc}
           alt={MEDIA.logo.alt}
           width={MEDIA.logo.navWidth}
           height={MEDIA.logo.navHeight}

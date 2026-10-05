@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getLivePosts } from '../../utils/posts';
 import CloudinaryImage from '../../components/ui/CloudinaryImage.astro';
 import { withBase } from '../../config/site';
 
@@ -11,7 +11,7 @@ const FIRST_ROW_COUNT = 3;
 const ROW_SIZE = 3;
 const INITIAL_ROWS = 2;
 
-const allPosts = await getCollection('posts', ({ data }) => data.published);
+const allPosts = await getLivePosts();
 const posts = allPosts
   .sort((a, b) =>
     Number(b.data.pinned) - Number(a.data.pinned) ||

@@ -6,11 +6,12 @@ import type { APIRoute } from 'astro';
 import { faqAnswerText } from '../utils/faq';
 import { SITE, CONTACT, SOCIAL } from '../config/site';
 import { getCollection } from 'astro:content';
+import { getLivePosts } from '../utils/posts';
 
 export const GET: APIRoute = async () => {
   const faqEntries = await getCollection('faq');
   const dishes     = await getCollection('menu',  ({ data }) => data.published);
-  const posts      = await getCollection('posts', ({ data }) => data.published);
+  const posts      = await getLivePosts();
 
   const sortedFaq   = faqEntries.sort((a, b) => a.data.order - b.data.order);
   const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());

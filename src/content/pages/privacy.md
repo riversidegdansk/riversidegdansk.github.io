@@ -1,6 +1,6 @@
 ---
 title: Polityka prywatności i plików cookie
-updatedAt: "2026-09-28"
+updatedAt: "2026-10-05"
 ---
 
 Niniejsza Polityka prywatności określa zasady przetwarzania danych osobowych osób korzystających ze strony internetowej **riversidegdansk.pl**, kontaktujących się z restauracją Riverside Dym i Ogień oraz dokonujących rezerwacji.
@@ -288,7 +288,13 @@ W zależności od ustawień strony możemy korzystać m.in. z:
 
 ### Meta Platforms
 
-Możemy korzystać z technologii Meta, w tym Meta Pixel, służącej w szczególności do pomiaru skuteczności reklam i działań marketingowych.
+Możemy korzystać z technologii Meta, w tym Meta Pixel, służącej w szczególności do pomiaru skuteczności reklam i działań marketingowych prowadzonych w serwisach Facebook i Instagram.
+
+Dostawcą jest **Meta Platforms Ireland Limited**, Merrion Road, Dublin 4, D04 X2K5, Irlandia.
+
+W zakresie zbierania danych na stronie za pomocą Meta Pixel i ich przekazania do Meta Administrator i Meta Platforms Ireland Limited są **współadministratorami** danych (art. 26 RODO). Zasady współadministrowania określa [Dodatek dotyczący współadministrowania](https://www.facebook.com/legal/controller_addendum) przyjęty przez Meta. Meta odpowiada za dalsze przetwarzanie otrzymanych danych, w tym za realizację praw osób, których dane dotyczą, w zakresie przetwarzania prowadzonego przez Meta. Zasady tego przetwarzania opisuje [Polityka prywatności Meta](https://www.facebook.com/privacy/policy).
+
+Meta Pixel jest uruchamiany wyłącznie po wyrażeniu zgody na marketingowe pliki cookie. Szczegóły opisuje sekcja 15.4.
 
 ### Cloudflare
 
@@ -490,9 +496,35 @@ Pliki marketingowe służą m.in. do:
 
 Możemy wykorzystywać w szczególności:
 
-**Meta Pixel**
+**Meta Pixel (Meta Platforms Ireland Limited)**
 
-Technologia Meta może umożliwiać przekazywanie informacji dotyczących korzystania ze strony do Meta Platforms w celu pomiaru reklam i prowadzenia działań marketingowych.
+Meta Pixel to skrypt, który przekazuje do Meta informacje o korzystaniu ze strony. Służy do:
+
+- mierzenia skuteczności reklam wyświetlanych w serwisach Facebook i Instagram,
+- sprawdzania, czy po obejrzeniu reklamy użytkownik wykonał na stronie określoną czynność (np. kliknął przycisk rezerwacji, numer telefonu lub pobrał menu),
+- tworzenia grup odbiorców reklam, w tym remarketingu.
+
+Za pomocą Meta Pixel mogą być przekazywane m.in.:
+
+- adres odwiedzanej podstrony i strona odsyłająca,
+- informacje o wykonanych na stronie czynnościach (zdarzeniach),
+- adres IP,
+- informacje o przeglądarce i urządzeniu,
+- identyfikatory zapisane w plikach cookie.
+
+Meta może powiązać te informacje z kontem użytkownika w serwisach Facebook lub Instagram, jeżeli użytkownik takie konto posiada i jest zalogowany.
+
+Meta Pixel wykorzystuje w szczególności pliki cookie:
+
+- `_fbp` – identyfikator przeglądarki zapisywany w domenie strony, przechowywany do 90 dni,
+- `_fbc` – identyfikator kliknięcia w reklamę, zapisywany po wejściu z reklamy Meta, przechowywany do 90 dni,
+- `fr` – plik cookie zapisywany w domenie facebook.com, przechowywany do 90 dni.
+
+Podstawą prawną jest zgoda użytkownika (art. 6 ust. 1 lit. a RODO) wyrażona w panelu ustawień plików cookie, zgodnie z wymaganiami ustawy – Prawo komunikacji elektronicznej. Meta Pixel nie jest uruchamiany bez zgody na marketingowe pliki cookie, a po wycofaniu zgody przestaje być ładowany na stronie.
+
+Dane mogą być przekazywane do Meta Platforms, Inc. w Stanach Zjednoczonych. Meta Platforms, Inc. uczestniczy w programie EU–US Data Privacy Framework, a ponadto stosuje standardowe klauzule umowne zatwierdzone przez Komisję Europejską (sekcja 7).
+
+Niezależnie od ustawień na stronie użytkownik może zarządzać reklamami Meta w [ustawieniach preferencji reklamowych Meta](https://www.facebook.com/adpreferences).
 
 Marketingowe pliki cookie oraz podobne technologie nie są uruchamiane bez uprzedniej zgody użytkownika.
 

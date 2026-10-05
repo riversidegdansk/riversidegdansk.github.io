@@ -21,8 +21,17 @@ function tokens(html: boolean): Record<string, string> {
 const fill = (answer: string, html: boolean) =>
   Object.entries(tokens(html)).reduce((text, [token, value]) => text.replaceAll(token, value), answer.trim());
 
+// Link do posta, który jeszcze nie jest opublikowany (zaplanowana data), zostaje samym tekstem —
+// żeby FAQ nie prowadziło do 404. Po publikacji posta link pojawi się sam przy kolejnym buildzie.
+const unlinkScheduledPosts = (html: string, livePostIds: Set<string>) =>
+  html.replace(/<a href="\/posts\/([^/"]+)\/?">(.*?)<\/a>/g, (link, id: string, label: string) =>
+    livePostIds.has(id) ? link : label);
+
 /** Odpowiedź do wyświetlenia na stronie — HTML, nowe linie jako <br/>. */
-export const faqAnswerHtml = (answer: string) => fill(answer, true).replace(/\n/g, '<br/>');
+export const faqAnswerHtml = (answer: string, livePostIds?: Set<string>) => {
+  const html = fill(answer, true).replace(/\n/g, '<br/>');
+  return livePostIds ? unlinkScheduledPosts(html, livePostIds) : html;
+};
 
 /** Odpowiedź jako czysty tekst — dla danych strukturalnych i llms.txt. */
 export const faqAnswerText = (answer: string) => fill(answer, false).replace(/<[^>]+>/g, '');

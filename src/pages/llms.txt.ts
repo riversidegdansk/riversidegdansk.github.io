@@ -4,10 +4,10 @@
 
 import type { APIRoute } from 'astro';
 import { SITE, CONTACT, SOCIAL } from '../config/site';
-import { getCollection } from 'astro:content';
+import { getLivePosts } from '../utils/posts';
 
 export const GET: APIRoute = async () => {
-  const posts = (await getCollection('posts', ({ data }) => data.published))
+  const posts = (await getLivePosts())
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   const content = `# ${SITE.fullName}

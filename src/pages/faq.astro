@@ -2,8 +2,10 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { faqAnswerHtml, faqAnswerText } from '../utils/faq';
+import { getLivePosts } from '../utils/posts';
 
 const faqs = await getCollection('faq');
+const livePostIds = new Set((await getLivePosts()).map((post) => post.id));
 const sorted = faqs.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
 const jsonLd = {
@@ -62,7 +64,7 @@ const jsonLd = {
                 x-transition:leave-end="opacity-0 -translate-y-2"
                 class="pb-7 -mt-3"
               >
-                <p class="prose-p max-w-2xl" set:html={faqAnswerHtml(faq.data.answer)} />
+                <p class="prose-p max-w-2xl" set:html={faqAnswerHtml(faq.data.answer, livePostIds)} />
               </div>
             </li>
           ))}

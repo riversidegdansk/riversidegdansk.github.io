@@ -1,21 +1,35 @@
 ---
-// Formularz kontaktowy (Formspark: PUBLIC_FORMSPARK_FORM_ID).
+// Formularz zapytania o imprezę (Formspark: PUBLIC_FORMSPARK_EVENTS_FORM_ID — osobny od kontaktowego).
 // Pola mają ID z prefiksem, więc formularz można osadzić obok innego na tej samej stronie.
 import { CONTACT, FORMSPARK, TURNSTILE } from '../../config/site';
 
 interface Props {
   idPrefix?:    string;
+  eventTypes?:  string[];
+  minGuests?:   number;
   submitLabel?: string;
   emailSubject?: string;
 }
 
 const {
-  idPrefix    = 'contact',
-  emailSubject = 'Masz nową wiadomość z riversidegdansk.pl',
-  submitLabel = 'Wyślij wiadomość',
+  idPrefix    = 'event',
+  eventTypes  = [
+    'Urodziny',
+    'Wesele',
+    'Komunia / Chrzciny',
+    'Jubileusz',
+    'Impreza firmowa',
+    'Integracja firmowa',
+    'Kolacja biznesowa',
+    'Szkolenie / Konferencja',
+    'Inna okazja',
+  ],
+  minGuests   = 10,
+  emailSubject = 'Masz nowe zapytanie w sprawie imprezy z riversidegdansk.pl',
+  submitLabel = 'Wyślij zapytanie',
 } = Astro.props;
 
-const formAction = `${FORMSPARK.url}/${FORMSPARK.formId}`;
+const formAction = `${FORMSPARK.url}/${FORMSPARK.eventsFormId}`;
 const id = (name: string) => `${idPrefix}-${name}`;
 ---
 
@@ -23,6 +37,7 @@ const id = (name: string) => `${idPrefix}-${name}`;
   action={formAction}
   method="POST"
   x-data="{ sending: false, sent: false, error: false }"
+  x-init="$refs.date.min = new Date().toISOString().slice(0, 10)"
   x-on:submit.prevent="
     sending = true;
     fetch($el.action, {
@@ -51,22 +66,45 @@ const id = (name: string) => `${idPrefix}-${name}`;
   <label for={id('name')} class="sr-only">Imię</label>
   <input id={id('name')} type="text" name="name" placeholder="Imię" required autocomplete="given-name" class="form-input mb-4" />
 
-  <label for={id('business')} class="sr-only">Firma</label>
-  <input id={id('business')} type="text" name="business" placeholder="Firma (opcjonalnie)" autocomplete="organization" class="form-input mb-4" />
+  <label for={id('company')} class="sr-only">Firma</label>
+  <input id={id('company')} type="text" name="company" placeholder="Firma (opcjonalnie)" autocomplete="organization" class="form-input mb-4" />
+
+  <label for={id('phone')} class="sr-only">Telefon</label>
+  <input id={id('phone')} type="tel" name="phone" placeholder="Telefon" required autocomplete="tel" class="form-input mb-4" />
 
   <label for={id('email')} class="sr-only">E-mail</label>
   <input id={id('email')} type="email" name="email" placeholder="E-mail" required autocomplete="email" class="form-input mb-4" />
 
-  <label for={id('message')} class="sr-only">Wiadomość</label>
-  <textarea id={id('message')} name="message" placeholder="Wiadomość" required rows="6" class="form-input mb-4"></textarea>
+  <label for={id('type')} class="sr-only">Rodzaj imprezy</label>
+  <select id={id('type')} name="event_type" required class="form-input mb-4">
+    <option value="" disabled selected>Rodzaj imprezy</option>
+    {eventTypes.map((type) => <option value={type}>{type}</option>)}
+  </select>
 
-  <div class="cf-turnstile mb-6" data-sitekey={TURNSTILE.siteKey}></div>
+  <label for={id('guests')} class="sr-only">Liczba osób</label>
+  <input id={id('guests')} type="number" name="guests" placeholder="Liczba osób" min={minGuests} required class="form-input mb-4" />
+
+  <label for={id('date')} class="sr-only">Termin imprezy</label>
+  {/* Pole daty nie obsługuje placeholdera — startuje jako tekst „Data imprezy”, po kliknięciu staje się kalendarzem. */}
+  <input
+    id={id('date')}
+    type="text"
+    name="event_date"
+    placeholder="Data imprezy"
+    x-ref="date"
+    x-on:focus="$el.type = 'date'; try { $el.showPicker() } catch (e) {}"
+    x-on:blur="if (!$el.value) $el.type = 'text'"
+    required
+    class="form-input mb-4"
+  />
+
+  <div class="cf-turnstile my-8" data-sitekey={TURNSTILE.siteKey}></div>
 
   <div x-show="sent" style="display: none" role="status" class="mb-4 p-4 rounded-lg border border-glass-accent-cool/30 bg-glass-accent-cool/10 text-glass-accent-cool text-sm">
-    Dziękujemy. Wiadomość została poprawnie wysłana! Odpowiemy w ciągu 24h w dni robocze.
+    Dziękujemy. Zgłoszenie zostało poprawnie wysłane! Skontaktujemy się w ciągu 24h w dni robocze, aby potwierdzić termin.
   </div>
   <div x-show="error" style="display: none" role="alert" class="mb-4 p-4 rounded-lg border border-glass-accent-fire/30 bg-glass-accent-fire/10 text-glass-accent-fire text-sm">
-    Coś poszło nie tak. Spróbuj ponownie lub napisz bezpośrednio na {CONTACT.email}.
+    Coś poszło nie tak. Spróbuj ponownie, zadzwoń: {CONTACT.phoneEvents} albo napisz na {CONTACT.email}.
   </div>
 
   <button

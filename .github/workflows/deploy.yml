@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Codzienny rebuild — publikuje posty z zaplanowaną datą (src/utils/posts.ts).
+  # 03:30 UTC = 05:30 latem / 04:30 zimą w Polsce. Działa tylko z gałęzi domyślnej (main).
+  schedule:
+    - cron: '30 3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -35,10 +39,8 @@ jobs:
         run: npm run build
         env:
           # Variables — wartości niechronione, widoczne w logach
-          PUBLIC_CLOUDINARY_CLOUD_NAME:     ${{ vars.PUBLIC_CLOUDINARY_CLOUD_NAME }}
           PUBLIC_FORMSPARK_FORM_ID:         ${{ vars.PUBLIC_FORMSPARK_FORM_ID }}
           PUBLIC_FORMSPARK_EVENTS_FORM_ID:  ${{ vars.PUBLIC_FORMSPARK_EVENTS_FORM_ID }}
-          PUBLIC_CLOUDINARY_API_KEY:        ${{ secrets.PUBLIC_CLOUDINARY_API_KEY }}
           PUBLIC_TURNSTILE_SITE_KEY:        ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
 
       - name: Upload artifact

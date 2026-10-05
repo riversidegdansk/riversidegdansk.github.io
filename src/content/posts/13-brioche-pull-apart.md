@@ -2,9 +2,9 @@
 title: 'Brioche Pull-Apart — wołowina, ser i dużo masła czosnkowego'
 author: 'Michał Rybak'
 date: 2026-10-22
-excerpt: 'Miękkie brioche, mocno smażona wołowina, cheddar, provolone, sriracha mayo i czosnkowe masło. Michał Rybak pokazuje wersję pull-apart bez półśrodków.'
+excerpt: 'Miękkie brioche, mocno smażona wołowina, cheddar, provolone, sriracha mayo i czosnkowe masło. Pokazuję moją wersję pull-apart bez półśrodków.'
 seoTitle: 'Brioche Pull-Apart z wołowiną'
-seoDescription: 'Bułeczki brioche z mocno smażoną wołowiną, cheddarem, provolone i masłem czosnkowym. Przepis Michała Rybaka na danie do dzielenia.'
+seoDescription: 'Bułeczki brioche z mocno smażoną wołowiną, cheddarem, provolone i masłem czosnkowym. Przepis Chefa Michała Rybaka na danie do dzielenia.'
 cover:
   public_id: 'riverside-dym-ogien-gdansk-post-brioche-pull-apart'
   alt: 'Kucharz Riverside składa Brioche Pull-Apart w formie do zapiekania'
@@ -13,7 +13,7 @@ published: true
 
 Miękkie brioche, wołowina, dwa rodzaje sera, sriracha mayo i zdecydowanie dużo masła czosnkowego.
 
-Chef Michał Rybak pokazuje **Brioche Pull-Apart** — danie stworzone do dzielenia, w którym całą brytfankę małych bułeczek traktuje się jak jedną dużą kanapkę.
+Tak wygląda mój **Brioche Pull-Apart** — danie stworzone do dzielenia, w którym całą brytfankę małych bułeczek traktuję jak jedną dużą kanapkę.
 
 <!-- MEDIA:video
 public_id: "riverside-dym-ogien-gdansk-post-jak-zapiekac-brioche"
@@ -23,17 +23,17 @@ caption: ""
 
 ## Najpierw farsz
 
-Cebula trafia na mocno rozgrzaną patelnię, a później dołącza wołowina.
+Cebulę wrzucam na mocno rozgrzaną patelnię, a potem dokładam wołowinę.
 
-Tutaj nie chodzi o delikatne podgrzanie mięsa. Powinno dostać **konkretny kolor**, bo właśnie podczas mocnego smażenia budujemy znaczną część smaku.
+Nie chodzi o delikatne podgrzanie mięsa. Ma dostać **konkretny kolor**, bo właśnie podczas mocnego smażenia buduję znaczną część smaku.
 
-Do mięsa dochodzą czosnek, sól, pieprz oraz demi-glace lub mocny stock wołowy. Całość jest redukowana, aż farsz staje się soczysty i klejący, ale na patelni nie pozostaje wolny płyn.
+Do mięsa dodaję czosnek, sól, pieprz oraz demi-glace albo mocny stock wołowy. Redukuję całość, aż farsz jest soczysty i klejący, a na patelni nie zostaje wolny płyn.
 
 ## Warstwa po warstwie
 
-Bułeczki brioche są przecinane razem, bez rozdzielania.
+Bułeczki brioche przecinam razem, bez rozdzielania.
 
-Na spodzie lądują kolejno:
+Na spód układam kolejno:
 
 **sriracha mayo → cheddar → wołowina → provolone → góra brioche.**
 
@@ -41,9 +41,9 @@ To prosta konstrukcja, ale każda warstwa ma swoją rolę. Sos wnosi pikantnoś�
 
 ## I jeszcze masło
 
-Na koniec górę smaruje się masłem z dużą ilością czosnku i pietruszki.
+Na koniec smaruję górę masłem z dużą ilością czosnku i pietruszki.
 
-Pierwsza część pieczenia odbywa się pod folią. Dopiero później folia znika, żeby brioche mogła się zrumienić.
+Pierwszą część pieczenia robię pod folią. Dopiero potem ją zdejmuję, żeby brioche mogła się zrumienić.
 
 A finał?
 

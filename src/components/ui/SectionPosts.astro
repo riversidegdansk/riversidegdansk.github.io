@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getLivePosts } from '../../utils/posts';
 import CloudinaryImage from './CloudinaryImage.astro';
 import { withBase } from '../../config/site';
 
@@ -18,7 +18,7 @@ const {
 } = Astro.props;
 
 // Najnowsze opublikowane wpisy — miniatura + tytuł.
-const entries = await getCollection('posts', ({ data }) => data.published);
+const entries = await getLivePosts();
 const posts = entries
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, limit)

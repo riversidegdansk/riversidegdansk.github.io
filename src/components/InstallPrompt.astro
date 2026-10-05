@@ -95,6 +95,13 @@ import { MEDIA, withBase } from '../config/site';
   const isMobile = matchMedia('(pointer: coarse)').matches;
 
   let deferred: InstallEvent | null = null;
+  let installViaBanner = false;
+
+  // Kolejka dla GTM — zdarzenia sprzed zgody na cookies GTM odczyta po załadowaniu.
+  const track = (data: object) => {
+    const w = window as Window & { dataLayer?: object[] };
+    (w.dataLayer = w.dataLayer || []).push(data);
+  };
 
   const storage = {
     get(key: string) { try { return localStorage.getItem(key); } catch { return null; } },
@@ -161,9 +168,10 @@ import { MEDIA, withBase } from '../config/site';
     deferred = null; // zdarzenie można użyć tylko raz; przeglądarka wyśle nowe przy kolejnej wizycie
     await prompt.prompt();
     const { outcome } = await prompt.userChoice;
+    installViaBanner = outcome === 'accepted';
     hide(outcome === 'dismissed');
     if (outcome === 'dismissed') setTriggers(null);
-    (window as Window & { dataLayer?: object[] }).dataLayer?.push({ event: 'pwa_install_prompt', outcome });
+    track({ event: 'pwa_install_prompt', outcome });
   }
 
   banner?.addEventListener('click', (e) => {
@@ -191,7 +199,10 @@ import { MEDIA, withBase } from '../config/site';
     }
   }
 
+  // Każda instalacja na Androidzie i komputerze — z naszego banera albo z menu przeglądarki.
+  // iOS nie zgłasza instalacji; tam ruch z aplikacji widać po display_mode = standalone.
   window.addEventListener('appinstalled', () => {
+    track({ event: 'pwa_installed', install_source: installViaBanner ? 'baner' : 'przegladarka' });
     hide(true);
     setTriggers(null);
   });
