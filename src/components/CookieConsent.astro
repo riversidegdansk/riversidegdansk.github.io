@@ -7,8 +7,15 @@ import * as CookieConsent from 'https://cdn.jsdelivr.net/gh/orestbida/cookiecons
 
 window.CookieConsent = CookieConsent;
 
+// Cookies do usunięcia po odmowie lub wycofaniu zgody. Każda nazwa dwa razy:
+// bez domeny (cookie hosta) i z domeną główną (GA i Meta zapisują na .riversidegdansk.pl).
+const clear = (...names) => names.flatMap((name) => [{ name }, { name, domain: 'riversidegdansk.pl' }]);
+
 window.addEventListener('load', () => {
   CookieConsent.run({
+    // Wersja zasad zgody. Zgoda z inną wersją (w tym ze starej strony, wersja 0) jest nieważna
+    // i okno pojawia się ponownie. Zwiększ przy zmianie usług, np. po dodaniu TikToka.
+    revision: 1,
     guiOptions: {
       consentModal: {
         layout: 'box',
@@ -33,12 +40,14 @@ window.addEventListener('load', () => {
       },
       functional: {},
       analytics: {
+        autoClear: { cookies: clear(/^_ga/, '_gid') },
         services: {
           ga: { label: 'Google Analytics' },
           gtm: { label: 'Google Tag Manager' },
         },
       },
       marketing: {
+        autoClear: { cookies: clear('_fbp', '_fbc') },
         services: {
           meta: { label: 'Meta Pixel (Facebook, Instagram)' },
         },
