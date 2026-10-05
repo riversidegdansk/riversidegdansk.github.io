@@ -1,12 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { CONTACT, FORMSPARK, TURNSTILE, SITE } from '../config/site';
-
-const formAction = `${FORMSPARK.url}/${FORMSPARK.formId}`;
+import { CONTACT, SITE, withBase } from '../config/site';
+import ContactForm from '../components/forms/ContactForm.astro';
 ---
 
 <BaseLayout
-  title="Kontakt"
+  title="Kontakt i dojazd — ul. Chmielna 10"
   description="Skontaktuj się z Riverside. Dym i Ogień — restauracją nad Motławą w Gdańsku. Sprawdź adres, dane kontaktowe, mapę dojazdu i wyślij wiadomość."
 >
 
@@ -17,7 +16,10 @@ const formAction = `${FORMSPARK.url}/${FORMSPARK.formId}`;
         <div class="w-full lg:w-1/2 px-4 mb-12 lg:mb-0">
           <h1 class="mb-8 section-heading">Gdzie nas znajdziesz?</h1>
           <p class="prose-p">
-            Znajdziesz nas w Gdańsku na Wyspie Spichrzów, nad Motławą, tuż za Zieloną Bramą. Kliknij <em>Zobacz trasę</em> aby sprawdzić jak do nas dojechać.
+            Znajdziesz nas w Gdańsku na Wyspie Spichrzów, nad Motławą, <a href={withBase('/posts/10-wyspa-spichrzow-i-motlawa/')}>tuż za Zieloną Bramą</a>. Kliknij <em>Zobacz trasę</em>, aby sprawdzić, jak do nas dojechać.
+          </p>
+          <p class="prose-p">
+            Chcesz od razu zająć stolik? <a href={withBase('/reservations')}>Zarezerwuj go online</a>. Odpowiedzi na pytania o godziny, taras czy psy znajdziesz w <a href={withBase('/faq')}>FAQ</a>.
           </p>
 
           <div class="mt-10 flex flex-wrap -mx-4">
@@ -62,7 +64,7 @@ const formAction = `${FORMSPARK.url}/${FORMSPARK.formId}`;
         </div>
 
         <div class="w-full lg:w-1/2 px-4">
-          <div class="p-1 border border-glass-border rounded-2xl overflow-hidden">
+          <div class="rounded-2xl overflow-hidden">
             <iframe
               src={CONTACT.mapsEmbed}
               width="100%"
@@ -101,91 +103,7 @@ const formAction = `${FORMSPARK.url}/${FORMSPARK.formId}`;
         </div>
 
         <div class="w-full lg:w-1/2 px-4">
-          <form
-            action={formAction}
-            method="POST"
-            x-data="{ sending: false, sent: false, error: false }"
-            x-on:submit.prevent="
-            sending = true;
-            fetch($el.action, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-            },
-            body: JSON.stringify(Object.fromEntries(new FormData($el)))
-            })
-            .then(r => { sent = r.ok; error = !r.ok; })
-            .catch(() => { error = true; })
-            .finally(() => { sending = false; })
-            "
-          >
-
-            <input type="hidden" name="_redirect" value="false" />
-            <div style="display:none" aria-hidden="true">
-              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
-            </div>
-
-            <label for="name" class="sr-only">Imię</label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              placeholder="Imię"
-              required
-              class="form-input mb-4"
-            />
-
-            <label for="business" class="sr-only">Firma</label>
-            <input
-              id="business"
-              type="text"
-              name="business"
-              placeholder="Firma (opcjonalnie)"
-              class="form-input mb-4"
-            />
-
-            <label for="email" class="sr-only">E-mail</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              placeholder="E-mail"
-              required
-              class="form-input mb-4"
-            />
-
-            <label for="message" class="sr-only">Wiadomość</label>
-            <textarea
-              id="message"
-              name="message"
-              placeholder="Wiadomość"
-              required
-              rows="6"
-              class="form-input mb-4"
-            ></textarea>
-
-            <div class="cf-turnstile mb-6" data-sitekey={TURNSTILE.siteKey}></div>
-
-            <div x-show="sent" class="mb-4 p-4 rounded-lg border border-glass-accent-cool/30 bg-glass-accent-cool/10 text-glass-accent-cool text-sm">
-              Dziękujemy. Wiadomość została poprawnie wysłana! Odpowiemy w ciągu 24h w dni robocze.
-            </div>
-            <div x-show="error" class="mb-4 p-4 rounded-lg border border-glass-accent-fire/30 bg-glass-accent-fire/10 text-glass-accent-fire text-sm">
-              Coś poszło nie tak. Spróbuj ponownie lub napisz bezpośrednio na {CONTACT.email}.
-            </div>
-
-            <button
-              type="submit"
-              class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-glass-black bg-glass-white hover:bg-glass-white/90 rounded-full transition-all duration-200 hover:shadow-lg group disabled:opacity-50"
-              x-bind:disabled="sending || sent"
-            >
-              <span x-text="sending ? 'Wysyłanie…' : 'Wyślij wiadomość'">Wyślij wiadomość</span>
-              <svg class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-              </svg>
-            </button>
-
-          </form>
+          <ContactForm />
         </div>
 
       </div>
@@ -193,5 +111,3 @@ const formAction = `${FORMSPARK.url}/${FORMSPARK.formId}`;
   </section>
 
 </BaseLayout>
-
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>

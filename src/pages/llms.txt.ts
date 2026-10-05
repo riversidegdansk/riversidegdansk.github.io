@@ -4,75 +4,47 @@
 
 import type { APIRoute } from 'astro';
 import { SITE, CONTACT, SOCIAL } from '../config/site';
-import { getCollection } from 'astro:content';
+import { getLivePosts } from '../utils/posts';
 
 export const GET: APIRoute = async () => {
-  const faqEntries   = await getCollection('faq');
-
-  const sortedFaq = faqEntries.sort((a, b) => a.data.order - b.data.order);
+  const posts = (await getLivePosts())
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
   const content = `# ${SITE.fullName}
 
-> Pracownia szkła artystycznego w Warszawie. Maciej Rafalski — hutnik i artysta szkła z ponad 20-letnim doświadczeniem. Realizujemy projekty na zamówienie dla firm, hoteli, architektów i osób prywatnych. Techniki: hutnictwo szkła (szkło dmuchane), fusing.
+> Restauracja nad Motławą w Gdańsku (${CONTACT.address}, ${CONTACT.city}), działająca od 2019 roku. Kuchnię prowadzi Chef Michał Rybak: dania przygotowywane od podstaw — wolno pieczona golonka, żeberka BBQ, ręcznie siekany tatar, ryby, makarony, pizza i smaki inspirowane kuchnią azjatycką. Jako pierwszy lokal na Pomorzu serwujemy niepasteryzowanego Pilsnera Urquell prosto z tanka. Organizujemy imprezy prywatne i firmowe: sala VIP do 50 osób lub cały lokal na wyłączność dla około 150 gości.
 
-## Informacje ogólne
+## Informacje praktyczne
 
-- Lokalizacja: ${CONTACT.address}, ${CONTACT.city}
-- Telefon: ${CONTACT.phone}
-- Email: ${CONTACT.email}
-- Godziny pracy: ${CONTACT.hours}
-- Strona WWW: ${SITE.finalUrl}
+- Adres: ${CONTACT.address}, ${CONTACT.city} — nad Motławą, tuż za Zieloną Bramą i Mostem Zielonym
+- Godziny otwarcia: ${CONTACT.hours.join('; ')}
+- Rezerwacja stolików: online (${CONTACT.reservationUrl}, maksymalnie 10 miejsc) lub telefonicznie ${CONTACT.phoneWork}
+- Imprezy i eventy: ${CONTACT.phoneEvents}
+- E-mail: ${CONTACT.email}
 - Google Maps: ${CONTACT.mapsUrl}
 
-## Oferta — dla firm i instytucji
+## Główne strony
 
-Realizujemy szklane obiekty dla przestrzeni komercyjnych:
-- Instalacje świetlne i dekoracyjne do lobby, recepcji, restauracji
-- Elementy architektoniczne według dokumentacji projektowej (panele, ścianki, detale fasad)
-- Nagrody, statuetki, obiekty okolicznościowe z logo firmy
-- Serie upominków biznesowych (min. 5–10 szt.)
-- Współpraca z architektami i projektantami wnętrz
+- [Menu](${SITE.finalUrl}/menu/): Pełna karta — przekąski, zupy, sałatki, makarony, pizza, dania główne, specjalności i desery, z cenami
+- [Rezerwacje](${SITE.finalUrl}/reservations/): Rezerwacja stolika online lub telefonicznie
+- [Imprezy i wydarzenia](${SITE.finalUrl}/events/): Sala VIP do 50 osób, cały lokal do 150 osób — imprezy prywatne i firmowe
+- [Zapytanie o imprezę](${SITE.finalUrl}/events-booking/): Formularz wstępnej rezerwacji wydarzenia
+- [O nas](${SITE.finalUrl}/about/): Historia Riverside, Chef Michał Rybak, Pilsner Urquell z tanka
+- [Galeria](${SITE.finalUrl}/gallery/): Zdjęcia lokalu, tarasu, wnętrz, baru z tankiem i dań
+- [FAQ](${SITE.finalUrl}/faq/): Rezerwacje, godziny otwarcia, menu, piwo z tanka, imprezy, dzieci i psy
+- [Kontakt](${SITE.finalUrl}/contact/): Adres, telefony, mapa dojazdu
 
-Proces współpracy: brief → wycena (3–5 dni roboczych) → umowa o dzieło → realizacja → dostawa z dokumentacją techniczną. Wystawiamy faktury VAT.
+## Blog „Riverside od Kuchni”
 
-## Oferta — dla osób prywatnych
+${posts.map(p => `- [${p.data.title}](${SITE.finalUrl}/posts/${p.id}/): ${p.data.excerpt}`).join('\n')}
 
-- Formy dekoracyjne: rzeźby, misy, dekoracje ścienne
-- Szkło użytkowe: wazony, naczynia, oświetlenie
-- Personalizowane upominki i prezenty
-- Obiekty na zamówienie według pomysłu klienta
+## Optional
 
-## FAQ
-
-- [Najczęściej zadawane pytania](.../faq/): Informacje o zamówieniach i rezerwacjach
-
-## Klienci (wybrani)
-
-OBI, Wasalaa, Le Collet, AD 100, MedEstelle Institute, LUX MED, Miasto Warszawa, Castorama, TVN Style, Radio Kolor, Polsat, PGE Narodowy
-
-## Technologia i materiały
-
-Technika hutnicza (szkło dmuchane): formowanie ręczne z rozgrzanej masy szklanej w temperaturze 1200°C. Każdy obiekt powstaje ręcznie — nie ma dwóch identycznych egzemplarzy.
-
-Fusing: stapianie kawałków szkła w piecu hutniczym. Umożliwia tworzenie dużych form, paneli i obiektów architektonicznych.
-
-Surowce: szkło recyklingowe (stłuczka z odpadów przemysłowych).
-
-## Social media
-
-- Facebook: ${SOCIAL.facebook}
-- Instagram: ${SOCIAL.instagram}
-- TikTok: ${SOCIAL.tiktok}
-
-## Mapa strony
-
-- ${SITE.finalUrl}/ — Strona główna
-- ${SITE.finalUrl}/about/ — Historia Macieja Rafalskiego
-- ${SITE.finalUrl}/portfolio/ — Galeria realizacji (dla domu / dla firm)
-- ${SITE.finalUrl}/services/ — Oferta dla firm i osób prywatnych
-- ${SITE.finalUrl}/faq/ — Najczęstsze pytania
-- ${SITE.finalUrl}/contact/ — Kontakt i formularz
-- ${SITE.finalUrl}/posts/ — Blog
+- [Pełna treść dla modeli językowych](${SITE.finalUrl}/llms-full.txt): Menu z cenami, oferta imprez, FAQ i wszystkie wpisy w jednym pliku
+- [Facebook](${SOCIAL.facebook})
+- [Instagram](${SOCIAL.instagram})
+- [TikTok](${SOCIAL.tiktok})
+- [YouTube](${SOCIAL.youtube})
 `;
 
   return new Response(content, {

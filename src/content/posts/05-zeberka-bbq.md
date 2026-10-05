@@ -1,9 +1,13 @@
 ---
-title: 'Żeberka BBQ - czas, ogień i autorski sos'
+title: 'Żeberka BBQ — czas, ogień i autorski sos'
 author: 'Riverside Dym i Ogień'
 date: 2026-07-29
 excerpt: 'Miękkie, soczyste mięso, powolne przygotowanie i wyrazisty sos BBQ. Pokazujemy, jak powstają żeberka w Riverside.'
-cover: 'riverside-dym-ogien-gdansk-galeria-dania-fot-3'
+seoTitle: 'Żeberka BBQ z autorskim sosem'
+seoDescription: 'Miękkie, wolno pieczone żeberka BBQ z autorskim sosem w Riverside w Gdańsku. Pokazujemy, jak czas i krótka finalizacja na ogniu budują smak.'
+cover:
+  public_id: 'riverside-dym-ogien-gdansk-galeria-dania-fot-3'
+  alt: 'Żeberka BBQ z autorskim sosem, ziemniakami i sałatką w Riverside'
 published: true
 ---
 
@@ -14,14 +18,14 @@ Powinno pozostać soczyste, zachować swój charakter, a jednocześnie łatwo od
 Do tego potrzebny jest przede wszystkim **czas**.
 
 <!-- MEDIA:image
-public_id: "DO_UZUPELNIENIA_zeberka-bbq"
-alt: "Żeberka BBQ w Riverside Dym i Ogień"
+public_id: "riverside-dym-ogien-gdansk-galeria-dania-fot-15"
+alt: "Żeberka BBQ z sosem, ziemniakami i sałatką podane w sali Riverside"
 caption: ""
 -->
 
 ## Najpierw mięso
 
-Żeberka w Riverside przygotowujemy powoli. Temperatura wykonuje większość pracy, ale musi dostać na to odpowiednio dużo czasu.
+W kuchni [Chefa Michała Rybaka](/posts/06-chef-michal-rybak/) żeberka przygotowujemy powoli. [Temperatura wykonuje większość pracy](/posts/03-dym-i-ogien-kuchnia/), ale musi dostać na to odpowiednio dużo czasu.
 
 Właśnie wtedy mięso stopniowo mięknie, zachowując soki i nabierając właściwej struktury.
 
@@ -38,9 +42,9 @@ Nie powinien przykrywać mięsa warstwą słodyczy. Ma uzupełniać jego smak �
 Dlatego moment, w którym sos trafia na żeberka, również ma znaczenie.
 
 <!-- MEDIA:video
-public_id: "DO_UZUPELNIENIA_michal-rybak-zeberka-bbq"
-poster: "DO_UZUPELNIENIA_michal-rybak-zeberka"
-caption: "Chef Michał Rybak finalizuje żeberka BBQ"
+public_id: "riverside-dym-ogien-gdansk-menu-zeberka"
+poster: "riverside-dym-ogien-gdansk-galeria-chef-fot-4"
+caption: ""
 -->
 
 ## Ostatnie minuty
@@ -49,6 +53,8 @@ Po długim i spokojnym przygotowaniu przychodzi krótki etap, podczas którego w
 
 Sos zaczyna pracować z powierzchnią mięsa, pojawia się kolor i charakterystyczny aromat.
 
-To połączenie dwóch przeciwieństw — **długiego przygotowania i krótkiej, intensywnej finalizacji** — daje efekt, którego szukamy.
+To połączenie dwóch przeciwieństw — **długiego przygotowania i krótkiej, intensywnej finalizacji** — daje efekt, którego szukamy. Tę samą zasadę stosujemy [przy golonce, która przygotowuje się 12 godzin](/posts/04-golonka-12-godzin/).
 
 A później pozostaje już tylko wydać żeberka na stół.
+
+Żeberka BBQ znajdziesz w [menu Riverside](/menu/) — [zarezerwuj stolik](/reservations/) i spróbuj.

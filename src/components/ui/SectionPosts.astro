@@ -1,0 +1,73 @@
+---
+import { getLivePosts } from '../../utils/posts';
+import CloudinaryImage from './CloudinaryImage.astro';
+import { withBase } from '../../config/site';
+
+interface Props {
+  title?:    string;
+  limit?:    number;
+  ctaLabel?: string;
+  ctaHref?:  string;
+}
+
+const {
+  title    = 'Riverside od Kuchni',
+  limit    = 3,
+  ctaLabel = 'Zobacz wszystkie wpisy',
+  ctaHref  = '/posts',
+} = Astro.props;
+
+// Najnowsze opublikowane wpisy — miniatura + tytuł.
+const entries = await getLivePosts();
+const posts = entries
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, limit)
+  .map((post) => ({
+    id:     post.id,
+    title:  post.data.title,
+    href:   withBase(`/posts/${post.id}`),
+    cover:  post.data.cover.public_id,
+    alt:    post.data.cover.alt || post.data.title,
+  }));
+---
+
+{posts.length > 0 && (
+  <section id="riverside-od-kuchni" class="section-py">
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div class="flex flex-wrap items-end justify-between gap-6 mb-12 md:mb-16">
+        <h2 class="section-heading mb-0!">{title}</h2>
+        <a
+          href={withBase(ctaHref)}
+          class="hidden md:inline-flex group py-4 px-7 font-medium text-glass-white hover:text-glass-black leading-none items-center border border-glass-border hover:bg-glass-accent-fire hover:border-glass-accent-fire rounded-full transition-colors duration-150"
+        >
+          <span class="mr-2.5">{ctaLabel}</span>
+          <span class="group-hover:translate-x-1 transform transition duration-150" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="grid gap-10 md:grid-cols-3 md:gap-8 xl:gap-10">
+        {posts.map((post) => (
+          <a href={post.href} class="group block">
+            <div class="relative mb-6 rounded-3xl overflow-hidden ring-1 ring-glass-border">
+              <div class="absolute inset-0 bg-gradient-to-t from-glass-accent-amber/50 to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <CloudinaryImage publicId={post.cover} alt={post.alt} preset="card" class="block w-full aspect-[4/3] object-cover group-hover:scale-105 transition duration-500" />
+            </div>
+            <h3 class="text-2xl tracking-tight text-glass-white group-hover:text-glass-accent-amber transition duration-200">{post.title}</h3>
+          </a>
+        ))}
+      </div>
+
+      <div class="mt-12 text-center md:hidden">
+        <a
+          href={withBase(ctaHref)}
+          class="group inline-flex py-5 px-8 font-medium text-glass-white hover:text-glass-black leading-none items-center justify-center border border-glass-border hover:bg-glass-accent-fire hover:border-glass-accent-fire rounded-full transition-colors duration-150"
+        >
+          <span class="mr-2.5">{ctaLabel}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+)}

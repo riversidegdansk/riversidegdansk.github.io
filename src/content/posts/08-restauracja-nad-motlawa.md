@@ -1,9 +1,13 @@
 ---
-title: 'Restauracja nad Motławą - Gdańsk widziany z Riverside'
+title: 'Restauracja nad Motławą — Gdańsk widziany z Riverside'
 author: 'Riverside Dym i Ogień'
 date: 2026-05-10
 excerpt: 'Kilka kroków od Długiego Targu, tuż nad Motławą. Zobacz, dlaczego lokalizacja Riverside jest częścią doświadczenia wizyty w naszej restauracji.'
-cover: 'riverside-dym-ogien-gdansk-galeria-wnetrza-fot-7'
+seoTitle: 'Restauracja z widokiem na Motławę'
+seoDescription: 'Taras i stoliki z widokiem na Motławę, Żuraw i Zieloną Bramę, kilka kroków od Długiego Targu. Zobacz, dlaczego warto przyjść do Riverside.'
+cover:
+  public_id: 'riverside-dym-ogien-gdansk-galeria-otoczenie-fot-3'
+  alt: 'Taras restauracji Riverside nad Motławą z widokiem na Zieloną Bramę'
 published: true
 ---
 
@@ -12,14 +16,14 @@ Można przyjść do restauracji na konkretne danie. Można też wybrać ją dlat
 W Riverside te dwie rzeczy spotykają się **nad Motławą**.
 
 <!-- MEDIA:image
-public_id: "DO_UZUPELNIENIA_riverside-taras-motlawa"
-alt: "Taras Riverside nad Motławą w Gdańsku"
+public_id: "riverside-dym-ogien-gdansk-klimat-riverside"
+alt: "Goście przy stole z pizzą w sali Riverside z widokiem na kamienice nad Motławą"
 caption: ""
 -->
 
 ## Kilka kroków od Długiego Targu
 
-Droga jest prosta: Długi Targ, Zielona Brama, Most Zielony i po chwili jesteście nad wodą.
+Droga jest prosta: [Długi Targ, Zielona Brama, Most Zielony](/posts/10-wyspa-spichrzow-i-motlawa/) i po chwili jesteście nad wodą.
 
 Riverside znajduje się tuż za mostem, w miejscu, z którego Gdańska właściwie nie trzeba już szukać.
 
@@ -31,19 +35,14 @@ Kamienice, Motława, przepływające statki i jeden z najbardziej rozpoznawalnyc
 
 W ciągu dnia okolica żyje ruchem miasta. Wieczorem światło odbija się w wodzie, a nabrzeże nabiera zupełnie innego charakteru.
 
-Latem naturalnym wyborem jest taras.
+Latem naturalnym wyborem jest taras — [zarezerwuj stolik](/reservations/), jeśli chcesz usiąść nad samą wodą.
 
 Ale widok nie znika wraz z końcem sezonu. Stoliki przy oknach pozwalają obserwować Motławę również wtedy, kiedy pogoda zdecydowanie bardziej zachęca do pozostania w środku.
 
-<!-- MEDIA:video
-public_id: "DO_UZUPELNIENIA_motlawa-dzien-wieczor"
-poster: "DO_UZUPELNIENIA_motlawa-wieczor"
-caption: "Widok na Motławę od popołudnia do wieczora"
--->
 
 <!-- MEDIA:image
-public_id: "DO_UZUPELNIENIA_riverside-widok-z-okna"
-alt: "Widok na Motławę z wnętrza Riverside"
+public_id: "riverside-dym-ogien-gdansk-galeria-otoczenie-fot-4"
+alt: "Nakryte stoliki przy oknie Riverside z widokiem na kamienice Długiego Pobrzeża"
 caption: ""
 -->
 
@@ -51,10 +50,12 @@ caption: ""
 
 Lokalizacja nad Motławą daje nam ogromny przywilej.
 
-Jednocześnie od początku zakładaliśmy, że piękny adres nie może zastępować dobrej kuchni.
+Jednocześnie [od początku](/posts/02-riverside-od-2019-roku/) zakładaliśmy, że piękny adres nie może zastępować dobrej kuchni.
 
-Dlatego w Riverside możecie zamówić wolno przygotowywane mięso, rybę, pizzę, tatar, coś inspirowanego kuchniami świata albo po prostu Pilsnera prosto z tanka.
+Dlatego w Riverside możecie zamówić [wolno przygotowywane mięso](/posts/04-golonka-12-godzin/), rybę, pizzę, tatar, [coś inspirowanego kuchniami świata](/posts/07-od-tatara-po-smaki-azji/) albo po prostu [Pilsnera prosto z tanka](/posts/01-piwo-z-tanka-jak-to-dziala/).
 
 A Motława?
 
 Jest zawsze obok.
+
+Planujesz [spotkanie firmowe nad Motławą](/posts/09-spotkanie-firmowe-gdansk/)? Sprawdź, jak je u nas zorganizować.

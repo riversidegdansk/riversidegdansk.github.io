@@ -6,32 +6,45 @@ const parseHoursValue = (value: string | undefined): string => {
   return match ? `${match[1]}-${match[2]}` : '';
 };
 
-const hoursSchema = [
-  `Mo ${parseHoursValue(settingsData.hours_monday)}`,
-  `Tu ${parseHoursValue(settingsData.hours_tuesday)}`,
-  `We ${parseHoursValue(settingsData.hours_wednesday)}`,
-  `Th ${parseHoursValue(settingsData.hours_thursday)}`,
-  `Fr ${parseHoursValue(settingsData.hours_friday)}`,
-  `Sa ${parseHoursValue(settingsData.hours_saturday)}`,
-  `Su ${parseHoursValue(settingsData.hours_sunday)}`,
-].filter((slot) => slot.includes('-')).join('; ');
+// Godziny w formacie schema.org (OpeningHoursSpecification) — dla danych strukturalnych restauracji.
+const DAYS = [
+  ['Monday',    settingsData.hours_monday],
+  ['Tuesday',   settingsData.hours_tuesday],
+  ['Wednesday', settingsData.hours_wednesday],
+  ['Thursday',  settingsData.hours_thursday],
+  ['Friday',    settingsData.hours_friday],
+  ['Saturday',  settingsData.hours_saturday],
+  ['Sunday',    settingsData.hours_sunday],
+] as const;
+
+const openingHoursSpecification = DAYS.flatMap(([day, value]) => {
+  const [opens, closes] = parseHoursValue(value).split('-');
+  return opens && closes
+    ? [{ '@type': 'OpeningHoursSpecification', dayOfWeek: `https://schema.org/${day}`, opens, closes }]
+    : [];
+});
+
+// „80-748 Gdańsk” → kod pocztowy i miejscowość osobno (schema.org PostalAddress).
+const cityMatch = settingsData.city.match(/^(\d{2}-\d{3})\s+(.+)$/);
 
 export const SITE = {
   name: 'Riverside. Dym i Ogień',
   fullName: 'Restauracja Riverside. Dym i Ogień',
-  description: 'Riverside. Dym i Ogień — restauracja nad Motławą w Gdańsku. Kuchnia na żywym ogniu, piwo Pilsner Urquell prosto z tanka i program lojalnościowy Riverside Club.',
+  alternateName: ['Riverside Dym i Ogień', 'Riverside Gdańsk'],
+  description: 'Riverside. Dym i Ogień — restauracja nad Motławą w Gdańsku. Kuchnia na żywym ogniu, piwo Pilsner Urquell prosto z tanka.',
   url: 'https://www.riversidegdansk.pl',
   finalUrl: 'https://www.riversidegdansk.pl',
-  lang: 'pl',
   locale: 'pl_PL',
   themeColor: '#C95A1A',
   bgColor: '#111315',
-  ogImage: 'https://res.cloudinary.com/riverside/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/home/riverside-og-default',
+  ogImage: 'https://res.cloudinary.com/riverside/image/upload/f_auto,q_auto,w_1200,h_630,c_fill/riverside-og-default',
 } as const;
 
 export const CONTACT = {
   address:      settingsData.address,
   city:         settingsData.city,
+  postalCode:   cityMatch?.[1] ?? '',
+  locality:     cityMatch?.[2] ?? settingsData.city,
   phone:        settingsData.phone,
   phoneWork:    settingsData.phone_bot,
   phoneEvents:    settingsData.phone_manager,
@@ -52,9 +65,7 @@ export const CONTACT = {
   ],
   region: 'pomorskie',
   country: 'PL',
-  nip: '',
-  regon: '',
-  hoursSchema,
+  openingHoursSpecification,
   lat: 54.34801648908613,
   lng: 18.656882571164516,
   mapsUrl: 'https://maps.app.goo.gl/8UKffkh9tswHGx647',
@@ -89,9 +100,9 @@ export const NAV = [
   { label: 'O nas',                href: '/about' },
   { label: 'Menu',                 href: '/menu' },
   { label: 'Imprezy',              href: '/events' },
-  { label: 'Poznaj Riverside',     href: '/gallery' },
-  { label: 'Riverside Club',       href: '/loyalty' },
+  { label: 'Galeria',              href: '/gallery' },
   { label: 'Riverside od Kuchni',  href: '/posts' },
+  { label: 'FAQ',                  href: '/faq' },
   { label: 'Kontakt',              href: '/contact' },
 ] as const;
 
@@ -105,26 +116,15 @@ export const FOOTER_NAV = [
   { label: 'O nas',                 href: '/about' },
   { label: 'Imprezy',               href: '/events' },
   { label: 'Rezerwacje',            href: NAV_CTA.href },
-  { label: 'Poznaj Riverside',      href: '/gallery' },
+  { label: 'Galeria',               href: '/gallery' },
   { label: 'Riverside od Kuchni',   href: '/posts' },
+  { label: 'FAQ',                   href: '/faq' },
   { label: 'Kontakt',               href: '/contact' },
 ] as const;
 
 export const FOOTER_LEGAL = [
-  { label: 'Regulaminy',            href: '/terms' },
   { label: 'Polityka prywatności',  href: '/privacy' },
 ] as const;
-
-export const LOYALTY_CTA = {
-  heading: 'Zbieraj znaczki za każdą wizytę i odbieraj wyjątkowe nagrody',
-  label:   'Dołącz do Riverside Club',
-  href:    '/loyalty',
-} as const;
-
-export const LOYALTY_FORMS = {
-  priv: 'https://56a512f6.sibforms.com/serve/MUIFAJgOxlsp8M7DKKZOnEhxGaOYW5GCxEkhSwp2OW9Ri51zQsM2j1ErwvlBLF6zvlInahxXa49bEfJwc43ReFVMteK0aiFB7DkPOZMSBGwcCANJ-FiJGHuYUNgt40BiA_pLpXKbK3PCv9JDlgB99csuQ1DPp8aLYTsc44ztYUnOlaK6AblxVJ7hM680tRWr_p8mf_e6YAnmznpr',
-  biz:  'https://56a512f6.sibforms.com/serve/MUIFAPv35Ydri1uA5_ckWByd7hV542lJBsD-rYSWQqK3SqsVqevGSc5NPI-WjvnOp7EYyFL7Jz5M2IvAnvXf8aApLbJbpfiGKyxuOwqchqlGRu-MvcmvZ2pyn4FO04Qe6xLPUtoYikiSPY-1qMVGO2UYlgzbOm3rbikEwOx-cJ-h05RYllSj2pC60PSDK9ny-2PMf-8M8KbObsVs',
-} as const;
 
 export const BUSINESS = {
   type:               ['LocalBusiness', 'Restaurant'] as const,
@@ -136,6 +136,26 @@ export const BUSINESS = {
 
 export const SAME_AS = Object.values(SOCIAL).filter(Boolean);
 
+// Szef kuchni — osoba w danych strukturalnych (autor przepisów, E-E-A-T).
+export const CHEF = {
+  name:     'Michał Rybak',
+  jobTitle: 'Szef kuchni',
+  image:    'riverside-dym-ogien-gdansk-chef-michal-rybak',
+  url:      '/posts/06-chef-michal-rybak/',
+  sameAs:   ['https://www.tiktok.com/@rybalikeachef'],
+} as const;
+
+// Kuchnie i zdjęcia restauracji do danych strukturalnych (Restaurant).
+export const RESTAURANT = {
+  servesCuisine: ['Polska', 'Europejska', 'Włoska', 'Grill', 'Azjatycka'],
+  images: [
+    'riverside-dym-ogien-gdansk-galeria-otoczenie-fot-2',
+    'riverside-dym-ogien-gdansk-galeria-wnetrza-fot-5',
+    'riverside-dym-ogien-gdansk-galeria-tank-fot-12',
+    'riverside-dym-ogien-gdansk-sekcja-menu-golonka',
+  ],
+} as const;
+
 export const MEDIA = {
   logo: {
     src:       '/images/logo-riverside-biale-transparent-czerwone-plomienie.webp',
@@ -144,6 +164,10 @@ export const MEDIA = {
     height:    150,
     navWidth:  150,
     navHeight: 150,
+    // Animowane logo w nagłówku (test). true = SVG z animacją, false = obecne logo .webp.
+    // Plik SVG wrzuć do public/images/ pod nazwą z animatedSrc.
+    useAnimated: true,
+    animatedSrc: '/images/logo-riverside-biale-transparent-czerwone-plomienie-animated.svg',
   },
   favicon: {
   ico:            '/favicons/favicon.ico',
@@ -158,10 +182,16 @@ export const MEDIA = {
 
 export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+// Ścieżki stron zawsze z końcowym „/” — tak jak w canonical i sitemapie
+// (GitHub Pages przekierowuje /menu na /menu/, co kosztuje dodatkowe przejście).
 export function withBase(path: string): string {
-  return `${BASE}${path}`;
+  const cut = path.search(/[?#]/);
+  const pathname = cut === -1 ? path : path.slice(0, cut);
+  const suffix = cut === -1 ? '' : path.slice(cut);
+  const isPage = pathname !== '' && !pathname.endsWith('/') && !/\.[a-z0-9]+$/i.test(pathname);
+  return `${BASE}${isPage ? `${pathname}/` : pathname}${suffix}`;
 }
 
 export const ANALYTICS = {
-  gtmId: '',
+  gtmId: 'GTM-5TFQJC2',
 } as const;

@@ -1,5 +1,7 @@
 ---
-import { cloudinaryUrl, cloudinarySrcset, cloudinaryVideoUrl, cloudinaryVideoPoster } from '../utils/cloudinary';
+import { cloudinaryVideoUrl, cloudinaryVideoPoster } from '../utils/cloudinary';
+import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
+import { withBase } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionGallery from '../components/ui/SectionGallery.astro';
 import SectionBooking from '../components/ui/SectionBooking.astro';
@@ -27,11 +29,6 @@ const stats = [
   { number: '04', value: '4.6', suffix: ' ★', label: 'To ocena naszego lokalu w Google.' },
 ];
 
-const tankSrc = tankImage ? cloudinaryUrl(tankImage, { width: 900, aspectRatio: '4:3', crop: 'fill' }) : null;
-const tankSrcset = tankImage ? cloudinarySrcset(tankImage, [600, 900, 1200], { aspectRatio: '4:3', crop: 'fill' }) : null;
-
-const chefSrc = chefImage ? cloudinaryUrl(chefImage, { width: 900, aspectRatio: '4:3', crop: 'fill' }) : null;
-const chefSrcset = chefImage ? cloudinarySrcset(chefImage, [600, 900, 1200], { aspectRatio: '4:3', crop: 'fill' }) : null;
 
 // Poster proponowany na 3. sekundzie — oryginalny szablon miał podpowiedź data-frame-time="3" przy każdym wideo.
 const POSTER_OFFSET = 3;
@@ -43,8 +40,8 @@ const actionVideos = [chefVideo1, chefVideo2, chefVideo3].map((video) => ({
 ---
 
 <BaseLayout
-  title="O restauracji"
-  description="Poznaj Riverside. Dym i Ogień — restaurację nad Motławą w Gdańsku od 2019 roku. Kuchnia szefa Michała Rybackiego, Pilsner Urquell prosto z tanka i ludzie, którzy tworzą to miejsce."
+  title="O nas — restauracja od 2019 roku"
+  description="Riverside. Dym i Ogień nad Motławą w Gdańsku od 2019 roku: kuchnia Chefa Michała Rybaka od podstaw, Pilsner Urquell z tanka i swobodna atmosfera."
 >
 
   {/* Intro + statystyki */}
@@ -55,8 +52,8 @@ const actionVideos = [chefVideo1, chefVideo2, chefVideo3].map((video) => ({
           <div class="lg:max-w-md xl:max-w-xl">
             <h1 class="font-heading text-4xl md:text-6xl mb-10 text-glass-white">O restauracji</h1>
             <p class="prose-p">Riverside działa nad Motławą, w samym sercu Gdańska, od 2019 roku. Od początku stawiamy na kuchnię opartą na jakości i przygotowywaniu dań od podstaw, bez kompromisów i półproduktów.</p>
-            <p class="prose-p">Menu tworzone przez naszego Chefa Michała łączy różnorodne inspiracje – od ręcznie siekanego tatara, przez ryby, pizzę, golonkę i żeberka, po smaki inspirowane kuchnią azjatycką. Dopełnieniem jest niepasteryzowany Pilsner Urquell serwowany prosto z tanka.</p>
-            <p class="prose-p">O wyjątkowej atmosferze Riverside decydują jednak przede wszystkim ludzie – zespół, który tworzy to miejsce każdego dnia, i goście, którzy chętnie do nas wracają.</p>
+            <p class="prose-p"><a href={withBase('/menu')}>Menu</a> tworzone przez naszego <a href={withBase('/posts/06-chef-michal-rybak/')}>Chefa Michała</a> łączy różnorodne inspiracje – od ręcznie siekanego tatara, przez ryby, pizzę, <a href={withBase('/posts/04-golonka-12-godzin/')}>golonkę</a> i <a href={withBase('/posts/05-zeberka-bbq/')}>żeberka</a>, po smaki inspirowane kuchnią azjatycką. Dopełnieniem jest niepasteryzowany Pilsner Urquell serwowany prosto z tanka.</p>
+            <p class="prose-p">O wyjątkowej atmosferze Riverside decydują jednak przede wszystkim ludzie – zespół, który tworzy to miejsce każdego dnia, i goście, którzy chętnie do nas wracają. U nas zorganizujesz też <a href={withBase('/events')}>imprezę prywatną lub spotkanie firmowe</a>.</p>
           </div>
         </div>
 
@@ -100,30 +97,17 @@ const actionVideos = [chefVideo1, chefVideo2, chefVideo3].map((video) => ({
         <div class="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
           <div class="max-w-md">
             <h2 class="section-heading lg:max-w-md">Pilsner Urquell prosto z tanka</h2>
-            <p class="prose-p mt-10">W 2019 roku jako pierwszy lokal na Pomorzu zaczęliśmy serwować niepasteryzowanego Pilsnera Urquell prosto z tanka – świeżego, niefiltrowanego i zawsze w idealnej temperaturze.</p>
+            <p class="prose-p mt-10">W 2019 roku jako pierwszy lokal na Pomorzu zaczęliśmy serwować niepasteryzowanego <a href={withBase('/posts/01-piwo-z-tanka-jak-to-dziala/')}>Pilsnera Urquell prosto z tanka</a> – świeżego, niefiltrowanego i zawsze w idealnej temperaturze.</p>
             <p class="prose-p">Bo wierzymy, że dbałość o jakość nie kończy się na kuchni. Dlatego równie dużą wagę przykładamy do tego, co trafia do kufla. Piwo z tanka nie jest u nas atrakcją – jest standardem.</p>
           </div>
         </div>
         <div class="w-full lg:w-1/2 px-4">
           {tankImage ? (
             <div class="relative rounded-3xl overflow-hidden shadow-2xl">
-              <img
-                class="block w-full rounded-3xl"
-                src={tankSrc}
-                srcset={tankSrcset}
-                sizes="(min-width: 1024px) 42vw, 100vw"
-                alt=""
-                aria-hidden="true"
-                loading="lazy"
-                decoding="async"
-              />
+              <CloudinaryImage publicId={tankImage} preset="section" class="block w-full rounded-3xl" />
             </div>
           ) : (
-            <div class="flex aspect-[4/3] items-center justify-center bg-glass-anthracite border border-glass-border rounded-3xl" role="img" aria-label="Zdjęcie wkrótce">
-              <svg class="w-12 h-12 text-glass-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v14H4V5zm0 14 5-6 3 3 4-5 4 4M9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-              </svg>
-            </div>
+            <CloudinaryImage preset="section" placeholderClass="rounded-3xl" />
           )}
         </div>
       </div>
@@ -137,22 +121,10 @@ const actionVideos = [chefVideo1, chefVideo2, chefVideo3].map((video) => ({
         <div class="w-full lg:w-1/2 px-4 mb-12 lg:mb-0">
           {chefImage ? (
             <div class="rounded-3xl overflow-hidden">
-              <img
-                class="block w-full rounded-3xl"
-                src={chefSrc}
-                srcset={chefSrcset}
-                sizes="(min-width: 1024px) 42vw, 100vw"
-                alt="Michał Rybak"
-                loading="lazy"
-                decoding="async"
-              />
+              <CloudinaryImage publicId={chefImage} alt="Michał Rybak" preset="section" class="block w-full rounded-3xl" />
             </div>
           ) : (
-            <div class="flex aspect-[4/3] items-center justify-center bg-glass-anthracite border border-glass-border rounded-3xl" role="img" aria-label="Zdjęcie wkrótce">
-              <svg class="w-12 h-12 text-glass-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v14H4V5zm0 14 5-6 3 3 4-5 4 4M9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-              </svg>
-            </div>
+            <CloudinaryImage preset="section" placeholderClass="rounded-3xl" />
           )}
         </div>
         <div class="w-full lg:w-1/2 px-4">

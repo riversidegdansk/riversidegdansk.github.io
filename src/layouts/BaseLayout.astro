@@ -5,7 +5,8 @@ import Header    from '../components/Header.astro';
 import Footer    from '../components/Footer.astro';
 import GTranslate from '../components/GTranslate.astro';
 import CookieConsent from '../components/CookieConsent.astro';
-import { ANALYTICS } from '../config/site';
+import InstallPrompt from '../components/InstallPrompt.astro';
+import { ANALYTICS, CONTACT } from '../config/site';
 
 const isProd = import.meta.env.PROD;
 
@@ -17,6 +18,8 @@ interface Props {
   canonical?:   string;
   noindex?:     boolean;
   jsonLd?:      object | object[];
+  article?:     { publishedTime: string; modifiedTime?: string };
+  breadcrumbs?: { name: string; path: string }[];
 }
 
 const props = Astro.props;
@@ -24,9 +27,7 @@ const props = Astro.props;
 const pathname = Astro.url.pathname;
 
 const isLegalPage =
-  pathname.endsWith('/terms/') ||
   pathname.endsWith('/privacy/') ||
-  pathname.endsWith('/terms') ||
   pathname.endsWith('/privacy');
 
 const isHome = pathname === '/';
@@ -43,6 +44,16 @@ const isHome = pathname === '/';
 
 {isProd && (
   <script is:inline define:vars={{ gtmId: ANALYTICS.gtmId }}>
+    // Tryb wyświetlania: 'standalone' = zainstalowana aplikacja PWA (także iOS), 'browser' = zwykła przeglądarka.
+    // Trafia do dataLayer przed GTM, więc tag Google może go dołączyć do każdego zdarzenia GA4.
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      display_mode:
+        window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true
+          ? 'standalone'
+          : 'browser',
+    });
+
     let gtmLoaded = false;
 
     function loadGTM(id) {
@@ -73,23 +84,67 @@ const isHome = pathname === '/';
       })(window, document, 'script', 'dataLayer', id);
     }
 
-    function analyticsAccepted(event) {
-      return event.detail?.cookie?.categories?.includes('analytics');
+    // Google Consent Mode v2 — kategorie z okna cookies → sygnały zgody dla tagów w GTM.
+    // Tagi w GTM odpalają się tylko przy wymaganej zgodzie (GA4: analytics_storage, piksele: ad_storage).
+    function gtag() { window.dataLayer.push(arguments); }
+
+    gtag('consent', 'default', {
+      ad_storage:              'denied',
+      ad_user_data:            'denied',
+      ad_personalization:      'denied',
+      analytics_storage:       'denied',
+      functionality_storage:   'denied',
+      personalization_storage: 'denied',
+      security_storage:        'granted',
+      wait_for_update:         500,
+    });
+
+    function consentState(categories) {
+      const has = (c) => categories.includes(c) ? 'granted' : 'denied';
+      return {
+        ad_storage:              has('marketing'),
+        ad_user_data:            has('marketing'),
+        ad_personalization:      has('marketing'),
+        analytics_storage:       has('analytics'),
+        functionality_storage:   has('functional'),
+        personalization_storage: has('functional'),
+      };
     }
 
-    window.addEventListener('cc:onConsent', function(event) {
-      if (analyticsAccepted(event)) {
+    let lastState = null;
+
+    function applyConsent(event) {
+      const categories = event.detail?.cookie?.categories || [];
+      const state = consentState(categories);
+      const revoked = lastState && Object.keys(state).some((k) => lastState[k] === 'granted' && state[k] === 'denied');
+      lastState = state;
+
+      gtag('consent', 'update', state);
+      window.dataLayer.push({ event: 'consent_update', consent_categories: categories.join(',') });
+
+      // Wycofanej zgody nie da się cofnąć w już załadowanych skryptach (np. piksel) — przeładowanie strony.
+      if (revoked && gtmLoaded) {
+        window.location.reload();
+        return;
+      }
+      // GTM tylko gdy jest zgoda na cokolwiek poza niezbędnymi cookies.
+      if (state.analytics_storage === 'granted' || state.ad_storage === 'granted') {
         loadGTM(gtmId);
       }
-    });
-
-    window.addEventListener('cc:onChange', function(event) {
-      if (analyticsAccepted(event)) {
-        loadGTM(gtmId);
-     } else {
-      window.location.reload();
     }
-    });
+
+    window.addEventListener('cc:onConsent', applyConsent);
+    window.addEventListener('cc:onChange', applyConsent);
+  </script>
+)}
+
+{isProd && (
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function() {});
+      });
+    }
   </script>
 )}
   </head>
@@ -123,7 +178,59 @@ const isHome = pathname === '/';
 
     <Footer />
     <CookieConsent />
+    <InstallPrompt />
     <GTranslate />
+
+    {/* Pomiar kliknięć dla GTM: pobranie menu PDF, przyciski rezerwacji i telefony.
+        Jeden nasłuch na całej stronie — obejmuje też linki w treści postów i FAQ.
+        Zdarzenia trafiają do dataLayer; GTM wysyła je dalej tylko po zgodzie na cookies analityczne. */}
+    <script is:inline define:vars={{
+      phones: {
+        [CONTACT.phoneWorkHref]:   'rezerwacje',
+        [CONTACT.phoneEventsHref]: 'imprezy',
+        [CONTACT.phoneHref]:       'glowny',
+      },
+      reservationHost: new URL(CONTACT.reservationUrl).host,
+    }}>
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('a[href]');
+        if (!a) return;
+
+        var href = a.getAttribute('href');
+        var url;
+        try { url = new URL(a.href, location.href); } catch (err) { return; }
+
+        var location_ =
+          a.closest('#mobile-menu-panel') ? 'menu_mobilne' :
+          a.closest('header')             ? 'naglowek' :
+          a.closest('footer')             ? 'stopka' :
+          (a.closest('section[id]') && a.closest('section[id]').id) || 'tresc';
+
+        var base = {
+          link_text:      (a.textContent || a.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 100),
+          link_url:       a.href,
+          click_location: location_,
+          page_path:      location.pathname,
+        };
+
+        var data = null;
+        if (href.indexOf('tel:') === 0) {
+          var tel = 'tel:' + href.slice(4).replace(/\s/g, '');
+          data = { event: 'phone_click', phone_number: href.slice(4).trim(), phone_type: phones[tel] || 'inny' };
+        } else if (/\.pdf$/i.test(url.pathname) && url.pathname.indexOf('/uploads/menu') === 0) {
+          data = { event: 'menu_download', file_name: url.pathname.split('/').pop() };
+        } else if (url.host === reservationHost) {
+          data = { event: 'reservation_click', reservation_type: 'online' };
+        } else if (url.host === location.host && url.pathname.replace(/\/?$/, '/') === '/reservations/') {
+          data = { event: 'reservation_click', reservation_type: 'przejscie_do_rezerwacji' };
+        }
+
+        if (data) {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push(Object.assign(data, base));
+        }
+      });
+    </script>
 
   </body>
 </html>

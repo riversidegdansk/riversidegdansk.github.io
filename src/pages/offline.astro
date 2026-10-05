@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT } from '../config/site';
+---
+
+<BaseLayout
+  title="Brak połączenia"
+  description="Jesteś offline. Sprawdź połączenie z internetem."
+  noindex={true}
+>
+
+  <section class="section-py min-h-[70vh] flex items-center">
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+
+        <p class="mb-6 text-sm font-medium tracking-widest uppercase text-glass-muted">
+          Tryb offline
+        </p>
+
+        <h1 class="mb-12 font-heading font-medium leading-tight">
+          <span class="block text-4xl sm:text-6xl lg:text-8xl text-gradient border-b border-glass-border pb-4 mb-4">
+            Brak
+          </span>
+          <span class="block text-4xl sm:text-6xl lg:text-8xl text-gradient border-b border-glass-border pb-4">
+            połączenia.
+          </span>
+        </h1>
+
+        <p class="prose-p mb-6">
+          Ta strona nie jest jeszcze zapisana na Twoim urządzeniu. Sprawdź połączenie z internetem i spróbuj ponownie.
+        </p>
+        <p class="prose-p mb-12">
+          Chcesz zarezerwować stolik? Zadzwoń: <a href={CONTACT.phoneWorkHref} class="underline">{CONTACT.phoneWork}</a>
+        </p>
+
+        <button
+          type="button"
+          onclick="location.reload()"
+          class="inline-flex items-center justify-center px-6 py-3 text-sm font-semibold text-glass-black bg-glass-white hover:bg-glass-white/90 rounded-full transition-all duration-200 hover:shadow-lg"
+        >
+          Spróbuj ponownie
+        </button>
+
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

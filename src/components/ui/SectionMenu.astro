@@ -1,12 +1,13 @@
 ---
-import { cloudinaryUrl, cloudinarySrcset } from '../../utils/cloudinary';
+import CloudinaryImage from './CloudinaryImage.astro';
+// Treść sekcji edytowana w CMS: Strona główna → Sekcja „Tego musisz spróbować”.
+import homeMenu from '../../data/home-menu.json';
 
 interface Dish {
   title: string;
   description: string;
   image?: string;
   imageAlt?: string;
-  reverse?: boolean;
 }
 
 interface Props {
@@ -15,27 +16,8 @@ interface Props {
 }
 
 const {
-  title = 'Tego musisz spróbować',
-  dishes = [
-    {
-      image: 'riverside-dym-ogien-gdansk-sekcja-menu-golonka',
-      title: 'Wolno gotowana golonka',
-      description: 'Golonka pieczona 12 godzin – miękka, soczysta, rozpada się przy pierwszym ruchu.',
-      reverse: false,
-    },
-    {
-      image: 'riverside-dym-ogien-gdansk-sekcja-menu-zeberka',
-      title: 'Żeberka pieczone BBQ',
-      description: 'Żeberka BBQ – wolno pieczone, w autorskim sosie, dokładnie takie, jakie mają być.',
-      reverse: true,
-    },
-    {
-      image: 'riverside-dym-ogien-gdansk-sekcja-menu-burger',
-      title: 'Cheesy Bacon Burger',
-      description: 'Soczyste, delikatne mięso z wyczuwalną nutą dymu, autorskie sosy i składniki. Każdy kęs to konkretny smak.',
-      reverse: false,
-    },
-  ],
+  title = homeMenu.title,
+  dishes = homeMenu.dishes as Dish[],
 } = Astro.props;
 ---
 
@@ -46,9 +28,9 @@ const {
     </h2>
 
     <div class="space-y-6">
-      {dishes.map(({ title: dishTitle, description, image, imageAlt = '', reverse = false }) => {
-        const photoSrc = image ? cloudinaryUrl(image, { width: 700, aspectRatio: '4:3', crop: 'fill' }) : null;
-        const photoSrcset = image ? cloudinarySrcset(image, [500, 700, 900], { aspectRatio: '4:3', crop: 'fill' }) : null;
+      {dishes.map(({ title: dishTitle, description, image, imageAlt = '' }, index) => {
+        // Co drugie danie ze zdjęciem po lewej stronie.
+        const reverse = index % 2 === 1;
 
         return (
           <div class="pt-20 pb-10 lg:pt-10 px-10 max-w-xl lg:max-w-none mx-auto border border-glass-border rounded-3xl shadow-xl shadow-black/40">
@@ -65,27 +47,10 @@ const {
                 {image ? (
                   <div class="relative rounded-3xl overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-t from-glass-accent-amber/30 via-transparent to-glass-black/20 pointer-events-none"></div>
-                    <img
-                      class="block w-full rounded-3xl"
-                      src={photoSrc}
-                      srcset={photoSrcset}
-                      sizes="(min-width: 1024px) 42vw, 100vw"
-                      alt={imageAlt}
-                      aria-hidden={imageAlt ? undefined : 'true'}
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    <CloudinaryImage publicId={image} alt={imageAlt} preset="section" class="block w-full rounded-3xl" />
                   </div>
                 ) : (
-                  <div
-                    class="flex aspect-[4/3] items-center justify-center bg-glass-anthracite border border-glass-border rounded-3xl"
-                    role="img"
-                    aria-label={imageAlt || 'Zdjęcie wkrótce'}
-                  >
-                    <svg class="w-12 h-12 text-glass-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16v14H4V5zm0 14 5-6 3 3 4-5 4 4M9 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                    </svg>
-                  </div>
+                  <CloudinaryImage alt={imageAlt} preset="section" placeholderClass="rounded-3xl" />
                 )}
               </div>
 

@@ -1,5 +1,5 @@
 /* ============================================
-   Glass Project — Global Styles
+   Riverside — Global Styles
    Tailwind CSS v4
    ============================================ */
 
@@ -90,14 +90,6 @@
     background-clip: text;
   }
 
-  /* Gradient tekstu — akcent amber */
-  .text-gradient-amber {
-    background: linear-gradient(to right, #C95A1A, #E36B22);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
   /* Padding sekcji — spójny rytm pionowy */
   .section-py {
     padding-top: 3rem;
@@ -113,8 +105,7 @@
   }
 
     /* tag h2 unifikacja */
-  .section-heading,
-  .article-content h2 {
+  .section-heading {
   font-size: clamp(1.875rem, 4vw, 3rem);
   font-weight: 500;
   font-family: var(--font-heading);
@@ -125,49 +116,20 @@
   background-clip: text;
   }
 
-  /* Artykuł jednostronicowy (np. loyalty.astro) — odstęp między sekcjami h2 */
-  .article-content h2 {
-    margin-top: 3rem;
-  }
-
   /* Akapit — standard dla treści narracyjnych */
-  .prose-p,
-  .article-content p {
+  .prose-p {
     font-size: 1.125rem;
     line-height: 1.7;
     color: var(--color-glass-muted);
     margin-bottom: 1.5rem;
   }
 
-  .prose-p:last-child,
-  .article-content p:last-child {
+  .prose-p:last-child {
   margin-bottom: 0;
   }
 
   @media (min-width: 1024px) {
-    .prose-p,
-    .article-content p {
-      font-size: 1.25rem;
-    }
-  }
-
-  /* Listy w artykule jednostronicowym — spójne z akapitem */
-  .article-content ul,
-  .article-content ol {
-    font-size: 1.125rem;
-    line-height: 1.7;
-    color: var(--color-glass-muted);
-    margin-bottom: 1.5rem;
-    padding-left: 1.5rem;
-  }
-
-  .article-content li {
-    margin-bottom: 0.5rem;
-  }
-
-  @media (min-width: 1024px) {
-    .article-content ul,
-    .article-content ol {
+    .prose-p {
       font-size: 1.25rem;
     }
   }
@@ -175,8 +137,7 @@
   /* Linki w treści opisowej — kolor + podkreślenie (nie tylko kolor, dla dostępności) */
   .prose-content a,
   .prose-p a,
-  .legal-content a,
-  .article-content a {
+  .legal-content a {
     color: var(--color-glass-accent-amber);
     text-decoration: underline;
     text-decoration-color: rgba(201, 90, 26, 0.4);
@@ -186,8 +147,7 @@
 
   .prose-content a:hover,
   .prose-p a:hover,
-  .legal-content a:hover,
-  .article-content a:hover {
+  .legal-content a:hover {
     color: var(--color-glass-accent-glow);
     text-decoration-color: currentColor;
   }
@@ -261,19 +221,59 @@
   border-radius: 0.75rem;
 }
 
-  /* Wrapper zdjęcia — standard dla całego serwisu */
-  .img-wrapper {
-    padding: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 1rem;
-  }
+/* Zdjęcia i filmy wstawiane w treść postów (src/plugins/post-media.mjs) */
+.prose-content .post-media {
+  margin: 2rem 0 2.5rem;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+}
 
-  .img-wrapper img {
-    width: 100%;
-    display: block;
-    border-radius: 0.75rem;
-    border: 1px solid var(--color-glass-border);
-  }
+.prose-content .post-media img,
+.prose-content .post-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  background: var(--color-glass-smoke);
+}
+
+/* Zdjęcia — wysokość ograniczona do 75vh; ramka zwęża się do szerokości zdjęcia
+   (pionowe kadry są wyśrodkowane, poziome zajmują pełną szerokość kolumny) */
+.prose-content .post-media--image {
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose-content .post-media--image img {
+  width: auto;
+  max-width: 100%;
+  max-height: 75vh;
+}
+
+/* Podpis nie poszerza ramki — zawija się do szerokości zdjęcia */
+.prose-content .post-media--image figcaption {
+  width: 0;
+  min-width: 100%;
+}
+
+/* Pionowe filmy (9:16) — węższe i wyśrodkowane, żeby nie zajmowały kilku ekranów */
+.prose-content .post-media--vertical {
+  max-width: min(24rem, calc(75vh * 9 / 16 + 10px));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose-content .post-media figcaption {
+  padding: 0.75rem 0.5rem 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--color-glass-muted);
+}
 
   /* Przycisk główny — amber CTA */
   .btn-primary {
@@ -321,52 +321,12 @@
     color: var(--color-glass-white);
   }
 
-  /* Przycisk biały — dla ciemnych sekcji CTA */
-  .btn-white {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    background-color: var(--color-glass-white);
-    color: var(--color-glass-black);
-    font-size: 0.875rem;
-    font-weight: 600;
-    border-radius: 9999px;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.2s;
-  }
-
-  .btn-white:hover {
-    background-color: color-mix(in srgb, var(--color-glass-white) 90%, black);
-  }
-
   /* Karta — surface z borderem */
   .card {
     background-color: var(--color-glass-anthracite);
     border: 1px solid var(--color-glass-border);
     border-radius: 1rem;
     padding: 1.5rem;
-  }
-
-  /* Karta z gradientem tła — opinie, FAQ */
-  .card-warm {
-    background: linear-gradient(
-      to top,
-      rgb(26 29 32),
-      rgb(201 90 26 / 0.6)
-    );
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 1rem;
-    padding: 1.5rem;
-  }
-
-  /* Divider */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--color-glass-border);
   }
 
   /* Formularz — input */
@@ -451,54 +411,8 @@
 /* ── Utilities custom ────────────────────────────────────────────────────── */
 @layer utilities {
 
-  /* Tło sekcji — ciemniejszy gradient */
-  .bg-section-dark {
-    background: linear-gradient(
-      to right,
-      var(--color-glass-black),
-      #0d0e10,
-      var(--color-glass-black)
-    );
-  }
-
-  /* Blur dekoracyjny — amber glow */
-  .glow-amber {
-    position: relative;
-  }
-
-  .glow-amber::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(201, 90, 26, 0.15);
-    filter: blur(48px);
-    border-radius: inherit;
-    z-index: -1;
-  }
-
-  .glow-fire {
-  position: relative;
-  }
-.glow-fire::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(201, 154, 46, 0.15);
-  filter: blur(48px);
-  border-radius: inherit;
-  z-index: -1;
-  }
-
   /* Tekst accent */
-  .text-amber { color: var(--color-glass-accent-amber); }
-  .text-cool  { color: var(--color-glass-accent-cool); }
   .text-fire  { color: var(--color-glass-accent-fire); }
-  .text-muted { color: var(--color-glass-muted); }
-
-  .text-mono-highlight {
-  color: var(--color-glass-accent-amber);
-  font-family: var(--font-mono);
-  }
 
   /* GTranslate widget — custom style */
 .gt_float_switcher {

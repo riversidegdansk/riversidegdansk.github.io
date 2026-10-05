@@ -3,7 +3,11 @@ title: 'Jak zorganizować spotkanie firmowe w restauracji w Gdańsku?'
 author: 'Riverside Dym i Ogień'
 date: 2026-05-14
 excerpt: 'Przestrzeń, menu, liczba gości, prywatność i lokalizacja. Podpowiadamy, na co zwrócić uwagę przy organizacji spotkania firmowego w restauracji.'
-cover: 'riverside-dym-ogien-gdansk-galeria-wnetrza-fot-5'
+seoTitle: 'Spotkanie firmowe w Gdańsku'
+seoDescription: 'Sala VIP do 50 osób czy cały lokal dla 150 gości? Podpowiadamy, jak zorganizować spotkanie firmowe w restauracji nad Motławą w Gdańsku.'
+cover:
+  public_id: 'riverside-dym-ogien-gdansk-galeria-wnetrza-fot-5'
+  alt: 'Sala restauracyjna Riverside z zielenią pod sufitem, gotowa na spotkanie firmowe w Gdańsku'
 published: true
 ---
 
@@ -17,13 +21,13 @@ Na co zwrócić uwagę?
 
 Innej przestrzeni potrzebuje kolacja dla kilkunastu osób, a innej wydarzenie dla ponad stu uczestników.
 
-W Riverside mniejsze wydarzenia możemy organizować w **sali VIP mieszczącej do 50 osób**.
+W Riverside mniejsze wydarzenia możemy organizować w [**sali VIP mieszczącej do 50 osób**](/events/).
 
 Przy większych realizacjach do dyspozycji może zostać oddany cały lokal, mieszczący około **150 gości**.
 
-<!-- MEDIA:image
-public_id: "DO_UZUPELNIENIA_riverside-sala-vip"
-alt: "Sala VIP Riverside przygotowana na spotkanie firmowe"
+<!-- MEDIA:video
+public_id: "riverside-dym-ogien-gdansk-post-imprezy-prywatne-i-firmowe"
+poster: "riverside-dym-ogien-gdansk-post-imprezy-prywatne-i-firmowe-fot"
 caption: ""
 -->
 
@@ -35,11 +39,6 @@ Znaczenie mają układ stołów, stopień prywatności i sposób wykorzystania p
 
 Dlatego ustawienie sali warto ustalić odpowiednio wcześniej.
 
-<!-- MEDIA:image
-public_id: "DO_UZUPELNIENIA_riverside-event"
-alt: "Wydarzenie firmowe w Riverside w Gdańsku"
-caption: ""
--->
 
 ## Menu powinno pasować do wydarzenia
 
@@ -47,20 +46,17 @@ Długie, bardziej formalne spotkanie może dobrze współgrać z ustalonym wcze�
 
 Przy mniej zobowiązującym wydarzeniu lepszy może być inny sposób serwowania.
 
-Najważniejsze, żeby menu wynikało z charakteru imprezy, liczby osób i dostępnego czasu.
+Najważniejsze, żeby [menu](/menu/) wynikało z charakteru imprezy, liczby osób i dostępnego czasu.
 
 ## Lokalizacja też ma znaczenie
 
-Riverside znajduje się w centrum Gdańska, tuż przy Motławie.
+Riverside znajduje się w centrum Gdańska, [tuż przy Motławie](/posts/08-restauracja-nad-motlawa/).
 
-To ułatwia dotarcie uczestnikom, a jednocześnie sprawia, że samo miejsce staje się częścią wydarzenia.
+To ułatwia dotarcie uczestnikom, a jednocześnie sprawia, że samo miejsce staje się częścią wydarzenia. Przed kolacją można zabrać gości na [spacer nad Motławą i Wyspą Spichrzów](/posts/10-wyspa-spichrzow-i-motlawa/).
 
 Najlepszy event to taki, podczas którego organizator nie musi przez cały wieczór pilnować każdego szczegółu.
 
 Dlatego właśnie szczegóły najlepiej ustalić wcześniej.
 
-<!-- MEDIA:video
-public_id: "DO_UZUPELNIENIA_event-przygotowanie"
-poster: "DO_UZUPELNIENIA_riverside-sala-vip"
-caption: "Przygotowanie przestrzeni Riverside na wydarzenie firmowe"
--->
+[Zapytaj o termin i ofertę dla firm](/events-booking/) — pomożemy dobrać salę i menu.
+
