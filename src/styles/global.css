@@ -3,8 +3,20 @@
    Tailwind CSS v4
    ============================================ */
 
-/* ── Fonty Google ────────────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap');
+/* ── Fonty (hostowane lokalnie, @fontsource) ─────────────────────────────── */
+/* Tylko alfabet łaciński + latin-ext (polskie znaki). Bez łańcucha CSS → Google Fonts → pliki. */
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-ext-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-ext-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/inter/latin-ext-600.css";
+@import "@fontsource/inter/latin-700.css";
+@import "@fontsource/inter/latin-ext-700.css";
+@import "@fontsource/libre-baskerville/latin-400.css";
+@import "@fontsource/libre-baskerville/latin-ext-400.css";
+@import "@fontsource/libre-baskerville/latin-700.css";
+@import "@fontsource/libre-baskerville/latin-ext-700.css";
 
 @import "tailwindcss";
 
@@ -21,6 +33,8 @@
   /* Akcenty */
   --color-glass-accent-amber: #C95A1A;
   --color-glass-accent-glow:  #E36B22;
+  /* Ciemniejszy pomarańcz pod białym tekstem (kontrast 4.8:1, WCAG AA) */
+  --color-glass-accent-ember: #B0501A;
   --color-glass-accent-fire:  #C99A2E;
   --color-glass-accent-cool:  #7FD1C7;
   --color-glass-accent-chili: #D62828;
@@ -138,7 +152,7 @@
   .prose-content a,
   .prose-p a,
   .legal-content a {
-    color: var(--color-glass-accent-amber);
+    color: var(--color-glass-accent-glow);
     text-decoration: underline;
     text-decoration-color: rgba(201, 90, 26, 0.4);
     text-underline-offset: 2px;
@@ -282,7 +296,7 @@
     justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background-color: var(--color-glass-accent-amber);
+    background-color: var(--color-glass-accent-glow);
     color: var(--color-glass-black);
     font-size: 0.875rem;
     font-weight: 600;
@@ -294,7 +308,7 @@
   }
 
   .btn-primary:hover {
-    background-color: var(--color-glass-accent-glow);
+    background-color: #EC7A35;
     box-shadow: 0 0 24px rgba(227, 107, 34, 0.2);
   }
 
@@ -371,7 +385,7 @@
 
   .badge-amber {
     border-color: rgba(201, 90, 26, 0.3);
-    color: var(--color-glass-accent-amber);
+    color: var(--color-glass-accent-glow);
     background: rgba(201, 90, 26, 0.08);
   }
 

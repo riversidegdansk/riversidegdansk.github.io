@@ -1,5 +1,6 @@
 ---
 import { CONTACT, withBase } from '../../config/site';
+import MapEmbed from './MapEmbed.astro';
 
 interface Props {
   title?: string;
@@ -29,7 +30,7 @@ const {
             <p class="prose-p mb-10">{description}</p>
             <a
               href={withBase(ctaHref)}
-              class="group inline-flex items-center leading-none font-medium pb-2 border-b-2 border-glass-accent-amber text-glass-accent-amber hover:text-glass-accent-glow hover:border-glass-accent-glow transition-colors duration-300"
+              class="group inline-flex items-center leading-none font-medium pb-2 border-b-2 border-glass-accent-glow text-glass-accent-glow hover:text-glass-white hover:border-glass-white transition-colors duration-300"
             >
               <span class="mr-4">{ctaLabel}</span>
               <span class="group-hover:rotate-45 transform transition duration-100">
@@ -43,15 +44,11 @@ const {
       </div>
 
       <div class="w-full lg:w-1/2 px-4 flex">
-        <iframe
+        <MapEmbed
           src={mapsEmbed}
           title={`Mapa — ${title}`}
-          class="w-full h-full min-h-[450px] rounded-3xl border border-glass-border shadow-xl shadow-black/40"
-          style="border:0;"
-          allowfullscreen
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
+          class="w-full min-h-[450px] rounded-3xl border border-glass-border shadow-xl shadow-black/40"
+        />
       </div>
 
     </div>

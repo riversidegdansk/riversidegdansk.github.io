@@ -109,8 +109,8 @@ const INITIAL_VISIBLE = FIRST_ROW_COUNT + (INITIAL_ROWS - 1) * ROW_SIZE;
           <button
             type="button"
             x-on:click="setTab('Wszystkie')"
-            x-bind:class="tab === 'Wszystkie' ? 'bg-glass-accent-amber text-glass-white border-glass-accent-amber' : 'text-glass-muted border-glass-border hover:bg-glass-accent-amber hover:text-glass-white hover:border-glass-accent-amber'"
-            class="inline-block py-2.5 px-5 text-lg leading-none rounded-full transition-colors duration-200 border cursor-pointer bg-glass-accent-amber text-glass-white border-glass-accent-amber"
+            x-bind:class="tab === 'Wszystkie' ? 'bg-glass-accent-ember text-glass-white border-glass-accent-amber' : 'text-glass-muted border-glass-border hover:bg-glass-accent-amber hover:text-glass-white hover:border-glass-accent-amber'"
+            class="inline-block py-2.5 px-5 text-lg leading-none rounded-full transition-colors duration-200 border cursor-pointer bg-glass-accent-ember text-glass-white border-glass-accent-amber"
           >
             Wszystkie
           </button>
@@ -118,7 +118,7 @@ const INITIAL_VISIBLE = FIRST_ROW_COUNT + (INITIAL_ROWS - 1) * ROW_SIZE;
             <button
               type="button"
               x-on:click={`setTab(${JSON.stringify(cat)})`}
-              x-bind:class={`tab === ${JSON.stringify(cat)} ? 'bg-glass-accent-amber text-glass-white border-glass-accent-amber' : 'text-glass-muted border-glass-border hover:bg-glass-accent-amber hover:text-glass-white hover:border-glass-accent-amber'`}
+              x-bind:class={`tab === ${JSON.stringify(cat)} ? 'bg-glass-accent-ember text-glass-white border-glass-accent-amber' : 'text-glass-muted border-glass-border hover:bg-glass-accent-amber hover:text-glass-white hover:border-glass-accent-amber'`}
               class="inline-block py-2.5 px-5 text-lg leading-none rounded-full transition-colors duration-200 border cursor-pointer text-glass-muted border-glass-border"
             >
               {CATEGORY_LABELS[cat] ?? cat}

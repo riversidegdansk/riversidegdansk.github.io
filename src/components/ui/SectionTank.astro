@@ -21,7 +21,7 @@ const {
 const mobileSrc  = video ? cloudinaryVideoUrl(video, { width: 480, aspectRatio: '9:16', crop: 'fill' }) : null;
 const desktopSrc = video ? cloudinaryVideoUrl(video, { width: 720, aspectRatio: '9:16', crop: 'fill' }) : null;
 const posterUrl  = video
-  ? cloudinaryVideoPoster(poster ?? video, { width: 720, aspectRatio: '9:16', crop: 'fill', startOffset: 4 })
+  ? cloudinaryVideoPoster(poster ?? video, { width: 480, aspectRatio: '9:16', crop: 'fill', startOffset: 4 })
   : null;
 ---
 
@@ -48,7 +48,7 @@ const posterUrl  = video
                 controls
                 muted
                 playsinline
-                preload="metadata"
+                preload="none"
                 poster={posterUrl}
               >
                 <source media="(min-width: 1024px)" src={desktopSrc} type="video/mp4" />
@@ -76,11 +76,13 @@ const posterUrl  = video
 
 <script>
   const video = document.getElementById('tank-video');
+  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
   if (video instanceof HTMLVideoElement) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          // Film pobiera się dopiero, gdy jest w połowie widoczny (preload="none").
+          if (entry.isIntersecting && !saveData) {
             video.play().catch(() => {});
           } else {
             video.pause();
