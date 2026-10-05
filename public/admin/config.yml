@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: cezi/riverside-app
+  repo: riversidegdansk/riversidegdansk.github.io
   branch: main
 
 media_libraries:
