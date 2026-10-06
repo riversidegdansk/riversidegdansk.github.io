@@ -167,7 +167,10 @@ self.addEventListener('fetch', (event) => {
 });
 `.trimStart();
 
+// Komentarze w szablonie wyżej są dla programisty — z publicznego /sw.js wycinamy całe linie z „//”.
+const stripComments = (code: string) => code.replace(/^[ \t]*\/\/.*\r?\n/gm, '');
+
 export const GET: APIRoute = () =>
-  new Response(sw(VERSION, PRECACHE), {
+  new Response(stripComments(sw(VERSION, PRECACHE)), {
     headers: { 'Content-Type': 'application/javascript; charset=utf-8' },
   });
