@@ -105,12 +105,18 @@ export const postMediaPlugin = {
   name: 'post-media',
   html(node, ctx) {
     const m = node.value.trim().match(BLOCK);
-    if (!m) return;
+    // Zwykły komentarz HTML w treści wpisu — notatka dla redakcji, nie trafia do strony.
+    if (!m) {
+      if (/^<!--[\s\S]*-->$/.test(node.value.trim())) ctx.replaceNode(node, { type: 'html', value: '' });
+      return;
+    }
     const [, kind, body] = m;
     const f = parseFields(body);
     const id = kind === 'STOPFRAME' ? (f.video || f.public_id) : f.public_id;
     if (!isReal(id)) {
+      // Zaślepka zostaje w pliku .md (widać, gdzie brakuje zdjęcia), ale nie w HTML strony.
       console.warn(`[post-media] pominięto ${kind} bez public_id w ${ctx.fileURL?.pathname.split('/').pop() ?? 'poście'}`);
+      ctx.replaceNode(node, { type: 'html', value: '' });
       return;
     }
     const value =

@@ -42,10 +42,15 @@ const isHome = pathname === '/';
     noindex={props.noindex ?? isLegalPage}
 />
 
+{/* Skrypt GTM + Google Consent Mode v2 (is:inline — trafia do HTML bez zmian, więc opis jest tutaj, nie w skrypcie):
+    - display_mode: 'standalone' = zainstalowana aplikacja PWA (także iOS), 'browser' = zwykła przeglądarka;
+      trafia do dataLayer przed GTM, więc tag Google może go dołączyć do każdego zdarzenia GA4.
+    - Consent Mode: kategorie z okna cookies → sygnały zgody dla tagów w GTM; tagi odpalają się tylko przy
+      wymaganej zgodzie (GA4: analytics_storage, piksele: ad_storage).
+    - Wycofanej zgody nie da się cofnąć w już załadowanych skryptach (np. piksel) — wtedy przeładowanie strony.
+    - GTM ładuje się tylko przy zgodzie na cokolwiek poza niezbędnymi cookies. */}
 {isProd && (
   <script is:inline define:vars={{ gtmId: ANALYTICS.gtmId }}>
-    // Tryb wyświetlania: 'standalone' = zainstalowana aplikacja PWA (także iOS), 'browser' = zwykła przeglądarka.
-    // Trafia do dataLayer przed GTM, więc tag Google może go dołączyć do każdego zdarzenia GA4.
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       display_mode:
@@ -84,8 +89,6 @@ const isHome = pathname === '/';
       })(window, document, 'script', 'dataLayer', id);
     }
 
-    // Google Consent Mode v2 — kategorie z okna cookies → sygnały zgody dla tagów w GTM.
-    // Tagi w GTM odpalają się tylko przy wymaganej zgodzie (GA4: analytics_storage, piksele: ad_storage).
     function gtag() { window.dataLayer.push(arguments); }
 
     gtag('consent', 'default', {
@@ -122,12 +125,10 @@ const isHome = pathname === '/';
       gtag('consent', 'update', state);
       window.dataLayer.push({ event: 'consent_update', consent_categories: categories.join(',') });
 
-      // Wycofanej zgody nie da się cofnąć w już załadowanych skryptach (np. piksel) — przeładowanie strony.
       if (revoked && gtmLoaded) {
         window.location.reload();
         return;
       }
-      // GTM tylko gdy jest zgoda na cokolwiek poza niezbędnymi cookies.
       if (state.analytics_storage === 'granted' || state.ad_storage === 'granted') {
         loadGTM(gtmId);
       }
