@@ -31,11 +31,6 @@ Jedna z zasad pozostaje niezmienna: ograniczamy drogi na skróty.
 
 To wymaga więcej pracy, ale daje kontrolę nad tym, co ostatecznie trafia na talerz.
 
-<!-- MEDIA:image
-public_id: "DO_UZUPELNIENIA_michal-rybak-przy-pracy"
-alt: "Michał Rybak podczas przygotowywania dania w Riverside"
-caption: ""
--->
 
 ## Menu nie jest skończonym projektem
 
