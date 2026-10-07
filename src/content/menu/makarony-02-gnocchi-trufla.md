@@ -5,6 +5,6 @@ description: 'Sos truflowy, szalotka, czosnek, portobello, natka pietruszki, pom
 price: '44,90 zł'
 tags:
   - Wegetariańskie
-order: 15
+order: 16
 published: true
 ---

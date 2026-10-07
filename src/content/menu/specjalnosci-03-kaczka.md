@@ -1,9 +1,10 @@
 ---
-category: 'Dania główne'
+category: 'Specjalności'
 name: 'Wolno pieczona kaczka, połówka'
 description: 'Dyniowe gnocchi, duszona czerwona kapusta, powidła śliwkowe z demi-glace'
-price: '69,90 zł'
+price: '74,90 zł'
 weight: '400 g / 600 g'
-order: 26
+image: 'riverside-dym-ogien-gdansk-galeria-dania-wolno-pieczona-kaczka'
+order: 22
 published: true
 ---

@@ -6,6 +6,6 @@ price: '54,90 zł'
 weight: '32 cm'
 tags:
   - Wegetariańskie
-order: 39
+order: 38
 published: true
 ---

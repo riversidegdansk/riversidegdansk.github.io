@@ -6,6 +6,6 @@ price: '21,90 / 36,90 zł'
 weight: '90 g / 150 g'
 tags:
   - Wegetariańskie
-order: 10
+order: 11
 published: true
 ---

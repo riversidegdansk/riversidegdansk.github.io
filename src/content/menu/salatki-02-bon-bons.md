@@ -5,6 +5,6 @@ description: 'Mix sałat, chutney z fig i moreli, dressing miodowo-balsamiczny, 
 price: '49,90 zł'
 tags:
   - Wegetariańskie
-order: 18
+order: 19
 published: true
 ---

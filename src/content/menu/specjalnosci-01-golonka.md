@@ -5,6 +5,6 @@ description: 'Puree ziemniaczane z niedźwiedzim czosnkiem, glazurowana czerwona
 price: '74,90 zł'
 weight: '600 g / 850 g'
 image: 'riverside-dym-ogien-gdansk-sekcja-menu-golonka'
-order: 19
+order: 20
 published: true
 ---

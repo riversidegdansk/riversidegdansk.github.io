@@ -5,6 +5,6 @@ description: 'Riverside chilli sos, czosnek, cebula, kolendra, pomidorki koktajl
 price: '55,90 zł'
 tags:
   - Pikantne
-order: 9
+order: 10
 published: true
 ---

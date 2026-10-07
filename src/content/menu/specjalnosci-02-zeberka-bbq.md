@@ -7,6 +7,6 @@ weight: '500 g / 750 g'
 image: 'riverside-dym-ogien-gdansk-sekcja-menu-zeberka'
 tags:
   - Pikantne
-order: 20
+order: 21
 published: true
 ---

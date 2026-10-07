@@ -5,6 +5,6 @@ description: 'Krewetki, kalmary, mule, pomidorki cherry, nduja, chilli, szalotka
 price: '69,90 zł'
 tags:
   - Pikantne
-order: 16
+order: 17
 published: true
 ---

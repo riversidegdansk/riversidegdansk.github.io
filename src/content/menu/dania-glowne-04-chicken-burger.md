@@ -6,6 +6,6 @@ price: '57,90 zł'
 weight: '160 g / 400 g'
 tags:
   - Pikantne
-order: 25
+order: 26
 published: true
 ---

@@ -6,6 +6,6 @@ price: '46,90 zł'
 weight: '32 cm'
 tags:
   - Pikantne
-order: 34
+order: 33
 published: true
 ---
