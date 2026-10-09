@@ -37,7 +37,7 @@ const {
     <p class="text-glass-white">{CONTACT.address}, {CONTACT.city}</p>
     <button type="button" data-map-load class="btn-primary">Pokaż mapę</button>
     <p class="max-w-xs text-xs text-glass-muted">
-      Mapa zostanie wczytana z Google Maps, który może zapisywać pliki cookie.
+      Mapa zostanie wczytana z Google Maps, który może zapisywać pliki cookie.{' '}
       <a href={CONTACT.mapsUrl} target="_blank" rel="noopener noreferrer" class="underline hover:text-glass-white">Otwórz w Mapach Google</a>
     </p>
   </div>
@@ -60,7 +60,11 @@ const {
   const maps = () => document.querySelectorAll<HTMLElement>('[data-map]');
 
   maps().forEach((box) =>
-    box.querySelector('[data-map-load]')?.addEventListener('click', () => loadMap(box)));
+    box.querySelector('[data-map-load]')?.addEventListener('click', () => {
+      loadMap(box);
+      const w = window as Window & { dataLayer?: object[] };
+      (w.dataLayer = w.dataLayer || []).push({ event: 'map_interaction', map_action: 'pokaz_mape', page_path: location.pathname });
+    }));
 
   // Zgoda na cookies funkcjonalne = mapy ładują się same.
   type ConsentEvent = CustomEvent<{ cookie?: { categories?: string[] } }>;

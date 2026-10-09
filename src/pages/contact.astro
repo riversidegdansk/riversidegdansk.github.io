@@ -60,6 +60,13 @@ import MapEmbed from '../components/ui/MapEmbed.astro';
               >
                 {CONTACT.phone}
               </a>
+              {/* Osobny numer do rezerwacji stolików — w pomiarze liczy się jako kontakt_rezerwacyjny (telefon ogólny zostaje w phone_click). */}
+              <p class="mt-3 text-sm text-glass-muted">Rezerwacje stolików:</p>
+              <a href={CONTACT.phoneWorkHref}
+              class="block text-glass-white hover:text-glass-accent-glow leading-loose transition-colors duration-200"
+              >
+                {CONTACT.phoneWork}
+              </a>
             </div>
           </div>
         </div>

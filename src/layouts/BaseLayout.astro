@@ -224,11 +224,19 @@ const isHome = pathname === '/';
           data = { event: 'reservation_click', reservation_type: 'online' };
         } else if (url.host === location.host && url.pathname.replace(/\/?$/, '/') === '/reservations/') {
           data = { event: 'reservation_click', reservation_type: 'przejscie_do_rezerwacji' };
+        } else if (url.host === 'maps.app.goo.gl' || (/(^|\.)google\.[a-z.]+$/.test(url.host) && url.pathname.indexOf('/maps') === 0)) {
+          data = { event: 'map_interaction', map_action: 'mapy_google' };
         }
 
         if (data) {
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push(Object.assign(data, base));
+          var goal =
+            data.event === 'reservation_click' && data.reservation_type === 'online' ? ['kontakt_rezerwacyjny', 'rezerwacja_online'] :
+            data.event === 'phone_click' && data.phone_type === 'rezerwacje'         ? ['kontakt_rezerwacyjny', 'telefon'] :
+            data.event === 'phone_click' && data.phone_type === 'imprezy'            ? ['zapytanie_impreza', 'telefon'] :
+            null;
+          if (goal) window.dataLayer.push(Object.assign({ event: goal[0], contact_method: goal[1] }, base));
         }
       });
     </script>

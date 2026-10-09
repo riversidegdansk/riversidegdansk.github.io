@@ -19,6 +19,9 @@ const formAction = `${FORMSPARK.url}/${FORMSPARK.formId}`;
 const id = (name: string) => `${idPrefix}-${name}`;
 ---
 
+{/* Wysyłka do Formspark jako JSON: pola _email.* idą płasko i jako obiekt (Formspark przy JSON-ie może oczekiwać obu form).
+    Po udanej wysyłce do dataLayer trafiają: generate_lead (form_name) i kontakt_rezerwacyjny (contact_method: formularz) — GTM → GA4.
+    Bez danych osobowych. */}
 <form
   action={formAction}
   method="POST"
@@ -29,13 +32,19 @@ const id = (name: string) => `${idPrefix}-${name}`;
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: (() => {
-        // Ustawienia _email.* wysyłamy płasko i jako obiekt — Formspark przy JSON-ie może oczekiwać obu form.
         const data = Object.fromEntries(new FormData($el));
         data._email = { subject: data['_email.subject'], from: data['_email.from'] };
         return JSON.stringify(data);
       })()
     })
-      .then(r => { sent = r.ok; error = !r.ok; })
+      .then(r => {
+        sent = r.ok; error = !r.ok;
+        if (r.ok) {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'generate_lead', form_name: 'kontakt' });
+          window.dataLayer.push({ event: 'kontakt_rezerwacyjny', contact_method: 'formularz', page_path: location.pathname });
+        }
+      })
       .catch(() => { error = true; })
       .finally(() => { sending = false; })
   "

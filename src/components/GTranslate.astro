@@ -17,3 +17,18 @@
   };
 </script>
 <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+
+<script>
+  // Pomiar zmiany języka (GTranslate działa przez Tłumacza Google: zmienia lang i klasę <html>).
+  // Zdarzenie language_switch trafia do dataLayer — GTM → GA4.
+  const html = document.documentElement;
+  const current = () => (html.classList.contains('translated-ltr') || html.classList.contains('translated-rtl')) ? html.lang || 'en' : 'pl';
+  let last = current();
+  new MutationObserver(() => {
+    const lang = current();
+    if (lang === last) return;
+    last = lang;
+    const w = window as Window & { dataLayer?: object[] };
+    (w.dataLayer = w.dataLayer || []).push({ event: 'language_switch', language: lang, page_path: location.pathname });
+  }).observe(html, { attributes: true, attributeFilter: ['lang', 'class'] });
+</script>
