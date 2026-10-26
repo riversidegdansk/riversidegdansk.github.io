@@ -6,7 +6,7 @@ import MapEmbed from '../components/ui/MapEmbed.astro';
 ---
 
 <BaseLayout
-  title="Kontakt i dojazd — ul. Chmielna 10"
+  title="Kontakt i dojazd — Gdańsk ul. Chmielna 10"
   description="Skontaktuj się z Riverside. Dym i Ogień — restauracją nad Motławą w Gdańsku. Sprawdź adres, dane kontaktowe, mapę dojazdu i wyślij wiadomość."
 >
 
@@ -63,7 +63,7 @@ import MapEmbed from '../components/ui/MapEmbed.astro';
               {/* Osobny numer do rezerwacji stolików — w pomiarze liczy się jako kontakt_rezerwacyjny (telefon ogólny zostaje w phone_click). */}
               <p class="mt-3 text-sm text-glass-muted">Rezerwacje stolików:</p>
               <a href={CONTACT.phoneWorkHref}
-              class="block text-glass-white hover:text-glass-accent-glow leading-loose transition-colors duration-200"
+              class="block text-glass-muted hover:text-glass-white leading-loose transition-colors duration-200"
               >
                 {CONTACT.phoneWork}
               </a>
