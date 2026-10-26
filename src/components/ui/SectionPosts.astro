@@ -1,6 +1,7 @@
 ---
 import { getLivePosts } from '../../utils/posts';
 import CloudinaryImage from './CloudinaryImage.astro';
+import ScheduledBadge from './ScheduledBadge.astro';
 import { withBase } from '../../config/site';
 
 interface Props {
@@ -25,6 +26,7 @@ const posts = entries
   .map((post) => ({
     id:     post.id,
     title:  post.data.title,
+    date:   post.data.date,
     href:   withBase(`/posts/${post.id}`),
     cover:  post.data.cover.public_id,
     alt:    post.data.cover.alt || post.data.title,
@@ -51,6 +53,7 @@ const posts = entries
           <a href={post.href} class="group block">
             <div class="relative mb-6 rounded-3xl overflow-hidden ring-1 ring-glass-border">
               <div class="absolute inset-0 bg-gradient-to-t from-glass-accent-amber/50 to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <ScheduledBadge date={post.date} class="absolute top-3 left-3 z-20" />
               <CloudinaryImage publicId={post.cover} alt={post.alt} preset="card" class="block w-full aspect-[4/3] object-cover group-hover:scale-105 transition duration-500" />
             </div>
             <h3 class="text-2xl tracking-tight text-glass-white group-hover:text-glass-accent-amber transition duration-200">{post.title}</h3>

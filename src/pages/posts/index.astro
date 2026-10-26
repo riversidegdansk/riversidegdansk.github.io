@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getLivePosts } from '../../utils/posts';
 import CloudinaryImage from '../../components/ui/CloudinaryImage.astro';
+import ScheduledBadge from '../../components/ui/ScheduledBadge.astro';
 import { withBase } from '../../config/site';
 
 // Kolejność: przypięty post (pinned) jako pierwszy, potem od najnowszego.
@@ -20,6 +21,7 @@ const posts = allPosts
   .map((post) => ({
     id:      post.id,
     title:   post.data.title,
+    date:    post.data.date,
     href:    withBase(`/posts/${post.id}`),
     cover:   post.data.cover.public_id,
     coverAlt: post.data.cover.alt || post.data.title,
@@ -61,6 +63,7 @@ const INITIAL_VISIBLE = (INITIAL_ROWS - 1) * ROW_SIZE;
                 <a href={featured.href} class="group block">
                   <div class="relative mb-6 rounded-3xl overflow-hidden ring-1 ring-glass-border">
                     <div class="absolute inset-0 bg-gradient-to-t from-glass-accent-amber/50 to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <ScheduledBadge date={featured.date} class="absolute top-3 left-3 z-20" />
                     <CloudinaryImage publicId={featured.cover} alt={featured.coverAlt} preset="section" loading="eager" fetchpriority="high" class="block w-full h-88 object-cover group-hover:scale-105 transition duration-500" />
                   </div>
                   <div class="max-w-lg">
@@ -75,6 +78,7 @@ const INITIAL_VISIBLE = (INITIAL_ROWS - 1) * ROW_SIZE;
                 <a href={post.href} class="group block md:flex mb-6 last:mb-0 items-center rounded-3xl p-4 border border-glass-border hover:border-glass-accent-amber transition duration-300">
                   <div class="relative w-full md:w-64 h-48 mb-6 md:mb-0 md:mr-12 rounded-2xl overflow-hidden shrink-0">
                     <div class="absolute inset-0 bg-gradient-to-t from-glass-accent-amber/50 to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <ScheduledBadge date={post.date} class="absolute top-3 left-3 z-20" />
                     <CloudinaryImage publicId={post.cover} alt={post.coverAlt} preset="card" sizes="(min-width: 768px) 16rem, 100vw" class="block w-full h-full object-cover group-hover:scale-105 transition duration-500" />
                   </div>
                   <div class="max-w-sm">
@@ -96,6 +100,7 @@ const INITIAL_VISIBLE = (INITIAL_ROWS - 1) * ROW_SIZE;
                 <a href={post.href} class="group block h-full">
                   <div class="relative mb-6 rounded-3xl overflow-hidden ring-1 ring-glass-border">
                     <div class="absolute inset-0 bg-gradient-to-t from-glass-accent-amber/50 to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <ScheduledBadge date={post.date} class="absolute top-3 left-3 z-20" />
                     <CloudinaryImage publicId={post.cover} alt={post.coverAlt} preset="card" sizes="(min-width: 1024px) 33vw, 100vw" class="block w-full h-56 object-cover group-hover:scale-105 transition duration-500" />
                   </div>
                   <h2 class="text-2xl tracking-tight text-glass-white group-hover:text-glass-accent-amber transition duration-200">{post.title}</h2>

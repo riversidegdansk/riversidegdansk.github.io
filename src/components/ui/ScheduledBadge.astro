@@ -1,0 +1,19 @@
+---
+// Znaczek „Zaplanowany na …” — tylko w `astro dev`, dla postów z przyszłą datą.
+// W buildzie produkcyjnym nic nie renderuje (takie posty i tak są wtedy ukryte, patrz utils/posts.ts).
+interface Props {
+  date:   Date;
+  class?: string;
+}
+
+const { date, class: className = '' } = Astro.props;
+const show = import.meta.env.DEV && date > new Date();
+const dateStr = date.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+{show && (
+  <span class={`inline-flex items-center gap-1.5 py-1.5 px-3 text-xs font-medium leading-none text-glass-black bg-glass-accent-fire rounded-full ${className}`}>
+    <span aria-hidden="true">⏱</span>
+    Zaplanowany na {dateStr}
+  </span>
+)}
