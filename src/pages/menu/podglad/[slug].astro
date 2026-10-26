@@ -1,0 +1,15 @@
+---
+import OfferPage from '../../../components/OfferPage.astro';
+import { getPreviewOffers } from '../../../utils/offers';
+
+// Podgląd szkiców i zaplanowanych menu okazjonalnych dla redakcji (bez astro dev).
+// Adres nie jest nigdzie linkowany, strona ma noindex i jest wyłączona z sitemapy.
+export async function getStaticPaths() {
+  const offers = await getPreviewOffers();
+  return offers.map((offer) => ({ params: { slug: offer.id }, props: { offer } }));
+}
+
+const { offer } = Astro.props;
+---
+
+<OfferPage offer={offer} preview />

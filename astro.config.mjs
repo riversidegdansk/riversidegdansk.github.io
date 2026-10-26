@@ -24,7 +24,8 @@ export default defineConfig({
   sitemap({
     filter: (page) =>
       !page.includes('/privacy/') &&
-      !page.includes('/offline/')
+      !page.includes('/offline/') &&
+      !page.includes('/menu/podglad/')
   }),
 ],
   image: {

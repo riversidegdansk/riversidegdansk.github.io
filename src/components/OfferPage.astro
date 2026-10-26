@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { cloudinaryUrl } from '../utils/cloudinary';
+import { withBase, SITE, NAV_CTA } from '../config/site';
+import { offerUntil, offerStatusLabel, type Offer } from '../utils/offers';
+
+interface Props {
+  offer:    Offer;
+  // Podgląd redakcyjny (/menu/podglad/…): noindex, pasek „Podgląd” u góry.
+  preview?: boolean;
+}
+
+const { offer, preview = false } = Astro.props;
+const { data } = offer;
+
+const statusLabel = offerStatusLabel(offer);
+const until = offerUntil(offer);
+const pdfHref = data.pdf ? withBase(data.pdf) : null;
+
+const BOOKING = {
+  stolik:  { label: NAV_CTA.label,          href: NAV_CTA.href },
+  impreza: { label: 'Zapytaj o rezerwację', href: '/events-booking' },
+} as const;
+const booking = BOOKING[data.booking];
+
+// Dane strukturalne: Menu z sekcjami, ważne od–do (validFrom / validThrough ofert z ceną).
+const parsePrice = (price?: string) => price?.match(/\d+(?:[.,]\d{1,2})?/)?.[0].replace(',', '.');
+const pageUrl = `${SITE.finalUrl}/menu/${offer.id}/`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type':    'Menu',
+  '@id':      `${pageUrl}#menu`,
+  name:       data.title,
+  url:        pageUrl,
+  inLanguage: 'pl-PL',
+  hasMenuSection: data.variants.map((variant) => ({
+    '@type': 'MenuSection',
+    name:    variant.name ?? data.title,
+    hasMenuSection: variant.sections.map((section) => ({
+      '@type': 'MenuSection',
+      name:    section.title,
+      hasMenuItem: section.items.map((item) => ({
+        '@type': 'MenuItem',
+        name:    item.name,
+        ...(item.description ? { description: item.description } : {}),
+      })),
+    })),
+    ...(parsePrice(variant.price) ? {
+      offers: {
+        '@type':       'Offer',
+        price:         parsePrice(variant.price),
+        priceCurrency: 'PLN',
+        validThrough:  data.showUntil.toISOString().slice(0, 10),
+      },
+    } : {}),
+  })),
+};
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.seoDescription ?? data.intro ?? `${data.title} w Riverside Dym i Ogień w Gdańsku, dostępne do ${until}.`}
+  ogImage={data.cover ? cloudinaryUrl(data.cover, { width: 1200, height: 630, crop: 'fill' }) : undefined}
+  jsonLd={preview ? undefined : jsonLd}
+  noindex={preview}
+>
+
+  {(preview || statusLabel) && (
+    <div class="bg-glass-accent-fire text-glass-black text-sm font-medium text-center py-2 px-4">
+      {preview ? 'Podgląd redakcyjny — ta strona nie jest jeszcze widoczna dla gości' : 'Podgląd lokalny'}
+      {statusLabel && <> · {statusLabel}</>}
+    </div>
+  )}
+
+  {/* Hero */}
+  <section class="section-py">
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <a href={withBase('/menu')} class="inline-flex items-center gap-2 mb-8 text-sm text-glass-muted hover:text-glass-white transition-colors duration-200">
+          <span aria-hidden="true">←</span> Menu
+        </a>
+        <p class="mb-4 text-sm uppercase tracking-widest text-glass-accent-fire">Dostępne do {until}</p>
+        <h1 class="font-heading text-4xl md:text-6xl mb-8 text-glass-white">{data.title}</h1>
+        {data.intro && <p class="prose-p">{data.intro}</p>}
+        <div class="flex flex-wrap gap-4 mt-10">
+          <a href={withBase(booking.href)} class="btn-primary">{booking.label}</a>
+          {pdfHref && (
+            <a href={pdfHref} download class="inline-flex py-4 px-7 font-medium text-glass-white hover:text-glass-black leading-none items-center border border-glass-border hover:bg-glass-accent-fire hover:border-glass-accent-fire rounded-full transition-colors duration-150">
+              Pobierz PDF
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Zestawy */}
+  {data.variants.map((variant) => (
+    <section class="section-py">
+      <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap lg:flex-nowrap -mx-4">
+          <div class="w-full lg:w-1/3 px-4 mb-10 lg:mb-0">
+            <div class="lg:sticky lg:top-32">
+              {variant.name && <h2 class="section-heading">{variant.name}</h2>}
+              {variant.price && (
+                <p class="text-3xl md:text-4xl font-bold text-glass-accent-fire">
+                  {variant.price}
+                  {variant.priceNote && <span class="block mt-1 text-base font-normal text-glass-muted">{variant.priceNote}</span>}
+                </p>
+              )}
+              {variant.note && <p class="mt-4 text-glass-muted">{variant.note}</p>}
+            </div>
+          </div>
+
+          <div class="w-full lg:w-2/3 px-4">
+            <div class="flex flex-col gap-6">
+              {variant.sections.map((section) => (
+                <div class="p-6 md:p-8 border border-glass-border rounded-2xl transition-colors duration-300 hover:border-glass-accent-amber">
+                  <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-5">
+                    <h3 class="text-xl md:text-2xl font-medium text-glass-white">{section.title}</h3>
+                    {section.note && <span class="text-sm text-glass-muted">{section.note}</span>}
+                  </div>
+                  <ul class="flex flex-col gap-4">
+                    {section.items.map((item) => (
+                      <li>
+                        <p class="text-glass-white">{item.name}</p>
+                        {item.description && <p class="mt-1 text-sm text-glass-muted leading-relaxed">{item.description}</p>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  {/* W cenie / uwagi */}
+  <section>
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-b border-glass-border">
+      <div class="max-w-3xl mx-auto text-center flex flex-col gap-2">
+        {data.included && <p class="text-glass-white"><span class="text-glass-accent-fire font-medium">W cenie:</span> {data.included}</p>}
+        {data.footnote && <p class="text-sm text-glass-muted">{data.footnote}</p>}
+        <p class="text-sm text-glass-muted">Ceny podane są w złotych polskich (PLN).</p>
+      </div>
+    </div>
+  </section>
+
+  {/* Pobierz PDF */}
+  <section class="section-py">
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mx-auto text-center">
+        <h2 class="font-heading text-4xl md:text-6xl tracking-tighter mb-10 text-glass-white">
+          <span class="block">Pobierz</span>
+          <span class="inline-block text-fire border-b-4 border-glass-accent-fire">{data.title}</span>
+        </h2>
+        <p class="prose-p mb-10">Zapisz menu w telefonie, wydrukuj je albo prześlij gościom — całość w jednym pliku PDF.</p>
+
+        {pdfHref ? (
+          <a href={pdfHref} class="btn-primary" download>Pobierz w pliku PDF</a>
+        ) : (
+          <span class="btn-primary opacity-50 pointer-events-none" aria-disabled="true">PDF wkrótce do pobrania</span>
+        )}
+
+        <p class="mt-10"><a href={withBase('/menu')} class="text-glass-muted hover:text-glass-white transition-colors duration-200">← Wróć do pełnego Menu</a></p>
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>

@@ -1,0 +1,13 @@
+---
+import OfferPage from '../../components/OfferPage.astro';
+import { getVisibleOffers } from '../../utils/offers';
+
+export async function getStaticPaths() {
+  const offers = await getVisibleOffers();
+  return offers.map((offer) => ({ params: { slug: offer.id }, props: { offer } }));
+}
+
+const { offer } = Astro.props;
+---
+
+<OfferPage offer={offer} />

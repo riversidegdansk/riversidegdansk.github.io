@@ -104,6 +104,57 @@ collections:
       - { name: order, label: Kolejność, widget: number, default: 0, required: false, value_type: int, hint: "Ustala kolejność dania w kategorii ORAZ kolejność samych kategorii na stronie (decyduje najniższy numer w danej kategorii)." }
       - { name: published, label: Opublikowane, widget: boolean, default: true }
 
+  - name: offers
+    label: Menu okazjonalne
+    label_singular: Menu okazjonalne
+    description: "Sylwester, oferta świąteczna itp. Po zaznaczeniu „Opublikowane” strona /menu/<nazwa-pliku>/ jest widoczna do dnia „Widoczne do” włącznie. Szkic można obejrzeć pod /menu/podglad/<nazwa-pliku>/ (po ok. 2–3 minutach od zapisu)."
+    folder: src/content/offers
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [showUntil, title]
+    fields:
+      - { name: title, label: Tytuł, widget: string, hint: "np. Menu sylwestrowe. Z tytułu powstaje adres strony — najlepiej bez roku, wtedy co roku ten sam adres." }
+      - { name: intro, label: Wstęp, widget: text, required: false }
+      - { name: seoDescription, label: Opis SEO, widget: text, required: false, hint: "120–155 znaków. Puste = wstęp." }
+      - { name: cover, label: Zdjęcie do udostępnień (Facebook itp.), widget: image, required: false }
+      - { name: showUntil, label: Widoczne do (włącznie), widget: datetime, time_format: false, format: "YYYY-MM-DD", hint: "Strona znika z www następnego dnia rano." }
+      - name: variants
+        label: Zestawy
+        label_singular: Zestaw
+        widget: list
+        hint: "Jeden zestaw, gdy menu ma jedną cenę (np. Sylwester). Kilka — przy wariantach (Zestaw I, II, III)."
+        fields:
+          - { name: name, label: Nazwa zestawu, widget: string, required: false, hint: "np. Zestaw I. Puste przy jednym zestawie." }
+          - { name: price, label: Cena, widget: string, required: false, hint: "np. 399 zł" }
+          - { name: priceNote, label: Dopisek do ceny, widget: string, required: false, default: "od osoby" }
+          - { name: note, label: Uwaga, widget: string, required: false, hint: "np. Menu dostępne od niedzieli do środy." }
+          - name: sections
+            label: Części menu
+            label_singular: Część
+            widget: list
+            fields:
+              - { name: title, label: Nazwa, widget: string, hint: "np. Przystawki" }
+              - { name: note, label: Dopisek, widget: string, required: false, hint: "np. do dzielenia się przy stole / do wyboru" }
+              - name: items
+                label: Dania
+                label_singular: Danie
+                widget: list
+                fields:
+                  - { name: name, label: Nazwa, widget: string }
+                  - { name: description, label: Składniki / opis, widget: string, required: false }
+      - { name: included, label: W cenie, widget: string, required: false, hint: "np. woda, kawa, herbata oraz kieliszek Prosecco." }
+      - { name: footnote, label: Dopisek na dole, widget: string, required: false, hint: "np. Pozostałe napoje wedle zużycia." }
+      - name: booking
+        label: Przycisk rezerwacji
+        widget: select
+        default: stolik
+        options:
+          - { label: "Zarezerwuj stolik (/reservations)", value: stolik }
+          - { label: "Zapytaj o rezerwację imprezy (/events-booking)", value: impreza }
+      - { name: pdf, label: PDF do pobrania, widget: string, required: false, hint: "Ścieżka do pliku w repozytorium, np. /uploads/menu-sylwestrowe-riverside-2026.pdf" }
+      - { name: order, label: Kolejność na stronie Menu, widget: number, default: 0, required: false, value_type: int }
+      - { name: published, label: Opublikowane, widget: boolean, default: false, hint: "Wyłączone = szkic, widoczny tylko pod /menu/podglad/<nazwa>/." }
+
   - name: testimonials
     label: Opinie
     label_singular: Opinia

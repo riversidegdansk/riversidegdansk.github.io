@@ -4,6 +4,7 @@ import { cloudinaryUrl } from '../utils/cloudinary';
 import CloudinaryImage from '../components/ui/CloudinaryImage.astro';
 import { withBase, SITE } from '../config/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getVisibleOffers, offerUntil, offerStatusLabel } from '../utils/offers';
 
 interface Props {
   menuPdf?: string;
@@ -39,6 +40,8 @@ const categories = categoryNames.map((name) => ({
 }));
 
 const pdfHref = menuPdf ? withBase(menuPdf) : null;
+
+const offers = await getVisibleOffers();
 
 // Dane strukturalne Menu → MenuSection → MenuItem (ceny dla wyszukiwarek i asystentów AI).
 // Cena „21,90 / 36,90 zł” daje dwie oferty (np. dwa rozmiary porcji).
@@ -88,6 +91,29 @@ const menuJsonLd = {
       </div>
     </div>
   </section>
+
+  {/* Menu okazjonalne — widoczne tylko w terminie (utils/offers.ts) */}
+  {offers.length > 0 && (
+    <section class="pb-8 md:pb-12">
+      <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-6 md:grid-cols-2">
+          {offers.map((offer) => {
+            const status = offerStatusLabel(offer);
+            return (
+              <a href={withBase(`/menu/${offer.id}/`)} class="group relative block p-8 md:p-10 border border-glass-accent-fire/60 rounded-3xl bg-glass-anthracite hover:border-glass-accent-fire transition-colors duration-300">
+                {status && <span class="badge badge-amber absolute top-4 right-4">{status}</span>}
+                <p class="mb-3 text-sm uppercase tracking-widest text-glass-accent-fire">Dostępne do {offerUntil(offer)}</p>
+                <h2 class="text-3xl md:text-4xl tracking-tight text-glass-white group-hover:text-glass-accent-amber transition duration-200">{offer.data.title}</h2>
+                <span class="inline-flex items-center gap-2 mt-6 font-medium text-glass-white">
+                  Zobacz menu <span class="group-hover:translate-x-1 transform transition duration-150" aria-hidden="true">→</span>
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
 
   {/* Kategorie */}
   <div x-data="{ lightbox: false, activeImage: null, activeAlt: '' }">

@@ -87,6 +87,44 @@ const menu = defineCollection({
   }),
 });
 
+// Menu okazjonalne (Sylwester, oferta świąteczna…) — każde pod /menu/<nazwa-pliku>/,
+// widoczne od publikacji do końca dnia showUntil, patrz utils/offers.ts.
+const offerItemSchema = z.object({
+  name:        z.string(),
+  description: z.string().optional(),
+});
+
+const offerSectionSchema = z.object({
+  title: z.string(),
+  note:  z.string().optional(),
+  items: z.array(offerItemSchema).default([]),
+});
+
+const offers = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/offers' }),
+  schema: z.object({
+    title:     z.string(),
+    intro:     z.string().optional(),
+    seoDescription: z.string().optional(),
+    cover:     z.string().optional(),
+    showUntil: z.coerce.date(),
+    // Zestawy — jeden, gdy menu ma jedną cenę (Sylwester), kilka przy wariantach (Zestaw I/II/III).
+    variants: z.array(z.object({
+      name:      z.string().optional(),
+      price:     z.string().optional(),
+      priceNote: z.string().optional(),
+      note:      z.string().optional(),
+      sections:  z.array(offerSectionSchema).default([]),
+    })).default([]),
+    included:  z.string().optional(),
+    footnote:  z.string().optional(),
+    booking:   z.enum(['stolik', 'impreza']).default('stolik'),
+    pdf:       z.string().optional(),
+    order:     z.coerce.number().optional().default(0),
+    published: z.boolean().default(false),
+  }),
+});
+
 export const collections = {
   posts,
   pages,
@@ -94,4 +132,5 @@ export const collections = {
   testimonials,
   faq,
   menu,
+  offers,
 };
