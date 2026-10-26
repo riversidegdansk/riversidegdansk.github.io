@@ -18,7 +18,7 @@ const adminIndexInDev = {
 };
 
 export default defineConfig({
-  site: 'https://www.riversidegdansk.pl',
+  site: 'https://riversidegdansk.pl',
   integrations: [
   alpinejs(),
   sitemap({

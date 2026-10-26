@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://www.riversidegdansk.pl/sitemap-index.xml
+Sitemap: https://riversidegdansk.pl/sitemap-index.xml
