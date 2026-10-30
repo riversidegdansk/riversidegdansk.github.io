@@ -7,3 +7,8 @@ export const isPostLive = ({ data }: CollectionEntry<'posts'>) =>
   data.published && (import.meta.env.DEV || data.date <= new Date());
 
 export const getLivePosts = () => getCollection('posts', isPostLive);
+
+// Przypięte (pinned) na początku, potem od najnowszego — lista /posts i sekcja na stronie głównej.
+export const byPinnedThenDate = (a: CollectionEntry<'posts'>, b: CollectionEntry<'posts'>) =>
+  Number(b.data.pinned) - Number(a.data.pinned) ||
+  b.data.date.valueOf() - a.data.date.valueOf();

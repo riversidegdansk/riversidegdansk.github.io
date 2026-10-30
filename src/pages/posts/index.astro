@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getLivePosts } from '../../utils/posts';
+import { getLivePosts, byPinnedThenDate } from '../../utils/posts';
 import CloudinaryImage from '../../components/ui/CloudinaryImage.astro';
 import ScheduledBadge from '../../components/ui/ScheduledBadge.astro';
 import { withBase } from '../../config/site';
@@ -14,10 +14,7 @@ const INITIAL_ROWS = 2;
 
 const allPosts = await getLivePosts();
 const posts = allPosts
-  .sort((a, b) =>
-    Number(b.data.pinned) - Number(a.data.pinned) ||
-    b.data.date.valueOf() - a.data.date.valueOf()
-  )
+  .sort(byPinnedThenDate)
   .map((post) => ({
     id:      post.id,
     title:   post.data.title,

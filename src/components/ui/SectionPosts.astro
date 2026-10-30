@@ -1,5 +1,5 @@
 ---
-import { getLivePosts } from '../../utils/posts';
+import { getLivePosts, byPinnedThenDate } from '../../utils/posts';
 import CloudinaryImage from './CloudinaryImage.astro';
 import ScheduledBadge from './ScheduledBadge.astro';
 import { withBase } from '../../config/site';
@@ -18,10 +18,10 @@ const {
   ctaHref  = '/posts',
 } = Astro.props;
 
-// Najnowsze opublikowane wpisy — miniatura + tytuł.
+// Przypięte wpisy, potem najnowsze — miniatura + tytuł.
 const entries = await getLivePosts();
 const posts = entries
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .sort(byPinnedThenDate)
   .slice(0, limit)
   .map((post) => ({
     id:     post.id,
