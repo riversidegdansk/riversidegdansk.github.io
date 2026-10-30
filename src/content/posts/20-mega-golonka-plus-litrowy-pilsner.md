@@ -9,7 +9,6 @@ cover:
   public_id: 'riverside-dym-ogien-gdansk-sekcja-menu-golonka'
   alt: 'Mega golonka z chrupiącą skórą na puree w Riverside w Gdańsku'
 published: true
-pinned: true
 ---
 
 Są dania, które nie udają niczego więcej, niż są naprawdę.

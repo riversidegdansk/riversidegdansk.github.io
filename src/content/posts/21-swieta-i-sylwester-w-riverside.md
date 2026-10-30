@@ -9,6 +9,7 @@ cover:
   public_id: 'riverside-dym-ogien-gdansk-swieta-sylwester-2026'
   alt: 'Świątecznie nakryty stół w Riverside i tatar wołowy z menu sylwestrowego'
 published: true
+pinned: true
 ---
 
 Grudzień w Riverside to dwa powody, żeby usiąść razem przy stole nad Motławą.
