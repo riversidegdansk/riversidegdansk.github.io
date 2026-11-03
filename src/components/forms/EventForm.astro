@@ -24,7 +24,7 @@ const {
     'Szkolenie / Konferencja',
     'Inna okazja',
   ],
-  minGuests   = 10,
+  minGuests   = 1,
   emailSubject = 'Masz nowe zapytanie w sprawie imprezy z riversidegdansk.pl',
   submitLabel = 'Wyślij zapytanie',
 } = Astro.props;
@@ -102,6 +102,19 @@ const id = (name: string) => `${idPrefix}-${name}`;
     placeholder="Data imprezy"
     x-ref="date"
     x-on:focus="$el.type = 'date'; try { $el.showPicker() } catch (e) {}"
+    x-on:blur="if (!$el.value) $el.type = 'text'"
+    required
+    class="form-input mb-4"
+  />
+
+  <label for={id('time')} class="sr-only">Godzina rozpoczęcia</label>
+  {/* Jak pole daty: tekst z placeholderem, po kliknięciu wybór godziny i minut (np. 17:00). */}
+  <input
+    id={id('time')}
+    type="text"
+    name="event_time"
+    placeholder="Godzina rozpoczęcia"
+    x-on:focus="$el.type = 'time'; try { $el.showPicker() } catch (e) {}"
     x-on:blur="if (!$el.value) $el.type = 'text'"
     required
     class="form-input mb-4"
