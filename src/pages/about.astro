@@ -22,10 +22,12 @@ const {
   chefVideo3 = 'riverside-dym-ogien-gdansk-sekcja-video-chef-2',
 } = Astro.props;
 
+// Liczba ocen nie jest pobierana z Google — wpisujemy zaokrąglenie w dół („ponad 6000”)
+// i podbijamy ręcznie po przekroczeniu kolejnego tysiąca.
 const stats = [
   { number: '01', value: '2019', suffix: '', label: 'To rok otwarcia Riverside. Dym i Ogień.' },
   { number: '02', value: '250m²', suffix: '', label: 'To powierzchnia naszych wszystkich sal.' },
-  { number: '03', value: '5800', suffix: '', label: 'Tylu gości oceniło naszą restaurację.' },
+  { number: '03', value: 'ponad 6000', suffix: '', label: 'Tylu gości oceniło naszą restaurację.' },
   { number: '04', value: '4.6', suffix: ' ★', label: 'To ocena naszego lokalu w Google.' },
 ];
 
