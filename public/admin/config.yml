@@ -155,6 +155,29 @@ collections:
       - { name: order, label: Kolejność na stronie Menu, widget: number, default: 0, required: false, value_type: int }
       - { name: published, label: Opublikowane, widget: boolean, default: false, hint: "Wyłączone = szkic, widoczny tylko pod /menu/podglad/<nazwa>/." }
 
+  - name: specials
+    label: Oferty specjalne
+    label_singular: Oferta specjalna
+    description: "Karty w sekcji „Tylko w Riverside” na stronie głównej: zdjęcie, tytuł i link. Na komputerze mieszczą się 4 karty w rzędzie, kolejne przewija się strzałkami."
+    folder: src/content/specials
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [order, title]
+    fields:
+      - { name: image, label: Zdjęcie, widget: image, hint: "Pionowy kadr 3:4 — zdjęcie zostanie przycięte automatycznie. Napis jest na przyciemnieniu u dołu, więc pasuje i jasne, i ciemne." }
+      - { name: alt, label: Opis zdjęcia (alt), widget: string, required: false, hint: "Puste = tytuł." }
+      - { name: title, label: Tytuł, widget: string, hint: "Krótko, najlepiej do ~30 znaków, np. Mega golonka + litr Pilsnera" }
+      - name: cta
+        label: Przycisk
+        widget: object
+        fields:
+          - { name: label, label: Tekst linku, widget: string, default: "Zobacz więcej", hint: "np. Zobacz zestawy, Sprawdź menu" }
+          - { name: href, label: Link, widget: string, hint: "Adres na stronie, np. /menu/sylwester/ albo /posts/19-rodzinna-niedziela-w-riverside-gdansk/" }
+      - { name: label, label: Etykieta na zdjęciu, widget: string, required: false, hint: "Opcjonalnie, np. Wtorki i środy, Do 23 grudnia" }
+      - { name: showUntil, label: Widoczne do (włącznie), widget: datetime, time_format: false, format: "YYYY-MM-DD", required: false, hint: "Opcjonalnie. Karta znika następnego dnia rano. Puste = bez końca." }
+      - { name: order, label: Kolejność, widget: number, default: 0, required: false, value_type: int }
+      - { name: published, label: Opublikowana, widget: boolean, default: true }
+
   - name: testimonials
     label: Opinie
     label_singular: Opinia

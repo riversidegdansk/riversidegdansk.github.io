@@ -125,6 +125,25 @@ const offers = defineCollection({
   }),
 });
 
+// Oferty specjalne — karty w sekcji „Tylko w Riverside” na stronie głównej (SectionSpecials).
+const specials = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/specials' }),
+  schema: z.object({
+    image:     z.string(),
+    alt:       z.string().optional(),
+    title:     z.string(),
+    cta: z.object({
+      label: z.string().default('Zobacz więcej'),
+      href:  z.string(),
+    }),
+    label:     z.string().optional(),
+    // Opcjonalnie: karta znika następnego dnia (przy codziennym rebuildzie).
+    showUntil: z.coerce.date().optional(),
+    order:     z.coerce.number().optional().default(0),
+    published: z.boolean().default(true),
+  }),
+});
+
 export const collections = {
   posts,
   pages,
@@ -133,4 +152,5 @@ export const collections = {
   faq,
   menu,
   offers,
+  specials,
 };

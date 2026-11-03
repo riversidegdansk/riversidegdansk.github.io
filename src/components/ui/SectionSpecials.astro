@@ -1,0 +1,75 @@
+---
+// „Tylko w Riverside” — pas kart z ofertami specjalnymi (kolekcja `specials`, CMS: Oferty specjalne).
+// Na telefonie przesuwany palcem (scroll-snap, następna karta „wystaje”), na tablecie 3,
+// na komputerze 4 karty w rzędzie. Strzałki tylko, gdy kart jest więcej, niż mieści się w rzędzie.
+import { getCollection } from 'astro:content';
+import CloudinaryImage from './CloudinaryImage.astro';
+import { withBase } from '../../config/site';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Tylko w Riverside' } = Astro.props;
+
+const DAY = 24 * 60 * 60 * 1000;
+const now = Date.now();
+
+const entries = await getCollection('specials', ({ data }) =>
+  data.published && (!data.showUntil || now < data.showUntil.valueOf() + DAY));
+const specials = entries.sort((a, b) => a.data.order - b.data.order);
+
+const arrow = 'inline-flex h-12 w-12 items-center justify-center text-glass-accent-amber hover:text-glass-white hover:bg-glass-accent-amber border border-glass-accent-amber rounded-full transition duration-200 disabled:opacity-30 disabled:pointer-events-none';
+---
+
+{specials.length > 0 && (
+  <section
+    class="section-py"
+    x-data="{
+      atStart: true,
+      atEnd: false,
+      update() { const t = $refs.track; this.atStart = t.scrollLeft < 8; this.atEnd = t.scrollLeft + t.clientWidth > t.scrollWidth - 8 },
+      scroll(dir) { const t = $refs.track; t.scrollBy({ left: dir * t.clientWidth, behavior: 'smooth' }) }
+    }"
+    x-init="update()"
+  >
+    <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between gap-6 mb-10">
+        <h2 class="section-heading mb-0!">{title}</h2>
+        <div class="hidden md:flex gap-3" x-show="!(atStart && atEnd)">
+          <button type="button" class={arrow} x-on:click="scroll(-1)" x-bind:disabled="atStart" aria-label="Poprzednie oferty">←</button>
+          <button type="button" class={arrow} x-on:click="scroll(1)" x-bind:disabled="atEnd" aria-label="Następne oferty">→</button>
+        </div>
+      </div>
+
+      <ul
+        x-ref="track"
+        x-on:scroll.debounce.100ms="update()"
+        x-on:resize.window.debounce.200ms="update()"
+        class="flex gap-4 lg:gap-6 overflow-x-auto snap-x snap-mandatory -mx-4 px-4 sm:mx-0 sm:px-0 list-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {specials.map(({ data }) => (
+          <li class="snap-start flex-shrink-0 w-[80%] sm:w-[calc((100%-1rem)/2)] md:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-4.5rem)/4)]">
+            <a href={withBase(data.cta.href)} class="group relative block rounded-3xl overflow-hidden ring-1 ring-glass-border">
+              <CloudinaryImage publicId={data.image} alt={data.alt || data.title} preset="portrait" sizes="(min-width: 1024px) 22vw, (min-width: 768px) 30vw, (min-width: 640px) 48vw, 80vw" class="block w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-700" />
+
+              {data.label && (
+                <span class="absolute top-4 left-4 inline-flex items-center py-1.5 px-3 text-xs font-medium leading-none text-glass-black bg-glass-accent-fire rounded-full">
+                  {data.label}
+                </span>
+              )}
+
+              {/* Przyciemnienie od dołu (60% → 0) — czytelne na jasnych i ciemnych zdjęciach. */}
+              <div class="absolute inset-x-0 bottom-0 p-5 pt-24 bg-gradient-to-t from-black/60 via-black/35 to-transparent">
+                <h3 class="text-xl lg:text-2xl leading-tight tracking-tight text-white [text-shadow:0_1px_8px_rgb(0_0_0/0.6)]">{data.title}</h3>
+                <span class="inline-flex items-center gap-2 mt-2 text-sm font-medium text-glass-accent-fire [text-shadow:0_1px_6px_rgb(0_0_0/0.6)]">
+                  {data.cta.label} <span class="group-hover:translate-x-1 transition duration-150" aria-hidden="true">→</span>
+                </span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
