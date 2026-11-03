@@ -6,7 +6,7 @@ excerpt: 'Wigilia firmowa, świąteczna kolacja z bliskimi albo Sylwester nad Mo
 seoTitle: 'Święta i Sylwester w Riverside'
 seoDescription: 'Oferta świąteczna od 179 zł od osoby i czterodaniowe menu sylwestrowe z Prosecco za 399 zł. Riverside Dym i Ogień nad Motławą w Gdańsku.'
 cover:
-  public_id: 'riverside-dym-ogien-gdansk-swieta-sylwester-2026'
+  public_id: 'riverside-dym-ogien-gdansk-swieta-sylwester-2026-fot-3'
   alt: 'Świątecznie nakryty stół w Riverside i tatar wołowy z menu sylwestrowego'
 published: true
 pinned: true
