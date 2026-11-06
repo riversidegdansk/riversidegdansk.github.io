@@ -129,7 +129,9 @@ const offers = defineCollection({
 const specials = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/specials' }),
   schema: z.object({
-    image:     z.string(),
+    // Zdjęcie albo film (bez autostartu). Przy filmie zdjęcie jest okładką — puste = kadr z filmu.
+    image:     z.string().optional(),
+    video:     z.string().optional(),
     alt:       z.string().optional(),
     title:     z.string(),
     cta: z.object({
@@ -141,7 +143,7 @@ const specials = defineCollection({
     showUntil: z.coerce.date().optional(),
     order:     z.coerce.number().optional().default(0),
     published: z.boolean().default(true),
-  }),
+  }).refine((d) => d.image || d.video, { message: 'Oferta specjalna potrzebuje zdjęcia albo filmu.' }),
 });
 
 export const collections = {

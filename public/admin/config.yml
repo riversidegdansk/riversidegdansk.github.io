@@ -158,13 +158,14 @@ collections:
   - name: specials
     label: Oferty specjalne
     label_singular: Oferta specjalna
-    description: "Karty w sekcji „Tylko w Riverside” na stronie głównej: zdjęcie, tytuł i link. Na komputerze mieszczą się 4 karty w rzędzie, kolejne przewija się strzałkami."
+    description: "Karty w sekcji „Tylko w Riverside” na stronie głównej: zdjęcie lub film, tytuł i link. Wyłączona „Opublikowana” = szkic, widoczny tylko lokalnie. Na komputerze mieszczą się 4 karty w rzędzie, kolejne przewija się strzałkami."
     folder: src/content/specials
     create: true
     slug: "{{slug}}"
     sortable_fields: [order, title]
     fields:
-      - { name: image, label: Zdjęcie, widget: image, hint: "Pionowy kadr 3:4 — zdjęcie zostanie przycięte automatycznie. Napis jest na przyciemnieniu u dołu, więc pasuje i jasne, i ciemne." }
+      - { name: image, label: Zdjęcie, widget: image, required: false, hint: "Pionowy kadr 3:4 — zdjęcie zostanie przycięte automatycznie. Napis jest na przyciemnieniu u dołu, więc pasuje i jasne, i ciemne. Przy filmie: okładka (puste = kadr z 1. sekundy filmu)." }
+      - { name: video, label: Film (zamiast zdjęcia), widget: file, required: false, hint: "Opcjonalnie film z Cloudinary. Nie startuje sam — gość klika przycisk odtwarzania. Kadr 3:4, przycinany automatycznie." }
       - { name: alt, label: Opis zdjęcia (alt), widget: string, required: false, hint: "Puste = tytuł." }
       - { name: title, label: Tytuł, widget: string, hint: "Krótko, najlepiej do ~30 znaków, np. Mega golonka + litr Pilsnera" }
       - name: cta

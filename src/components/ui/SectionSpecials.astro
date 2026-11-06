@@ -2,8 +2,11 @@
 // „Tylko w Riverside” — pas kart z ofertami specjalnymi (kolekcja `specials`, CMS: Oferty specjalne).
 // Na telefonie przesuwany palcem (scroll-snap, następna karta „wystaje”), na tablecie 3,
 // na komputerze 4 karty w rzędzie. Strzałki tylko, gdy kart jest więcej, niż mieści się w rzędzie.
+// Karta z filmem: okładka + przycisk odtwarzania (bez autostartu); podczas odtwarzania
+// tytuł i link chowają się, a pojawiają się kontrolki filmu.
 import { getCollection } from 'astro:content';
 import CloudinaryImage from './CloudinaryImage.astro';
+import { cloudinaryUrl, cloudinaryVideoUrl, cloudinaryVideoPoster } from '../../utils/cloudinary';
 import { withBase } from '../../config/site';
 
 interface Props {
@@ -15,9 +18,20 @@ const { title = 'Tylko w Riverside' } = Astro.props;
 const DAY = 24 * 60 * 60 * 1000;
 const now = Date.now();
 
+// W `astro dev` widać też szkice (z oznaczeniem) — podgląd przed publikacją.
 const entries = await getCollection('specials', ({ data }) =>
-  data.published && (!data.showUntil || now < data.showUntil.valueOf() + DAY));
+  (data.published || import.meta.env.DEV) && (!data.showUntil || now < data.showUntil.valueOf() + DAY));
 const specials = entries.sort((a, b) => a.data.order - b.data.order);
+
+const VIDEO = { width: 720, aspectRatio: '3:4', crop: 'fill' } as const;
+const videoSrc = (video: string) => cloudinaryVideoUrl(video, VIDEO);
+const videoPoster = (video: string, image?: string) =>
+  image ? cloudinaryUrl(image, VIDEO) : cloudinaryVideoPoster(video, { ...VIDEO, startOffset: 1 });
+
+const badge = 'inline-flex items-center py-1.5 px-3 text-xs font-medium leading-none rounded-full';
+const scrim = 'absolute inset-x-0 bottom-0 p-5 pt-24 bg-gradient-to-t from-black/60 via-black/35 to-transparent';
+const titleClass = 'text-xl lg:text-2xl leading-tight tracking-tight text-white [text-shadow:0_1px_8px_rgb(0_0_0/0.6)]';
+const ctaClass = 'inline-flex items-center gap-2 mt-2 text-sm font-medium text-glass-accent-fire [text-shadow:0_1px_6px_rgb(0_0_0/0.6)]';
 
 const arrow = 'inline-flex h-12 w-12 items-center justify-center text-glass-accent-amber hover:text-glass-white hover:bg-glass-accent-amber border border-glass-accent-amber rounded-full transition duration-200 disabled:opacity-30 disabled:pointer-events-none';
 ---
@@ -50,23 +64,67 @@ const arrow = 'inline-flex h-12 w-12 items-center justify-center text-glass-acce
       >
         {specials.map(({ data }) => (
           <li class="snap-start flex-shrink-0 w-[80%] sm:w-[calc((100%-1rem)/2)] md:w-[calc((100%-2rem)/3)] lg:w-[calc((100%-4.5rem)/4)]">
-            <a href={withBase(data.cta.href)} class="group relative block rounded-3xl overflow-hidden ring-1 ring-glass-border">
-              <CloudinaryImage publicId={data.image} alt={data.alt || data.title} preset="portrait" sizes="(min-width: 1024px) 22vw, (min-width: 768px) 30vw, (min-width: 640px) 48vw, 80vw" class="block w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-700" />
+            {data.video ? (
+              <div
+                class="group relative rounded-3xl overflow-hidden ring-1 ring-glass-border"
+                x-data="{ playing: false }"
+              >
+                <video
+                  x-ref="video"
+                  class="block w-full aspect-[3/4] object-cover bg-glass-anthracite"
+                  poster={videoPoster(data.video, data.image)}
+                  preload="none"
+                  playsinline
+                  x-bind:controls="playing"
+                  x-on:play="playing = true"
+                  x-on:pause="playing = false"
+                  x-on:ended="playing = false"
+                  aria-label={data.alt || data.title}
+                >
+                  <source src={videoSrc(data.video)} type="video/mp4" />
+                </video>
 
-              {data.label && (
-                <span class="absolute top-4 left-4 inline-flex items-center py-1.5 px-3 text-xs font-medium leading-none text-glass-black bg-glass-accent-fire rounded-full">
-                  {data.label}
-                </span>
-              )}
+                <div x-show="!playing" x-transition.opacity>
+                  <div class="absolute top-4 left-4 flex gap-2">
+                    {data.label && <span class={`${badge} text-glass-black bg-glass-accent-fire`}>{data.label}</span>}
+                    {!data.published && <span class={`${badge} text-white bg-glass-accent-amber`}>Szkic</span>}
+                  </div>
 
-              {/* Przyciemnienie od dołu (60% → 0) — czytelne na jasnych i ciemnych zdjęciach. */}
-              <div class="absolute inset-x-0 bottom-0 p-5 pt-24 bg-gradient-to-t from-black/60 via-black/35 to-transparent">
-                <h3 class="text-xl lg:text-2xl leading-tight tracking-tight text-white [text-shadow:0_1px_8px_rgb(0_0_0/0.6)]">{data.title}</h3>
-                <span class="inline-flex items-center gap-2 mt-2 text-sm font-medium text-glass-accent-fire [text-shadow:0_1px_6px_rgb(0_0_0/0.6)]">
-                  {data.cta.label} <span class="group-hover:translate-x-1 transition duration-150" aria-hidden="true">→</span>
-                </span>
+                  <button
+                    type="button"
+                    class="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 inline-flex h-16 w-16 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm ring-1 ring-white/40 text-white hover:bg-glass-accent-fire hover:text-glass-black hover:ring-glass-accent-fire transition duration-200"
+                    x-on:click="$refs.video.play()"
+                    aria-label={`Odtwórz film: ${data.title}`}
+                  >
+                    <svg class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11-6.86a1 1 0 0 0 0-1.72l-11-6.86A1 1 0 0 0 8 5.14z"/></svg>
+                  </button>
+
+                  <div class={`${scrim} pointer-events-none`}>
+                    <h3 class={titleClass}>{data.title}</h3>
+                    <a href={withBase(data.cta.href)} class={`${ctaClass} pointer-events-auto hover:text-glass-accent-glow`}>
+                      {data.cta.label} <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </div>
               </div>
-            </a>
+            ) : (
+              <a href={withBase(data.cta.href)} class="group relative block rounded-3xl overflow-hidden ring-1 ring-glass-border">
+                <CloudinaryImage publicId={data.image} alt={data.alt || data.title} preset="portrait" sizes="(min-width: 1024px) 22vw, (min-width: 768px) 30vw, (min-width: 640px) 48vw, 80vw" class="block w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-700" />
+
+                <div class="absolute top-4 left-4 flex gap-2">
+                  {data.label && <span class={`${badge} text-glass-black bg-glass-accent-fire`}>{data.label}</span>}
+                  {!data.published && <span class={`${badge} text-white bg-glass-accent-amber`}>Szkic</span>}
+                </div>
+
+                {/* Przyciemnienie od dołu (60% → 0) — czytelne na jasnych i ciemnych zdjęciach. */}
+                <div class={scrim}>
+                  <h3 class={titleClass}>{data.title}</h3>
+                  <span class={ctaClass}>
+                    {data.cta.label} <span class="group-hover:translate-x-1 transition duration-150" aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </a>
+            )}
           </li>
         ))}
       </ul>
