@@ -14,7 +14,7 @@
     "@fontsource/inter": "^5.3.0",
     "@fontsource/libre-baskerville": "^5.3.0",
     "alpinejs": "^3.17.5",
-    "astro": "^7.4.7",
+    "astro": "^7.4.11",
     "vanilla-cookieconsent": "^3.1.0"
   },
   "devDependencies": {
